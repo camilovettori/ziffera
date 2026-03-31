@@ -61,6 +61,29 @@ export default function ExampleSection() {
               Full checkout system with customer and delivery flow
             </div>
           </div>
+
+          {/* MOBILE PREVIEW */}
+          <div className="group rounded-[2rem] border border-white/10 bg-white/[0.04] p-4 shadow-[0_20px_70px_rgba(0,0,0,0.25)] transition duration-500 hover:-translate-y-1 hover:border-blue-400/20 hover:shadow-[0_28px_90px_rgba(0,0,0,0.32)]">
+            <div className="mb-3 text-xs uppercase tracking-[0.24em] text-blue-200">
+              Mobile experience
+            </div>
+            <div className="relative overflow-hidden rounded-[1.6rem] border border-white/10 bg-[#09111b]">
+              <div className="absolute inset-x-0 top-0 z-10 h-10 bg-gradient-to-b from-black/25 to-transparent" />
+              <div className="relative aspect-[9/16]">
+                <Image
+                  src="/examples/mobileFF.jpg"
+                  alt="Mobile preview of Frequency Framed"
+                  fill
+                  sizes="(max-width: 1024px) 100vw, 500px"
+                  className="object-cover object-top"
+                />
+              </div>
+            </div>
+
+            <div className="mt-4 text-sm text-slate-400">
+              Mobile experience for smaller screens
+            </div>
+          </div>
         </div>
 
         {/* RIGHT COLUMN */}
