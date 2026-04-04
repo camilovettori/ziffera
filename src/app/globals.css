@@ -1,24 +1,16 @@
 @import "tailwindcss";
 
-/* =========================
-   ROOT / DESIGN TOKENS
-========================= */
-
 :root {
-  --bg: #0B0F14;
-  --bg-soft: #111723;
-  --text: #ffffff;
-  --text-secondary: #94a3b8;
+  --bg: #f7faff;
+  --bg-soft: #ffffff;
+  --text: #0f172a;
+  --text-secondary: #64748b;
 
   --primary: #3b82f6;
-  --primary-soft: rgba(59, 130, 246, 0.15);
+  --primary-soft: rgba(59, 130, 246, 0.12);
 
-  --border: rgba(255, 255, 255, 0.08);
+  --border: rgba(15, 23, 42, 0.08);
 }
-
-/* =========================
-   BASE RESET
-========================= */
 
 * {
   box-sizing: border-box;
@@ -36,52 +28,37 @@ body {
   text-rendering: optimizeLegibility;
 }
 
-/* =========================
-   SELECTION (highlight)
-========================= */
-
 ::selection {
-  background: rgba(59, 130, 246, 0.25);
+  background: rgba(59, 130, 246, 0.16);
 }
-
-/* =========================
-   SCROLLBAR (premium feel)
-========================= */
 
 ::-webkit-scrollbar {
   width: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #0B0F14;
+  background: #eef4ff;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.15);
+  background: rgba(59, 130, 246, 0.2);
   border-radius: 999px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.25);
+  background: rgba(59, 130, 246, 0.32);
 }
 
-/* =========================
-   UTILITY CLASSES (CUSTOM)
-========================= */
-
-/* glow blur (usado no hero e cards) */
 .glow-blue {
-  box-shadow: 0 0 80px rgba(59, 130, 246, 0.25);
+  box-shadow: 0 0 80px rgba(59, 130, 246, 0.18);
 }
 
-/* glass effect */
 .glass {
   backdrop-filter: blur(20px);
-  background: rgba(255, 255, 255, 0.04);
+  background: rgba(255, 255, 255, 0.7);
   border: 1px solid var(--border);
 }
 
-/* smooth hover */
 .hover-lift {
   transition: all 0.3s ease;
 }
@@ -90,16 +67,11 @@ body {
   transform: translateY(-4px);
 }
 
-/* subtle gradient text (futuro uso em headings) */
 .gradient-text {
-  background: linear-gradient(90deg, #ffffff, #60a5fa);
+  background: linear-gradient(90deg, #1d4ed8, #60a5fa);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
-
-/* =========================
-   ANIMATIONS (VIDA NO SITE)
-========================= */
 
 @keyframes floatSlow {
   0% {
@@ -132,18 +104,10 @@ body {
   animation: fadeUp 0.8s ease forwards;
 }
 
-/* =========================
-   SECTION SPACING CONTROL
-========================= */
-
 .section {
   padding-top: 6rem;
   padding-bottom: 6rem;
 }
-
-/* =========================
-   IMAGE DEFAULT STYLE
-========================= */
 
 img {
   border-radius: 1rem;

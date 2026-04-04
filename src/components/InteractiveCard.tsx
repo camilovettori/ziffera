@@ -53,11 +53,10 @@ export default function InteractiveCard({
       }}
       className={`relative ${className}`}
     >
-      {/* GLOW FOLLOW */}
       <div
-        className="pointer-events-none absolute inset-0 rounded-[2.4rem] opacity-40 blur-2xl transition duration-300"
+        className="pointer-events-none absolute inset-0 rounded-[2rem] opacity-30 blur-2xl transition duration-300"
         style={{
-          background: `radial-gradient(circle at ${glow.x}% ${glow.y}%, rgba(59,130,246,0.35), transparent 40%)`,
+          background: `radial-gradient(circle at ${glow.x}% ${glow.y}%, rgba(59,130,246,0.28), transparent 42%)`,
         }}
       />
 

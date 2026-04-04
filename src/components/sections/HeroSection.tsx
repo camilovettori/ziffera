@@ -1,8 +1,30 @@
 "use client";
 
 import { motion } from "framer-motion";
+import useEmblaCarousel from "embla-carousel-react";
+import Image from "next/image";
 import Link from "next/link";
-import InteractiveCard from "../InteractiveCard";
+import {
+  BarChart3,
+  Check,
+  ChevronLeft,
+  ChevronRight,
+  Globe,
+  Plug,
+  Sparkles,
+} from "lucide-react";
+import { useEffect, useState } from "react";
+import type { ReactNode } from "react";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
 
 const heroPoints = [
   "Clear communication",
@@ -10,23 +32,119 @@ const heroPoints = [
   "Built for real businesses",
 ];
 
+type HeroSlide = {
+  badge: string;
+  title: string;
+  description: string;
+  highlights: string[];
+  tone: "blue" | "slate";
+  icon: ReactNode;
+  image?: string;
+  footnote?: string;
+  cta: string;
+};
+
+const slides: HeroSlide[] = [
+  {
+    badge: "Launch offer",
+    title: "Professional website from EUR 650",
+    description: "A clean, credible website for a strong first impression.",
+    highlights: ["Custom design", "Mobile optimized"],
+    tone: "blue",
+    icon: <Globe className="h-5 w-5" />,
+    footnote: "Normally EUR 2500+",
+    cta: "Start your project",
+  },
+  {
+    badge: "Real client project",
+    title: "Frequency Framed",
+    description: "A real e-commerce build with a polished storefront.",
+    highlights: ["Stripe checkout", "Admin tools"],
+    tone: "slate",
+    icon: <Sparkles className="h-5 w-5" />,
+    image: "/examples/homepage.png",
+    cta: "View our work",
+  },
+  {
+    badge: "Integration product",
+    title: "Zconnect",
+    description: "A simple integration that removes repetitive admin work.",
+    highlights: ["Automate invoices", "Custom connections"],
+    tone: "blue",
+    icon: <Plug className="h-5 w-5" />,
+    footnote: "Unify -> Zoho Invoice / Zoho Books",
+    cta: "Talk about Zconnect",
+  },
+  {
+    badge: "Launching 01/05",
+    title: "MarginFlow",
+    description: "Margin visibility for small businesses that want clearer numbers.",
+    highlights: ["Track margins", "Spot weak products"],
+    tone: "slate",
+    icon: <BarChart3 className="h-5 w-5" />,
+    footnote: "Coming soon",
+    cta: "Join the waitlist",
+  },
+];
+
 export default function HeroSection() {
+  const [emblaRef, emblaApi] = useEmblaCarousel({
+    align: "start",
+    loop: true,
+  });
+  const [selectedIndex, setSelectedIndex] = useState(0);
+  const [paused, setPaused] = useState(false);
+
+  useEffect(() => {
+    if (!emblaApi) {
+      return;
+    }
+
+    const onSelect = () => setSelectedIndex(emblaApi.selectedScrollSnap());
+
+    onSelect();
+    emblaApi.on("select", onSelect);
+    emblaApi.on("reInit", onSelect);
+
+    return () => {
+      emblaApi.off("select", onSelect);
+      emblaApi.off("reInit", onSelect);
+    };
+  }, [emblaApi]);
+
+  useEffect(() => {
+    if (!emblaApi || paused) {
+      return;
+    }
+
+    const interval = window.setInterval(() => {
+      emblaApi.scrollNext();
+    }, 3800);
+
+    return () => window.clearInterval(interval);
+  }, [emblaApi, paused]);
+
   return (
-    <section className="relative mx-auto grid max-w-7xl gap-12 px-6 pb-16 pt-14 lg:grid-cols-[1.02fr_0.98fr] lg:items-center lg:px-10 lg:pb-24 lg:pt-20">
-      <div className="relative z-10 max-w-3xl">
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.55 }}
-          className="inline-flex items-center gap-2 rounded-full border border-blue-200 bg-blue-50 px-4 py-2 text-[11px] uppercase tracking-[0.28em] text-blue-700"
-        >
-          Modern websites, smart systems, and integrations
-        </motion.div>
+    <section className="relative mx-auto grid max-w-7xl gap-10 overflow-hidden px-6 pb-16 pt-14 lg:grid-cols-[1.12fr_0.88fr] lg:items-center lg:px-10 lg:pb-24 lg:pt-20">
+      <div className="pointer-events-none absolute inset-0 -z-10">
+        <div className="absolute left-[-10%] top-[-12%] h-80 w-80 rounded-full bg-blue-300/35 blur-3xl float-slow" />
+        <div className="absolute right-[-4%] top-[8%] h-72 w-72 rounded-full bg-sky-300/28 blur-3xl float-slow [animation-delay:1.5s]" />
+        <div className="absolute bottom-[-10%] left-[16%] h-64 w-64 rounded-full bg-indigo-300/24 blur-3xl float-slow [animation-delay:3s]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(59,130,246,0.16),transparent_24%),radial-gradient(circle_at_top_right,rgba(125,211,252,0.12),transparent_22%)]" />
+      </div>
+
+      <motion.div
+        initial={{ opacity: 0, y: 18 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.65, ease: "easeOut" }}
+        className="relative z-10 max-w-3xl"
+      >
+        <Badge>Modern websites, smart systems, and integrations</Badge>
 
         <motion.h1
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.65, delay: 0.05 }}
+          transition={{ duration: 0.7, delay: 0.05 }}
           className="mt-6 max-w-4xl text-5xl font-semibold leading-[0.92] tracking-[-0.06em] text-slate-950 md:text-7xl xl:text-[5.5rem]"
         >
           Modern websites and smart systems
@@ -37,45 +155,38 @@ export default function HeroSection() {
         </motion.h1>
 
         <motion.p
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 18 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.65, delay: 0.12 }}
-          className="mt-6 max-w-2xl text-lg leading-8 text-slate-600 md:text-[1.24rem] md:leading-9"
+          transition={{ duration: 0.7, delay: 0.12 }}
+          className="mt-6 max-w-2xl text-lg leading-8 text-slate-600 md:text-[1.16rem] md:leading-9"
         >
-          Ziffera builds business websites, e-commerce stores, custom systems,
-          and integrations that help you look more professional, save time, and
-          win more work.
+          Ziffera builds websites, stores, systems, and integrations that help
+          businesses look sharper and move faster.
         </motion.p>
 
         <motion.p
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 18 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.65, delay: 0.18 }}
+          transition={{ duration: 0.7, delay: 0.18 }}
           className="mt-4 max-w-2xl text-sm leading-7 text-slate-500"
         >
-          A good fit for small businesses, local brands, artists, and growing
-          teams that want something polished without the agency intimidation.
+          A good fit for small businesses, local brands, and growing teams that
+          want something polished without the agency noise.
         </motion.p>
 
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 18 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.65, delay: 0.24 }}
+          transition={{ duration: 0.7, delay: 0.24 }}
           className="mt-9 flex flex-wrap gap-4"
         >
-          <Link
-            href="/contact"
-            className="rounded-2xl bg-blue-600 px-6 py-3.5 text-sm font-semibold text-white shadow-[0_18px_50px_rgba(59,130,246,0.22)] transition duration-300 hover:-translate-y-0.5 hover:bg-blue-500"
-          >
-            Start your project
-          </Link>
+          <Button asChild size="lg">
+            <Link href="/contact">Start your project</Link>
+          </Button>
 
-          <Link
-            href="/#work"
-            className="rounded-2xl border border-slate-200 bg-white px-6 py-3.5 text-sm font-medium text-slate-800 transition duration-300 hover:border-blue-200 hover:bg-blue-50"
-          >
-            View our work
-          </Link>
+          <Button asChild variant="outline" size="lg">
+            <Link href="/#work">View our work</Link>
+          </Button>
         </motion.div>
 
         <motion.div
@@ -85,79 +196,172 @@ export default function HeroSection() {
           className="mt-10 grid gap-3 sm:grid-cols-3"
         >
           {heroPoints.map((point) => (
-            <div
+            <Card
               key={point}
-              className="rounded-[1.4rem] border border-slate-200 bg-white px-4 py-3 text-sm text-slate-600 shadow-[0_8px_24px_rgba(15,23,42,0.04)]"
+              className="overflow-hidden border-slate-200/80 bg-[linear-gradient(180deg,#ffffff_0%,#f8fbff_100%)] shadow-[0_14px_32px_rgba(15,23,42,0.05)]"
             >
-              {point}
-            </div>
+              <CardContent className="px-4 py-3 text-sm font-medium text-slate-700">
+                {point}
+              </CardContent>
+            </Card>
           ))}
         </motion.div>
-      </div>
+      </motion.div>
 
       <motion.div
-        initial={{ opacity: 0, scale: 0.97, rotate: -1 }}
-        animate={{ opacity: 1, scale: 1, rotate: 0 }}
-        transition={{ duration: 0.85, delay: 0.2 }}
-        className="relative"
+        initial={{ opacity: 0, y: 20, scale: 0.98 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        transition={{ duration: 0.8, delay: 0.16 }}
+        className="relative mx-auto w-full max-w-[410px] lg:self-center"
       >
-        <div className="pointer-events-none absolute -left-8 top-10 h-36 w-36 rounded-full bg-blue-200/70 blur-3xl" />
-        <div className="pointer-events-none absolute -right-8 bottom-8 h-40 w-40 rounded-full bg-cyan-200/70 blur-3xl" />
+        <div className="pointer-events-none absolute -left-8 top-6 h-32 w-32 rounded-full bg-blue-200/75 blur-3xl" />
+        <div className="pointer-events-none absolute -right-6 bottom-4 h-32 w-32 rounded-full bg-cyan-200/70 blur-3xl" />
 
-        <InteractiveCard className="rounded-[2.4rem]">
-          <div className="relative overflow-hidden rounded-[2.4rem] border border-slate-200 bg-white p-4 shadow-[0_30px_90px_rgba(15,23,42,0.08)] lg:p-5">
-            <div className="rounded-[1.8rem] border border-slate-200 bg-[linear-gradient(180deg,#ffffff_0%,#f8fbff_100%)] p-6 shadow-[0_16px_40px_rgba(15,23,42,0.05)] lg:p-7">
-              <div className="inline-flex rounded-full border border-blue-200 bg-blue-50 px-3 py-1 text-[10px] uppercase tracking-[0.22em] text-blue-700">
-                Launch offer
+        <Card className="overflow-hidden border-white/80 bg-white/95 p-2.5 shadow-[0_30px_90px_rgba(15,23,42,0.12)] backdrop-blur-xl">
+          <div className="rounded-[1.6rem] border border-slate-200 bg-[linear-gradient(180deg,#ffffff_0%,#f8fbff_100%)] p-3 shadow-[0_14px_28px_rgba(15,23,42,0.05)] sm:p-4">
+            <div className="mb-3 flex items-center justify-between gap-3">
+              <div className="flex items-center gap-2">
+                <Badge variant="secondary">Featured showcase</Badge>
+                <span className="hidden text-[10px] uppercase tracking-[0.24em] text-slate-400 sm:inline">
+                  compact preview
+                </span>
               </div>
-
-              <h2 className="mt-4 text-3xl font-semibold tracking-[-0.05em] text-slate-950">
-                Professional website from EUR 650
-              </h2>
-
-              <p className="mt-4 max-w-xl text-sm leading-7 text-slate-600">
-                Designed for small businesses, artists, and brands that want to
-                look professional and get more customers.
-              </p>
-
-              <div className="mt-5 text-sm font-medium text-slate-500">
-                Normally EUR 2500+
+              <div className="flex gap-2">
+                <Button
+                  type="button"
+                  size="icon"
+                  variant="outline"
+                  className="h-9 w-9 rounded-full bg-white/90"
+                  onClick={() => emblaApi?.scrollPrev()}
+                  aria-label="Previous slide"
+                >
+                  <ChevronLeft className="h-3.5 w-3.5" />
+                </Button>
+                <Button
+                  type="button"
+                  size="icon"
+                  variant="outline"
+                  className="h-9 w-9 rounded-full bg-white/90"
+                  onClick={() => emblaApi?.scrollNext()}
+                  aria-label="Next slide"
+                >
+                  <ChevronRight className="h-3.5 w-3.5" />
+                </Button>
               </div>
+            </div>
 
-              <div className="mt-6 grid gap-3">
-                {[
-                  "Custom design",
-                  "Mobile optimized",
-                  "Stripe payments for e-commerce",
-                  "Admin panel to manage content",
-                  "Fast and modern performance",
-                ].map((item) => (
-                  <div
-                    key={item}
-                    className="flex items-start gap-3 rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-700"
-                  >
-                    <span className="mt-0.5 text-blue-600">✔</span>
-                    <span>{item}</span>
+            <div
+              ref={emblaRef}
+              onMouseEnter={() => setPaused(true)}
+              onMouseLeave={() => setPaused(false)}
+              className="overflow-hidden"
+            >
+              <div className="flex">
+                {slides.map((slide) => (
+                  <div key={slide.title} className="min-w-0 flex-[0_0_100%] pr-3">
+                    <motion.div
+                      initial={{ opacity: 0, y: 14 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.35, ease: "easeOut" }}
+                    >
+                      <Card
+                        className={[
+                          "overflow-hidden border-slate-200 shadow-[0_18px_44px_rgba(15,23,42,0.08)]",
+                          slide.tone === "blue"
+                            ? "bg-[linear-gradient(180deg,#ffffff_0%,#eff6ff_100%)]"
+                            : "bg-[linear-gradient(180deg,#ffffff_0%,#f8fbff_100%)]",
+                        ].join(" ")}
+                      >
+                        <CardHeader className="pb-2">
+                          <div className="mb-3 flex items-center justify-between gap-3">
+                            <Badge>{slide.badge}</Badge>
+                            <div className="flex h-10 w-10 items-center justify-center rounded-2xl border border-blue-100 bg-white text-blue-700 shadow-[0_12px_24px_rgba(59,130,246,0.08)]">
+                              {slide.icon}
+                            </div>
+                          </div>
+                          <CardTitle className="text-xl tracking-[-0.05em]">
+                            {slide.title}
+                          </CardTitle>
+                          <CardDescription className="mt-2 max-w-xl text-sm leading-6 text-slate-600">
+                            {slide.description}
+                          </CardDescription>
+                        </CardHeader>
+
+                        <CardContent className="space-y-3">
+                          {slide.image ? (
+                            <div className="overflow-hidden rounded-[1.35rem] border border-slate-200 bg-white shadow-[0_10px_24px_rgba(15,23,42,0.05)]">
+                              <div className="relative aspect-[16/11]">
+                                <Image
+                                  src={slide.image}
+                                  alt={slide.title}
+                                  fill
+                                  sizes="(max-width: 1024px) 420px, 420px"
+                                  className="object-cover object-top"
+                                />
+                              </div>
+                            </div>
+                          ) : null}
+
+                          <div className="grid gap-2">
+                            {slide.highlights.map((highlight) => (
+                              <div
+                                key={highlight}
+                                className="flex items-center gap-3 rounded-[1.1rem] border border-slate-200 bg-white px-4 py-2.5 text-sm text-slate-700"
+                              >
+                                <span className="flex h-5 w-5 items-center justify-center rounded-full bg-blue-50 text-blue-700">
+                                  <Check className="h-3.5 w-3.5" />
+                                </span>
+                                {highlight}
+                              </div>
+                            ))}
+                          </div>
+
+                          {slide.footnote ? (
+                            <>
+                              <Separator />
+                              <div className="rounded-[1.25rem] border border-blue-100 bg-blue-50 px-4 py-3 text-sm text-slate-700">
+                                {slide.footnote}
+                              </div>
+                            </>
+                          ) : null}
+                        </CardContent>
+
+                        <CardContent className="pt-0">
+                          <Button asChild className="w-full">
+                            <Link href={slide.cta === "View our work" ? "/#work" : "/contact"}>
+                              {slide.cta}
+                            </Link>
+                          </Button>
+                        </CardContent>
+                      </Card>
+                    </motion.div>
                   </div>
                 ))}
               </div>
+            </div>
 
-              <div className="mt-6 rounded-[1.4rem] border border-blue-100 bg-blue-50 px-4 py-3 text-sm leading-6 text-slate-700">
-                Optional support from EUR 25/month
-                <span className="block text-slate-500">
-                  Hosting, updates, and maintenance.
-                </span>
+            <div className="mt-4 flex items-center justify-between gap-4">
+              <div className="flex items-center gap-2">
+                {slides.map((slide, index) => (
+                  <button
+                    key={slide.title}
+                    type="button"
+                    onClick={() => emblaApi?.scrollTo(index)}
+                    aria-label={`Go to slide ${index + 1}`}
+                    className={[
+                      "h-2.5 rounded-full transition-all duration-300",
+                      index === selectedIndex ? "w-8 bg-blue-500" : "w-2.5 bg-slate-300",
+                    ].join(" ")}
+                  />
+                ))}
               </div>
-
-              <Link
-                href="/contact"
-                className="mt-6 inline-flex w-full items-center justify-center rounded-2xl bg-blue-600 px-6 py-3.5 text-sm font-semibold text-white shadow-[0_18px_50px_rgba(59,130,246,0.22)] transition duration-300 hover:-translate-y-0.5 hover:bg-blue-500"
-              >
-                Start your project
-              </Link>
+              <div className="text-xs uppercase tracking-[0.24em] text-slate-400">
+                {String(selectedIndex + 1).padStart(2, "0")} /{" "}
+                {String(slides.length).padStart(2, "0")}
+              </div>
             </div>
           </div>
-        </InteractiveCard>
+        </Card>
       </motion.div>
     </section>
   );
