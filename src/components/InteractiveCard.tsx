@@ -1,13 +1,22 @@
 "use client";
 
 import { motion } from "framer-motion";
+import type { ReactNode, MouseEvent } from "react";
 import { useState } from "react";
 
-export default function InteractiveCard({ children }: any) {
+type InteractiveCardProps = {
+  children: ReactNode;
+  className?: string;
+};
+
+export default function InteractiveCard({
+  children,
+  className = "",
+}: InteractiveCardProps) {
   const [rotate, setRotate] = useState({ x: 0, y: 0 });
   const [glow, setGlow] = useState({ x: 50, y: 50 });
 
-  const handleMouseMove = (e: any) => {
+  const handleMouseMove = (e: MouseEvent<HTMLDivElement>) => {
     const rect = e.currentTarget.getBoundingClientRect();
 
     const x = e.clientX - rect.left;
@@ -42,7 +51,7 @@ export default function InteractiveCard({ children }: any) {
       style={{
         transformStyle: "preserve-3d",
       }}
-      className="relative"
+      className={`relative ${className}`}
     >
       {/* GLOW FOLLOW */}
       <div

@@ -1,157 +1,163 @@
 "use client";
-import Link from "next/link";
+
 import { motion } from "framer-motion";
+import Link from "next/link";
 import InteractiveCard from "../InteractiveCard";
 
-export default function HeroSection() {
-  const metrics = [
-    { value: "Premium", label: "Design language" },
-    { value: "Fast", label: "Performance-first builds" },
-    { value: "Scalable", label: "Engineering mindset" },
-    { value: "Trusted", label: "Business-focused delivery" },
-  ];
+const heroPoints = [
+  "Clear communication",
+  "Fast, modern builds",
+  "Built for real businesses",
+];
 
+export default function HeroSection() {
   return (
-    <section className="relative mx-auto grid max-w-7xl gap-14 px-6 pb-24 pt-16 lg:grid-cols-[1.05fr_0.95fr] lg:px-10 lg:pb-28 lg:pt-20">
-      
-      {/* LEFT */}
+    <section className="relative mx-auto grid max-w-7xl gap-12 px-6 pb-16 pt-14 lg:grid-cols-[1.02fr_0.98fr] lg:items-center lg:px-10 lg:pb-24 lg:pt-20">
       <div className="relative z-10 max-w-3xl">
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.55 }}
+          className="inline-flex items-center gap-2 rounded-full border border-blue-200 bg-blue-50 px-4 py-2 text-[11px] uppercase tracking-[0.28em] text-blue-700"
+        >
+          Modern websites, smart systems, and integrations
+        </motion.div>
+
+        <motion.h1
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.65, delay: 0.05 }}
+          className="mt-6 max-w-4xl text-5xl font-semibold leading-[0.92] tracking-[-0.06em] text-slate-950 md:text-7xl xl:text-[5.5rem]"
+        >
+          Modern websites and smart systems
+          <br />
+          <span className="bg-[linear-gradient(180deg,#1d4ed8_0%,#3b82f6_45%,#7dd3fc_100%)] bg-clip-text text-transparent">
+            for growing businesses.
+          </span>
+        </motion.h1>
+
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.65, delay: 0.12 }}
+          className="mt-6 max-w-2xl text-lg leading-8 text-slate-600 md:text-[1.24rem] md:leading-9"
+        >
+          Ziffera builds business websites, e-commerce stores, custom systems,
+          and integrations that help you look more professional, save time, and
+          win more work.
+        </motion.p>
+
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.65, delay: 0.18 }}
+          className="mt-4 max-w-2xl text-sm leading-7 text-slate-500"
+        >
+          A good fit for small businesses, local brands, artists, and growing
+          teams that want something polished without the agency intimidation.
+        </motion.p>
 
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="mb-6 inline-flex items-center gap-2 rounded-full border border-blue-400/20 bg-blue-400/10 px-5 py-2.5 text-[11px] uppercase tracking-[0.28em] text-blue-200"
-        >
-          Premium websites and software built for growth
-        </motion.div>
-
-        <motion.h1
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.1 }}
-          className="max-w-4xl text-5xl font-semibold leading-[0.92] tracking-[-0.055em] text-white md:text-7xl xl:text-[5.4rem]"
-        >
-          Serious digital
-          <br />
-          products for
-          <br />
-          modern businesses.
-        </motion.h1>
-
-        <motion.p
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.2 }}
-          className="mt-8 max-w-2xl text-lg leading-8 text-slate-300 md:text-[1.35rem]"
-        >
-          Ziffera combines software engineering and premium design to build
-          websites, systems, and SaaS products that look exceptional and perform
-          with purpose.
-        </motion.p>
-
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.3 }}
-          className="mt-10 flex flex-wrap gap-4"
+          transition={{ duration: 0.65, delay: 0.24 }}
+          className="mt-9 flex flex-wrap gap-4"
         >
           <Link
             href="/contact"
-            className="rounded-2xl bg-gradient-to-r from-blue-500 to-blue-400 px-6 py-3.5 text-sm font-semibold text-white shadow-[0_18px_50px_rgba(59,130,246,0.38)] transition hover:-translate-y-0.5"
+            className="rounded-2xl bg-blue-600 px-6 py-3.5 text-sm font-semibold text-white shadow-[0_18px_50px_rgba(59,130,246,0.22)] transition duration-300 hover:-translate-y-0.5 hover:bg-blue-500"
           >
             Start your project
           </Link>
 
           <Link
-            href="#work"
-            className="rounded-2xl border border-white/12 bg-white/[0.04] px-6 py-3.5 text-sm text-white transition hover:bg-white/[0.08]"
+            href="/#work"
+            className="rounded-2xl border border-slate-200 bg-white px-6 py-3.5 text-sm font-medium text-slate-800 transition duration-300 hover:border-blue-200 hover:bg-blue-50"
           >
-            See our work
+            View our work
           </Link>
         </motion.div>
 
         <motion.div
-          initial={{ opacity: 0, y: 40 }}
+          initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.4 }}
-          className="mt-14 grid gap-4 sm:grid-cols-2 xl:grid-cols-4"
+          transition={{ duration: 0.7, delay: 0.3 }}
+          className="mt-10 grid gap-3 sm:grid-cols-3"
         >
-          {metrics.map((item, i) => (
-            <motion.div
-              key={item.label}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4 + i * 0.1 }}
-              className="rounded-[1.9rem] border border-white/10 bg-white/[0.04] p-5 backdrop-blur-sm hover:-translate-y-1 transition"
+          {heroPoints.map((point) => (
+            <div
+              key={point}
+              className="rounded-[1.4rem] border border-slate-200 bg-white px-4 py-3 text-sm text-slate-600 shadow-[0_8px_24px_rgba(15,23,42,0.04)]"
             >
-              <div className="text-2xl font-semibold text-white">
-                {item.value}
-              </div>
-              <div className="mt-2 text-sm text-slate-400">
-                {item.label}
-              </div>
-            </motion.div>
+              {point}
+            </div>
           ))}
         </motion.div>
       </div>
 
-      {/* RIGHT */}
       <motion.div
-        initial={{ opacity: 0, scale: 0.95, rotate: -2 }}
+        initial={{ opacity: 0, scale: 0.97, rotate: -1 }}
         animate={{ opacity: 1, scale: 1, rotate: 0 }}
-        transition={{ duration: 0.9, delay: 0.3 }}
-        className="relative flex items-center justify-center perspective-[1200px]"
+        transition={{ duration: 0.85, delay: 0.2 }}
+        className="relative"
       >
-        {/* glow */}
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_45%,rgba(59,130,246,0.25),transparent_30%)] blur-3xl opacity-90" />
+        <div className="pointer-events-none absolute -left-8 top-10 h-36 w-36 rounded-full bg-blue-200/70 blur-3xl" />
+        <div className="pointer-events-none absolute -right-8 bottom-8 h-40 w-40 rounded-full bg-cyan-200/70 blur-3xl" />
 
-        {/* floating + interactive */}
-        <motion.div
-          animate={{ y: [0, -12, 0] }}
-          transition={{ duration: 6, repeat: Infinity }}
-          className="relative"
-        >
-          <InteractiveCard>
-            <div className="rounded-[2.4rem] border border-white/10 bg-white/[0.05] p-6 shadow-[0_30px_120px_rgba(0,0,0,0.48)] backdrop-blur-2xl transition duration-500">
-
-              {/* header */}
-              <div className="text-sm uppercase text-slate-400 mb-2">
-                Limited offer
+        <InteractiveCard className="rounded-[2.4rem]">
+          <div className="relative overflow-hidden rounded-[2.4rem] border border-slate-200 bg-white p-4 shadow-[0_30px_90px_rgba(15,23,42,0.08)] lg:p-5">
+            <div className="rounded-[1.8rem] border border-slate-200 bg-[linear-gradient(180deg,#ffffff_0%,#f8fbff_100%)] p-6 shadow-[0_16px_40px_rgba(15,23,42,0.05)] lg:p-7">
+              <div className="inline-flex rounded-full border border-blue-200 bg-blue-50 px-3 py-1 text-[10px] uppercase tracking-[0.22em] text-blue-700">
+                Launch offer
               </div>
 
-              <div className="text-2xl font-semibold text-white">
-                Premium Website
+              <h2 className="mt-4 text-3xl font-semibold tracking-[-0.05em] text-slate-950">
+                Professional website from EUR 650
+              </h2>
+
+              <p className="mt-4 max-w-xl text-sm leading-7 text-slate-600">
+                Designed for small businesses, artists, and brands that want to
+                look professional and get more customers.
+              </p>
+
+              <div className="mt-5 text-sm font-medium text-slate-500">
+                Normally EUR 2500+
               </div>
 
-              {/* pricing */}
-              <div className="mt-6 grid grid-cols-2 gap-4">
-                <div className="bg-[#0B0F14] p-5 rounded-xl border border-white/10">
-                  <div className="text-xs text-slate-500">Setup</div>
-                  <div className="text-3xl font-semibold text-white mt-2">
-                    €250
+              <div className="mt-6 grid gap-3">
+                {[
+                  "Custom design",
+                  "Mobile optimized",
+                  "Stripe payments for e-commerce",
+                  "Admin panel to manage content",
+                  "Fast and modern performance",
+                ].map((item) => (
+                  <div
+                    key={item}
+                    className="flex items-start gap-3 rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-700"
+                  >
+                    <span className="mt-0.5 text-blue-600">✔</span>
+                    <span>{item}</span>
                   </div>
-                </div>
-
-                <div className="bg-[#0B0F14] p-5 rounded-xl border border-white/10">
-                  <div className="text-xs text-slate-500">Monthly</div>
-                  <div className="text-3xl font-semibold text-white mt-2">
-                    €20/mo
-                  </div>
-                </div>
+                ))}
               </div>
 
-              {/* CTA */}
+              <div className="mt-6 rounded-[1.4rem] border border-blue-100 bg-blue-50 px-4 py-3 text-sm leading-6 text-slate-700">
+                Optional support from EUR 25/month
+                <span className="block text-slate-500">
+                  Hosting, updates, and maintenance.
+                </span>
+              </div>
+
               <Link
                 href="/contact"
-                className="mt-6 block w-full rounded-xl bg-gradient-to-r from-blue-500 to-blue-400 px-4 py-3 text-center font-semibold text-white shadow-[0_10px_40px_rgba(59,130,246,0.35)] transition hover:from-blue-400 hover:to-blue-300"
+                className="mt-6 inline-flex w-full items-center justify-center rounded-2xl bg-blue-600 px-6 py-3.5 text-sm font-semibold text-white shadow-[0_18px_50px_rgba(59,130,246,0.22)] transition duration-300 hover:-translate-y-0.5 hover:bg-blue-500"
               >
-                Claim your spot
+                Start your project
               </Link>
-
             </div>
-          </InteractiveCard>
-        </motion.div>
+          </div>
+        </InteractiveCard>
       </motion.div>
     </section>
   );

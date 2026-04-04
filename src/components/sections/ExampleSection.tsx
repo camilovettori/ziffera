@@ -1,204 +1,152 @@
-"use client";
-
 import Image from "next/image";
 import Link from "next/link";
 
+const proofPoints = [
+  "Real client project",
+  "Stripe integration",
+  "Admin panel",
+  "Mobile-ready",
+];
+
 export default function ExampleSection() {
   return (
-    <section className="mt-24">
-      {/* HEADER */}
-      <div className="max-w-3xl">
-        <div className="text-xs uppercase tracking-[0.24em] text-blue-200">
-          Real client project
+    <section id="work" className="mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-24">
+      <div className="grid gap-10 xl:grid-cols-[0.92fr_1.08fr] xl:items-start">
+        <div className="max-w-2xl">
+          <div className="inline-flex items-center gap-2 rounded-full border border-blue-200 bg-blue-50 px-4 py-2 text-[11px] uppercase tracking-[0.28em] text-blue-700">
+            Real proof
+          </div>
+
+          <h2 className="mt-4 text-4xl font-semibold tracking-[-0.05em] text-slate-950 md:text-5xl">
+            Frequency Framed.
+          </h2>
+
+          <p className="mt-5 max-w-2xl text-lg leading-8 text-slate-600">
+            A real e-commerce build with Stripe, an admin panel, and a
+            polished storefront.
+          </p>
+
+          <div className="mt-8 flex flex-wrap gap-3">
+            {proofPoints.map((point) => (
+              <span
+                key={point}
+                className="rounded-full border border-slate-200 bg-white px-4 py-2 text-sm text-slate-600 shadow-[0_8px_20px_rgba(15,23,42,0.04)]"
+              >
+                {point}
+              </span>
+            ))}
+          </div>
+
+          <div className="mt-8 flex flex-wrap gap-4">
+            <Link
+              href="/contact"
+              className="rounded-2xl bg-blue-600 px-6 py-3.5 text-sm font-semibold text-white shadow-[0_18px_50px_rgba(59,130,246,0.22)] transition duration-300 hover:-translate-y-0.5 hover:bg-blue-500"
+            >
+              Start your project
+            </Link>
+
+            <a
+              href="https://www.frequencyframed.ie"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="rounded-2xl border border-slate-200 bg-white px-6 py-3.5 text-sm font-medium text-slate-800 transition duration-300 hover:border-blue-200 hover:bg-blue-50"
+            >
+              Visit live website
+            </a>
+          </div>
         </div>
 
-        <h2 className="mt-3 text-4xl font-semibold tracking-[-0.04em] text-white md:text-5xl">
-          This is the difference between looking amateur and looking established.
-        </h2>
-
-        <p className="mt-5 text-lg leading-8 text-slate-400">
-          A real website, e-commerce flow and admin system delivered by Ziffera
-          for a client.
-        </p>
-
-        <p className="mt-3 max-w-2xl text-sm leading-7 text-slate-500">
-          From premium presentation to checkout flow and admin management, this
-          project shows the level of quality clients can expect.
-        </p>
-
-        <p className="mt-4 inline-flex flex-wrap items-center rounded-full border border-sky-300/20 bg-sky-400/10 px-4 py-2 text-sm text-sky-100">
-          Live website:
-          <a
-            href="https://www.frequencyframed.ie"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="ml-2 font-medium text-white underline decoration-sky-200/40 underline-offset-4 transition hover:decoration-sky-200/70"
-          >
-            www.frequencyframed.ie
-          </a>
-        </p>
-
-        <p className="mt-3 text-sm text-slate-500">Built and launched by Ziffera.</p>
-      </div>
-
-      {/* MAIN GRID */}
-      <div className="mt-12 grid gap-6 lg:grid-cols-2">
-        {/* LEFT COLUMN */}
-        <div className="flex flex-col gap-6">
-          {/* MAIN VIDEO */}
-          <div className="group rounded-[2rem] border border-white/10 bg-white/[0.04] p-4 shadow-[0_20px_70px_rgba(0,0,0,0.25)] transition duration-500 hover:-translate-y-1 hover:border-blue-400/20 hover:shadow-[0_28px_90px_rgba(0,0,0,0.32)]">
-            <div className="relative overflow-hidden rounded-[1.6rem] border border-white/10">
-              <video
-                src="/examples/homepage.mp4"
-                autoPlay
-                muted
-                loop
-                playsInline
-                className="w-full object-cover transition duration-700 group-hover:scale-[1.02]"
+        <div className="grid gap-4 sm:grid-cols-2">
+          <div className="sm:col-span-2 overflow-hidden rounded-[2rem] border border-slate-200 bg-white shadow-[0_18px_50px_rgba(15,23,42,0.06)]">
+            <div className="relative aspect-[16/10]">
+              <Image
+                src="/examples/homepage.png"
+                alt="Frequency Framed homepage"
+                fill
+                sizes="(max-width: 1024px) 100vw, 60vw"
+                className="object-cover object-top"
               />
-              <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/25 via-transparent to-transparent" />
             </div>
-
-            <div className="mt-4 text-sm text-slate-400">
-              Live homepage experience and site structure
+            <div className="border-t border-slate-100 px-5 py-4 text-sm text-slate-500">
+              Homepage and storefront presentation.
             </div>
           </div>
 
-          {/* CHECKOUT */}
-          <div className="group rounded-[2rem] border border-white/10 bg-white/[0.04] p-4 shadow-[0_20px_70px_rgba(0,0,0,0.25)] transition duration-500 hover:-translate-y-1 hover:border-blue-400/20 hover:shadow-[0_28px_90px_rgba(0,0,0,0.32)]">
-            <div className="relative overflow-hidden rounded-[1.6rem] border border-white/10">
+          <div className="overflow-hidden rounded-[1.8rem] border border-slate-200 bg-white shadow-[0_18px_50px_rgba(15,23,42,0.06)]">
+            <div className="relative aspect-[4/4.2]">
               <Image
                 src="/examples/checkout.png"
-                alt="Checkout"
-                width={1200}
-                height={900}
-                className="w-full object-cover transition duration-700 group-hover:scale-[1.02]"
+                alt="Frequency Framed checkout view"
+                fill
+                sizes="(max-width: 1024px) 50vw, 30vw"
+                className="object-cover object-top"
               />
-              <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/10 via-transparent to-transparent" />
             </div>
-
-            <div className="mt-4 text-sm text-slate-400">
-              Checkout flow built for clarity and conversion
+            <div className="border-t border-slate-100 px-4 py-3 text-sm text-slate-500">
+              Checkout flow.
             </div>
           </div>
 
-          {/* MOBILE PREVIEW */}
-          <div className="group rounded-[2rem] border border-white/10 bg-white/[0.04] p-4 shadow-[0_20px_70px_rgba(0,0,0,0.25)] transition duration-500 hover:-translate-y-1 hover:border-blue-400/20 hover:shadow-[0_28px_90px_rgba(0,0,0,0.32)]">
-            <div className="mb-3 text-xs uppercase tracking-[0.24em] text-blue-200">
-              Mobile experience
+          <div className="overflow-hidden rounded-[1.8rem] border border-slate-200 bg-white shadow-[0_18px_50px_rgba(15,23,42,0.06)]">
+            <div className="relative aspect-[4/4.2]">
+              <Image
+                src="/examples/admin.png"
+                alt="Frequency Framed admin dashboard"
+                fill
+                sizes="(max-width: 1024px) 50vw, 30vw"
+                className="object-cover object-top"
+              />
             </div>
-            <div className="relative overflow-hidden rounded-[1.6rem] border border-white/10 bg-[#09111b]">
-              <div className="absolute inset-x-0 top-0 z-10 h-10 bg-gradient-to-b from-black/25 to-transparent" />
-              <div className="relative aspect-[9/16]">
-                <Image
-                  src="/examples/mobileFF.jpg"
-                  alt="Mobile preview of Frequency Framed"
-                  fill
-                  sizes="(max-width: 1024px) 100vw, 500px"
-                  className="object-cover object-top"
-                />
-              </div>
-            </div>
-
-            <div className="mt-4 text-sm text-slate-400">
-              Mobile experience for smaller screens
+            <div className="border-t border-slate-100 px-4 py-3 text-sm text-slate-500">
+              Admin panel.
             </div>
           </div>
-        </div>
 
-        {/* RIGHT COLUMN */}
-        <div className="flex flex-col gap-6">
-          {/* GALLERY */}
-          <div className="group rounded-[2rem] border border-white/10 bg-white/[0.04] p-4 shadow-[0_20px_70px_rgba(0,0,0,0.25)] transition duration-500 hover:-translate-y-1 hover:border-blue-400/20 hover:shadow-[0_28px_90px_rgba(0,0,0,0.32)]">
-            <div className="relative overflow-hidden rounded-[1.4rem] border border-white/10">
+          <div className="overflow-hidden rounded-[1.8rem] border border-slate-200 bg-white shadow-[0_18px_50px_rgba(15,23,42,0.06)]">
+            <div className="relative aspect-[4/4.2]">
               <Image
                 src="/examples/gallery.png"
-                alt="Gallery"
-                width={1000}
-                height={750}
-                className="w-full object-cover transition duration-700 group-hover:scale-[1.02]"
+                alt="Frequency Framed gallery view"
+                fill
+                sizes="(max-width: 1024px) 50vw, 30vw"
+                className="object-cover object-top"
               />
-              <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/10 via-transparent to-transparent" />
             </div>
-
-            <div className="mt-3 text-sm text-slate-400">
-              Product gallery / collection layout
+            <div className="border-t border-slate-100 px-4 py-3 text-sm text-slate-500">
+              Product gallery.
             </div>
           </div>
 
-          {/* ADMIN VIDEO */}
-          <div className="group rounded-[2rem] border border-white/10 bg-white/[0.04] p-4 shadow-[0_20px_70px_rgba(0,0,0,0.25)] transition duration-500 hover:-translate-y-1 hover:border-blue-400/20 hover:shadow-[0_28px_90px_rgba(0,0,0,0.32)]">
-            <div className="relative overflow-hidden rounded-[1.4rem] border border-white/10">
-              <video
-                src="/examples/admin.mp4"
-                autoPlay
-                muted
-                loop
-                playsInline
-                className="w-full object-cover transition duration-700 group-hover:scale-[1.02]"
+          <div className="overflow-hidden rounded-[1.8rem] border border-slate-200 bg-white shadow-[0_18px_50px_rgba(15,23,42,0.06)]">
+            <div className="relative aspect-[4/4.2]">
+              <Image
+                src="/examples/mobileFF.jpg"
+                alt="Frequency Framed mobile preview"
+                fill
+                sizes="(max-width: 1024px) 50vw, 30vw"
+                className="object-cover object-top"
               />
-              <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/25 via-transparent to-transparent" />
             </div>
-
-            <div className="mt-3 text-sm text-slate-400">
-              Admin dashboard to manage content, products and business data
+            <div className="border-t border-slate-100 px-4 py-3 text-sm text-slate-500">
+              Mobile view.
             </div>
           </div>
 
-          {/* CART */}
-          <div className="group rounded-[2rem] border border-white/10 bg-white/[0.04] p-4 shadow-[0_20px_70px_rgba(0,0,0,0.25)] transition duration-500 hover:-translate-y-1 hover:border-blue-400/20 hover:shadow-[0_28px_90px_rgba(0,0,0,0.32)]">
-            <div className="relative overflow-hidden rounded-[1.4rem] border border-white/10">
+          <div className="overflow-hidden rounded-[1.8rem] border border-slate-200 bg-white shadow-[0_18px_50px_rgba(15,23,42,0.06)]">
+            <div className="relative aspect-[4/4.2]">
               <Image
                 src="/examples/cart.png"
-                alt="Cart"
-                width={1000}
-                height={750}
-                className="w-full object-cover transition duration-700 group-hover:scale-[1.02]"
+                alt="Frequency Framed cart view"
+                fill
+                sizes="(max-width: 1024px) 50vw, 30vw"
+                className="object-cover object-top"
               />
-              <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/10 via-transparent to-transparent" />
             </div>
-
-            <div className="mt-3 text-sm text-slate-400">
-              Cart experience designed for clarity and conversion
+            <div className="border-t border-slate-100 px-4 py-3 text-sm text-slate-500">
+              Cart flow.
             </div>
           </div>
         </div>
-      </div>
-
-      {/* VALUE STRIP */}
-      <div className="mt-10 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-        {[
-          "Custom design - no templates",
-          "Professional e-commerce flow",
-          "Admin dashboard included",
-          "Built for real businesses",
-        ].map((item) => (
-          <div
-            key={item}
-            className="rounded-2xl border border-white/10 bg-white/[0.04] px-5 py-4 text-sm text-slate-300 transition duration-300 hover:border-blue-400/20 hover:bg-white/[0.06]"
-          >
-            {item}
-          </div>
-        ))}
-      </div>
-
-      {/* CTA */}
-      <div className="mt-10 flex flex-wrap gap-4">
-        <Link
-          href="/contact"
-          className="rounded-2xl bg-gradient-to-r from-blue-500 to-blue-400 px-6 py-3.5 text-sm font-semibold text-white shadow-[0_18px_50px_rgba(59,130,246,0.35)] transition duration-300 hover:-translate-y-0.5 hover:from-blue-400 hover:to-blue-300"
-        >
-          Start your project
-        </Link>
-
-        <a
-          href="https://www.frequencyframed.ie"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="rounded-2xl border border-white/12 bg-white/[0.04] px-6 py-3.5 text-sm text-white transition duration-300 hover:bg-white/[0.08]"
-        >
-          Visit live website
-        </a>
       </div>
     </section>
   );
