@@ -56,11 +56,25 @@ export default function ContactPage() {
         body: JSON.stringify({ name, email, message }),
       });
 
-      const result: { success?: boolean; message?: string; error?: string } =
-        await response.json();
+      const responseText = await response.text();
+      let result: { success?: boolean; message?: string; error?: string } = {};
+
+      if (responseText) {
+        try {
+          result = JSON.parse(responseText) as {
+            success?: boolean;
+            message?: string;
+            error?: string;
+          };
+        } catch (parseError) {
+          console.error("Contact API returned invalid JSON", parseError);
+        }
+      }
 
       if (!response.ok) {
-        throw new Error(result.error ?? "Unable to send message.");
+        throw new Error(
+          result.error ?? "Unable to send message. Please try again."
+        );
       }
 
       console.log("Contact form sent", result);
@@ -254,10 +268,15 @@ export default function ContactPage() {
                       name="name"
                       value={formData.name}
                       onChange={(event) =>
-                        setFormData((current) => ({
-                          ...current,
-                          name: event.target.value,
-                        }))
+                        setFormData((current) => {
+                          setStatus("idle");
+                          setFeedback("");
+
+                          return {
+                            ...current,
+                            name: event.target.value,
+                          };
+                        })
                       }
                       placeholder="Your name"
                       required
@@ -274,10 +293,15 @@ export default function ContactPage() {
                       name="email"
                       value={formData.email}
                       onChange={(event) =>
-                        setFormData((current) => ({
-                          ...current,
-                          email: event.target.value,
-                        }))
+                        setFormData((current) => {
+                          setStatus("idle");
+                          setFeedback("");
+
+                          return {
+                            ...current,
+                            email: event.target.value,
+                          };
+                        })
                       }
                       placeholder="you@company.com"
                       required
@@ -293,10 +317,15 @@ export default function ContactPage() {
                       name="message"
                       value={formData.message}
                       onChange={(event) =>
-                        setFormData((current) => ({
-                          ...current,
-                          message: event.target.value,
-                        }))
+                        setFormData((current) => {
+                          setStatus("idle");
+                          setFeedback("");
+
+                          return {
+                            ...current,
+                            message: event.target.value,
+                          };
+                        })
                       }
                       placeholder="Tell us what you need, what is changing, and any details we should know."
                       required
@@ -321,21 +350,18 @@ export default function ContactPage() {
                     {status === "sending" ? "Sending..." : "Send message"}
                   </button>
 
-                  {feedback ? (
-                    <p
-                      className={`max-w-xl text-sm leading-6 ${
-                        status === "success"
-                          ? "text-emerald-300"
-                          : "text-rose-300"
-                      }`}
-                    >
-                      {feedback}
-                    </p>
-                  ) : (
-                    <p className="max-w-xl text-sm leading-6 text-slate-400">
-                      Your message will go straight to hello@ziffera.ie.
-                    </p>
-                  )}
+                  <p
+                    aria-live="polite"
+                    className={`max-w-xl text-sm leading-6 ${
+                      status === "success"
+                        ? "text-emerald-300"
+                        : status === "error"
+                          ? "text-rose-300"
+                          : "text-slate-400"
+                    }`}
+                  >
+                    {feedback || "Your message will go straight to hello@ziffera.ie."}
+                  </p>
                 </div>
               </div>
             </div>

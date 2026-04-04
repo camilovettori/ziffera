@@ -16,7 +16,12 @@ function escapeHtml(value: string) {
     .replaceAll("'", "&#39;");
 }
 
-function buildAdminEmailHtml(name: string, email: string, message: string) {
+function buildAdminEmailHtml(
+  name: string,
+  email: string,
+  message: string,
+  submittedAt: string
+) {
   return `
     <div style="font-family: Arial, Helvetica, sans-serif; line-height: 1.6; color: #0f172a; background: #ffffff; padding: 24px 0;">
       <div style="max-width: 600px; margin: 0 auto; padding: 0 20px;">
@@ -29,6 +34,7 @@ function buildAdminEmailHtml(name: string, email: string, message: string) {
             <h2 style="margin: 0 0 16px; font-size: 24px; line-height: 1.2; color: #0f172a; letter-spacing: -0.03em;">New contact form submission</h2>
             <p style="margin: 0 0 12px; font-size: 15px; color: #334155;"><strong>Name:</strong> ${escapeHtml(name)}</p>
             <p style="margin: 0 0 12px; font-size: 15px; color: #334155;"><strong>Email:</strong> ${escapeHtml(email)}</p>
+            <p style="margin: 0 0 12px; font-size: 15px; color: #334155;"><strong>Submitted:</strong> ${escapeHtml(submittedAt)}</p>
             <div style="margin-top: 18px; padding: 18px; border: 1px solid #e5e7eb; border-radius: 16px; background: #f8fafc;">
               <div style="font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: #64748b; margin-bottom: 10px;">Message</div>
               <div style="white-space: pre-wrap; font-size: 15px; color: #0f172a;">${escapeHtml(message)}</div>
@@ -80,11 +86,14 @@ export async function POST(req: Request) {
     const name = typeof body.name === "string" ? body.name.trim() : "";
     const email = typeof body.email === "string" ? body.email.trim() : "";
     const message = typeof body.message === "string" ? body.message.trim() : "";
+    const submittedAt = new Date().toISOString();
 
     console.log("Contact form submission received", {
       name,
       email,
+      submittedAt,
       hasMessage: Boolean(message),
+      messageLength: message.length,
     });
 
     if (!name || !email || !message) {
@@ -110,24 +119,32 @@ export async function POST(req: Request) {
       );
     }
 
-    const subject = "New contact form submission - Ziffera";
-    const adminResult = await resend.emails.send({
-      from: fromEmail,
-      to: "hello@ziffera.ie",
-      replyTo: email,
-      subject,
-      text: `Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`,
-      html: buildAdminEmailHtml(name, email, message),
-    });
+    try {
+      const adminResult = await resend.emails.send({
+        from: fromEmail,
+        to: "hello@ziffera.ie",
+        replyTo: email,
+        subject: "New contact form submission \u2014 Ziffera",
+        text: `Name: ${name}\nEmail: ${email}\nSubmitted: ${submittedAt}\n\nMessage:\n${message}`,
+        html: buildAdminEmailHtml(name, email, message, submittedAt),
+      });
 
-    console.log("Admin notification sent", adminResult);
+      console.log("Admin notification sent", adminResult);
+    } catch (adminError) {
+      console.error("Admin notification failed", adminError);
+
+      return NextResponse.json(
+        { error: "Failed to send the admin notification." },
+        { status: 500 }
+      );
+    }
 
     try {
       const autoReplyResult = await resend.emails.send({
         from: fromEmail,
         to: email,
         replyTo: "hello@ziffera.ie",
-        subject: "We received your message - Ziffera",
+        subject: "We received your message \u2014 Ziffera",
         text:
           `Hi ${name},\n\n` +
           "Thank you for reaching out to Ziffera.\n\n" +
@@ -143,6 +160,11 @@ export async function POST(req: Request) {
       console.log("Auto-reply sent", autoReplyResult);
     } catch (autoReplyError) {
       console.error("Auto-reply failed", autoReplyError);
+
+      return NextResponse.json(
+        { error: "Failed to send the auto-reply email." },
+        { status: 500 }
+      );
     }
 
     return NextResponse.json(
