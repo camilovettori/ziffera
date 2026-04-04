@@ -8,7 +8,7 @@ const navItems = [
   { label: "Services", href: "#services" },
   { label: "Work", href: "#work" },
   { label: "Products", href: "#products" },
-  { label: "Contact", href: "#contact" },
+  { label: "Contact", href: "/contact" },
 ];
 
 export default function Header() {
@@ -65,9 +65,12 @@ export default function Header() {
             ))}
           </nav>
 
-          <button className="rounded-2xl border border-blue-400/20 bg-gradient-to-r from-blue-500 to-blue-400 px-6 py-3 text-sm font-semibold text-white shadow-[0_10px_40px_rgba(59,130,246,0.4)] transition duration-300 hover:-translate-y-0.5 hover:from-blue-400 hover:to-blue-300">
+          <Link
+            href="/contact"
+            className="rounded-2xl border border-blue-400/20 bg-gradient-to-r from-blue-500 to-blue-400 px-6 py-3 text-sm font-semibold text-white shadow-[0_10px_40px_rgba(59,130,246,0.4)] transition duration-300 hover:-translate-y-0.5 hover:from-blue-400 hover:to-blue-300"
+          >
             Start your project
-          </button>
+          </Link>
         </div>
 
         {/* MOBILE BUTTON */}
@@ -135,9 +138,13 @@ export default function Header() {
               </a>
             ))}
 
-            <button className="mt-2 rounded-2xl bg-gradient-to-r from-blue-500 to-blue-400 px-5 py-3 text-sm font-semibold text-white shadow-[0_10px_40px_rgba(59,130,246,0.35)] transition duration-300 hover:from-blue-400 hover:to-blue-300">
+            <Link
+              href="/contact"
+              onClick={() => setMobileOpen(false)}
+              className="mt-2 rounded-2xl bg-gradient-to-r from-blue-500 to-blue-400 px-5 py-3 text-sm font-semibold text-white shadow-[0_10px_40px_rgba(59,130,246,0.35)] transition duration-300 hover:from-blue-400 hover:to-blue-300"
+            >
               Start your project
-            </button>
+            </Link>
           </div>
         </div>
       </div>

@@ -160,7 +160,7 @@ export default function StartPage() {
 
             <div className="mt-8 flex flex-wrap gap-4">
               <a
-                href="#apply"
+                href="/contact"
                 className="rounded-2xl bg-gradient-to-r from-blue-500 via-blue-400 to-cyan-300 px-6 py-3.5 text-sm font-semibold text-white shadow-[0_20px_60px_rgba(59,130,246,0.38)] transition duration-300 hover:-translate-y-0.5 hover:shadow-[0_24px_70px_rgba(59,130,246,0.45)]"
               >
                 Start your project
@@ -232,7 +232,7 @@ export default function StartPage() {
                   />
                   <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(2,6,12,0.04),transparent_22%,transparent_74%,rgba(2,6,12,0.42))]" />
                   <a
-                    href="#apply"
+                    href="/contact"
                     className="absolute bottom-4 right-4 inline-flex scale-[1.06] items-center justify-center rounded-[999px] border border-white/10 bg-[linear-gradient(135deg,rgba(59,130,246,0.95),rgba(34,211,238,0.88))] px-4 py-2 text-[10px] font-semibold uppercase tracking-[0.22em] text-white shadow-[0_14px_34px_rgba(59,130,246,0.24),0_0_0_1px_rgba(255,255,255,0.03)] backdrop-blur-xl transition duration-300 hover:-translate-y-0.5 hover:border-sky-300/30 hover:shadow-[0_16px_38px_rgba(59,130,246,0.3)]"
                   >
                     Start your project
@@ -445,6 +445,22 @@ export default function StartPage() {
               <ExampleSection />
             </div>
           </div>
+
+          <div className="mt-8 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+            {[
+              "No templates",
+              "Built for real businesses",
+              "Fast turnaround",
+              "Desktop and mobile ready",
+            ].map((item) => (
+              <div
+                key={item}
+                className="rounded-2xl border border-white/10 bg-white/[0.04] px-5 py-4 text-sm text-slate-300 shadow-[0_12px_40px_rgba(0,0,0,0.14)]"
+              >
+                {item}
+              </div>
+            ))}
+          </div>
         </section>
 
         {/* PROCESS */}
@@ -513,7 +529,7 @@ export default function StartPage() {
         </section>
 
         {/* APPLY */}
-        <section id="apply" className="mt-20">
+        <section id="contact" className="mt-20">
           <div className="mb-6 max-w-2xl">
             <div className="text-xs uppercase tracking-[0.24em] text-blue-200">
               Start your project
@@ -522,8 +538,9 @@ export default function StartPage() {
               Tell us about your business and we will review the fit.
             </h2>
             <p className="mt-4 text-lg leading-8 text-slate-400">
-              Fill out the form below. No commitment - we&apos;ll just review your
-              project and reply with next steps.
+              The detailed intake now lives on the dedicated contact page.
+              No commitment - we&apos;ll just review your project and reply
+              with next steps.
             </p>
             <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
               <div>
@@ -531,10 +548,16 @@ export default function StartPage() {
                   Prefer something quick? Chat with us on WhatsApp.
                 </div>
                 <div className="mt-1 text-sm text-slate-500">
-                  No commitment — we&apos;ll just review your project and point
+                  No commitment - we&apos;ll just review your project and point
                   you in the right direction.
                 </div>
               </div>
+              <Link
+                href="/contact"
+                className="inline-flex w-fit items-center justify-center rounded-full bg-blue-500 px-5 py-2.5 text-sm font-medium text-white transition hover:bg-blue-400"
+              >
+                Start your project
+              </Link>
               <a
                 href="https://wa.me/353830483222"
                 target="_blank"
@@ -546,7 +569,7 @@ export default function StartPage() {
             </div>
           </div>
 
-          <form className="relative overflow-hidden rounded-[2rem] border border-white/16 bg-[linear-gradient(180deg,rgba(255,255,255,0.11),rgba(255,255,255,0.035))] p-6 shadow-[0_24px_80px_rgba(0,0,0,0.28)] backdrop-blur-2xl md:p-8 lg:p-10">
+          <form className="hidden relative overflow-hidden rounded-[2rem] border border-white/16 bg-[linear-gradient(180deg,rgba(255,255,255,0.11),rgba(255,255,255,0.035))] p-6 shadow-[0_24px_80px_rgba(0,0,0,0.28)] backdrop-blur-2xl md:p-8 lg:p-10">
             <div className="pointer-events-none absolute -left-16 top-12 h-40 w-40 rounded-full bg-blue-500/16 blur-3xl" />
             <div className="pointer-events-none absolute -bottom-12 right-[-2rem] h-44 w-44 rounded-full bg-cyan-400/12 blur-3xl" />
             <div className="pointer-events-none absolute inset-x-12 top-0 h-px bg-gradient-to-r from-transparent via-white/30 to-transparent" />
@@ -848,12 +871,13 @@ export default function StartPage() {
                   Only 4 spots available this month
                 </div>
                 <p className="mt-2 text-sm leading-7 text-slate-300">
-                  If you want a premium website that helps your business look
-                  credible and win more clients, now is the time to apply.
+                  We review each project personally and reply with next steps.
+                  No commitment - we&apos;ll simply review your project and
+                  guide you.
                 </p>
               </div>
               <a
-                href="#apply"
+                href="/contact"
                 className="inline-flex items-center justify-center rounded-[1.3rem] bg-gradient-to-br from-blue-500 via-blue-400 to-cyan-300 px-7 py-3.5 text-sm font-semibold text-white shadow-[0_20px_54px_rgba(59,130,246,0.45)] transition hover:-translate-y-0.5 hover:shadow-[0_24px_62px_rgba(59,130,246,0.55)]"
               >
                 Start your project
@@ -865,3 +889,4 @@ export default function StartPage() {
     </main>
   );
 }
+

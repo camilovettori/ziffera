@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 
 export default function ExampleSection() {
   return (
@@ -8,7 +9,7 @@ export default function ExampleSection() {
       {/* HEADER */}
       <div className="max-w-3xl">
         <div className="text-xs uppercase tracking-[0.24em] text-blue-200">
-          Real project example
+          Real client project
         </div>
 
         <h2 className="mt-3 text-4xl font-semibold tracking-[-0.04em] text-white md:text-5xl">
@@ -16,9 +17,28 @@ export default function ExampleSection() {
         </h2>
 
         <p className="mt-5 text-lg leading-8 text-slate-400">
-          Below is a real client project built by Ziffera — including premium
-          design, e-commerce flow, checkout, and a functional admin dashboard.
+          A real website, e-commerce flow and admin system delivered by Ziffera
+          for a client.
         </p>
+
+        <p className="mt-3 max-w-2xl text-sm leading-7 text-slate-500">
+          From premium presentation to checkout flow and admin management, this
+          project shows the level of quality clients can expect.
+        </p>
+
+        <p className="mt-4 inline-flex flex-wrap items-center rounded-full border border-sky-300/20 bg-sky-400/10 px-4 py-2 text-sm text-sky-100">
+          Live website:
+          <a
+            href="https://www.frequencyframed.ie"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="ml-2 font-medium text-white underline decoration-sky-200/40 underline-offset-4 transition hover:decoration-sky-200/70"
+          >
+            www.frequencyframed.ie
+          </a>
+        </p>
+
+        <p className="mt-3 text-sm text-slate-500">Built and launched by Ziffera.</p>
       </div>
 
       {/* MAIN GRID */}
@@ -40,7 +60,7 @@ export default function ExampleSection() {
             </div>
 
             <div className="mt-4 text-sm text-slate-400">
-              Live website experience — homepage and structure
+              Live homepage experience and site structure
             </div>
           </div>
 
@@ -58,7 +78,7 @@ export default function ExampleSection() {
             </div>
 
             <div className="mt-4 text-sm text-slate-400">
-              Full checkout system with customer and delivery flow
+              Checkout flow built for clarity and conversion
             </div>
           </div>
 
@@ -148,10 +168,10 @@ export default function ExampleSection() {
       {/* VALUE STRIP */}
       <div className="mt-10 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
         {[
-          "Custom design — no templates",
+          "Custom design - no templates",
           "Professional e-commerce flow",
           "Admin dashboard included",
-          "Built to look credible and premium",
+          "Built for real businesses",
         ].map((item) => (
           <div
             key={item}
@@ -164,15 +184,15 @@ export default function ExampleSection() {
 
       {/* CTA */}
       <div className="mt-10 flex flex-wrap gap-4">
-        <a
-          href="#apply"
+        <Link
+          href="/contact"
           className="rounded-2xl bg-gradient-to-r from-blue-500 to-blue-400 px-6 py-3.5 text-sm font-semibold text-white shadow-[0_18px_50px_rgba(59,130,246,0.35)] transition duration-300 hover:-translate-y-0.5 hover:from-blue-400 hover:to-blue-300"
         >
-          I want something like this
-        </a>
+          Start your project
+        </Link>
 
         <a
-          href="https://frequencyframed.ie"
+          href="https://www.frequencyframed.ie"
           target="_blank"
           rel="noopener noreferrer"
           className="rounded-2xl border border-white/12 bg-white/[0.04] px-6 py-3.5 text-sm text-white transition duration-300 hover:bg-white/[0.08]"

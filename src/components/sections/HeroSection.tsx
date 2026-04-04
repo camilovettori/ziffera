@@ -57,15 +57,18 @@ export default function HeroSection() {
           className="mt-10 flex flex-wrap gap-4"
         >
           <Link
-  href="/start"
-  className="rounded-2xl bg-gradient-to-r from-blue-500 to-blue-400 px-6 py-3.5 text-sm font-semibold text-white shadow-[0_18px_50px_rgba(59,130,246,0.38)] transition hover:-translate-y-0.5"
->
-  Start your project
-</Link>
+            href="/contact"
+            className="rounded-2xl bg-gradient-to-r from-blue-500 to-blue-400 px-6 py-3.5 text-sm font-semibold text-white shadow-[0_18px_50px_rgba(59,130,246,0.38)] transition hover:-translate-y-0.5"
+          >
+            Start your project
+          </Link>
 
-          <button className="rounded-2xl border border-white/12 bg-white/[0.04] px-6 py-3.5 text-sm text-white hover:bg-white/[0.08] transition">
+          <Link
+            href="#work"
+            className="rounded-2xl border border-white/12 bg-white/[0.04] px-6 py-3.5 text-sm text-white transition hover:bg-white/[0.08]"
+          >
             See our work
-          </button>
+          </Link>
         </motion.div>
 
         <motion.div
@@ -140,11 +143,11 @@ export default function HeroSection() {
 
               {/* CTA */}
               <Link
-  href="/start"
-  className="mt-6 block w-full rounded-xl bg-gradient-to-r from-blue-500 to-blue-400 px-4 py-3 text-center font-semibold text-white shadow-[0_10px_40px_rgba(59,130,246,0.35)] transition hover:from-blue-400 hover:to-blue-300"
->
-  Claim your spot
-</Link>
+                href="/contact"
+                className="mt-6 block w-full rounded-xl bg-gradient-to-r from-blue-500 to-blue-400 px-4 py-3 text-center font-semibold text-white shadow-[0_10px_40px_rgba(59,130,246,0.35)] transition hover:from-blue-400 hover:to-blue-300"
+              >
+                Claim your spot
+              </Link>
 
             </div>
           </InteractiveCard>

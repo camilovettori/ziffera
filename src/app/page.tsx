@@ -1,5 +1,6 @@
 import Header from "@/components/layout/Header";
 import HeroSection from "@/components/sections/HeroSection";
+import Link from "next/link";
 
 export default function HomePage() {
   const services = [
@@ -156,9 +157,12 @@ export default function HomePage() {
               </p>
             </div>
 
-            <button className="w-fit rounded-2xl border border-white/15 bg-white/5 px-5 py-3 text-sm font-medium text-white transition hover:bg-white/10">
-              View full portfolio
-            </button>
+            <Link
+              href="/contact"
+              className="w-fit rounded-2xl border border-white/15 bg-white/5 px-5 py-3 text-sm font-medium text-white transition hover:bg-white/10"
+            >
+              Start your project
+            </Link>
           </div>
 
           <div className="mt-12 grid gap-5 lg:grid-cols-3">
@@ -279,16 +283,25 @@ export default function HomePage() {
 
               <div className="rounded-[1.8rem] border border-white/10 bg-[#0B0F14]/80 p-6">
                 <div className="space-y-4">
-                  <button className="w-full rounded-2xl bg-blue-500 px-5 py-3.5 text-sm font-semibold text-white transition hover:bg-blue-400">
-                    Start your project
-                  </button>
-                  <button className="w-full rounded-2xl border border-white/15 bg-white/5 px-5 py-3.5 text-sm font-medium text-white transition hover:bg-white/10">
-                    Talk to Ziffera
-                  </button>
-                  <button className="w-full rounded-2xl border border-blue-400/20 bg-blue-400/10 px-5 py-3.5 text-sm font-medium text-blue-100 transition hover:bg-blue-400/15">
-                    Try MarginFlow
-                  </button>
-                </div>
+                <Link
+                  href="/contact"
+                  className="inline-flex w-full items-center justify-center rounded-2xl bg-blue-500 px-5 py-3.5 text-sm font-semibold text-white transition hover:bg-blue-400"
+                >
+                  Start your project
+                </Link>
+                <Link
+                  href="/contact"
+                  className="inline-flex w-full items-center justify-center rounded-2xl border border-white/15 bg-white/5 px-5 py-3.5 text-sm font-medium text-white transition hover:bg-white/10"
+                >
+                  Talk to Ziffera
+                </Link>
+                <Link
+                  href="/artists"
+                  className="inline-flex w-full items-center justify-center rounded-2xl border border-blue-400/20 bg-blue-400/10 px-5 py-3.5 text-sm font-medium text-blue-100 transition hover:bg-blue-400/15"
+                >
+                  View artist example
+                </Link>
+              </div>
               </div>
             </div>
           </div>
