@@ -256,6 +256,7 @@ export interface EmailEventRecord {
   queued_at: string;
   sent_at: string | null;
   failed_at: string | null;
+  updated_at: string;
 }
 
 export interface ServiceStatusChangeRecord {
