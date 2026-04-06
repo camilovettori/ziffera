@@ -1,5 +1,6 @@
 import "server-only";
 
+import crypto from "node:crypto";
 import { query } from "@/lib/core/db";
 import { createClient, upsertClientContact, writeAuditLog } from "@/lib/core/admin-data";
 import type { ClientRecord, ProductRecord, StripeCustomerRecord, SubscriptionRecord } from "@/lib/core/models";
@@ -14,6 +15,55 @@ async function getMarginFlowProduct() {
   );
 
   return result.rows[0] ?? null;
+}
+
+function canonicalizeMarginFlowCheckoutPayload(input: {
+  clientId: string;
+  clientSlug: string;
+  clientName: string;
+  email: string;
+  companyName: string | null;
+  stripeCustomerId: string;
+  productCode: string;
+  productName: string;
+  promoPriceId: string;
+  trialDays: number;
+  successUrl: string;
+  cancelUrl: string;
+}) {
+  return JSON.stringify({
+    cancelUrl: input.cancelUrl,
+    clientId: input.clientId,
+    clientName: input.clientName,
+    clientSlug: input.clientSlug,
+    companyName: input.companyName ?? "",
+    email: input.email,
+    productCode: input.productCode,
+    productName: input.productName,
+    promoPriceId: input.promoPriceId,
+    stripeCustomerId: input.stripeCustomerId,
+    successUrl: input.successUrl,
+    trialDays: input.trialDays,
+  });
+}
+
+function buildMarginFlowCheckoutIdempotencyKey(input: {
+  clientId: string;
+  clientSlug: string;
+  clientName: string;
+  email: string;
+  companyName: string | null;
+  stripeCustomerId: string;
+  productCode: string;
+  productName: string;
+  promoPriceId: string;
+  trialDays: number;
+  successUrl: string;
+  cancelUrl: string;
+}) {
+  const canonicalPayload = canonicalizeMarginFlowCheckoutPayload(input);
+  const digest = crypto.createHash("sha256").update(canonicalPayload).digest("hex");
+  return `marginflow-subscribe:v1:${digest}`;
 }
 
 export async function findClientByBillingEmail(email: string) {
@@ -247,6 +297,20 @@ export async function createMarginFlowCheckoutSession(input: {
   const trialDays = getStripeTrialDaysForProductCode("marginflow");
   const successUrl = `${env.appUrl.replace(/\/$/, "")}/marginflow/subscribe/success?session_id={CHECKOUT_SESSION_ID}`;
   const cancelUrl = `${env.appUrl.replace(/\/$/, "")}/marginflow/subscribe`;
+  const idempotencyKey = buildMarginFlowCheckoutIdempotencyKey({
+    clientId: input.client.id,
+    clientSlug: input.client.slug,
+    clientName: input.client.name,
+    email: input.email,
+    companyName: input.companyName ?? input.client.company_name ?? null,
+    stripeCustomerId: input.stripeCustomerId,
+    productCode: product.code,
+    productName: product.name,
+    promoPriceId: catalogEntry.monthlyPromoPriceId,
+    trialDays,
+    successUrl,
+    cancelUrl,
+  });
 
   const checkoutSession = await stripe.checkout.sessions.create(
     {
@@ -283,7 +347,7 @@ export async function createMarginFlowCheckoutSession(input: {
       },
     },
     {
-      idempotencyKey: `marginflow-subscribe:${input.client.id}`,
+      idempotencyKey,
     }
   );
 
