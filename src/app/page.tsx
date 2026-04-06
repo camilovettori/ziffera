@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { motion } from "framer-motion";
 import {
@@ -61,14 +61,19 @@ const launchChecklist = [
 
 const products = [
   {
-    badge: "Launching 01/05",
+    badge: "€25/month",
     title: "MarginFlow",
     desc: "Margin visibility software for small businesses that want clearer numbers.",
-    bullets: ["Track margins in one place", "Spot weak products fast", "Make better decisions"],
+    bullets: [
+      "14-day free trial",
+      "Track margins in one place",
+      "Make better decisions",
+    ],
     gradient: "from-blue-50 via-white to-sky-50",
     accent: "MF",
-    cta: "Join the waitlist",
-    note: "Built for practical product thinking.",
+    cta: "Start free trial",
+    href: "/marginflow",
+    note: "Premium, calm, and designed for practical decisions.",
   },
   {
     badge: "Launching 01/05",
@@ -78,6 +83,7 @@ const products = [
     gradient: "from-slate-50 via-white to-blue-50",
     accent: "ZC",
     cta: "Talk about Zconnect",
+    href: "/contact",
     note: "Need another platform connection? Get in touch.",
   },
 ];
@@ -279,7 +285,7 @@ export default function HomePage() {
               <div className="rounded-[1.6rem] border border-blue-100 bg-blue-50 px-4 py-4 text-sm text-slate-700">
                 Only 5 spots available
                 <span className="mt-1 block text-slate-500">
-                  Optional monthly support from EUR 25/month.
+                  Optional monthly support from €25/month.
                 </span>
               </div>
             </CardContent>
@@ -368,7 +374,7 @@ export default function HomePage() {
 
                   <CardContent className="pt-0">
                     <Button asChild className="w-full">
-                      <Link href="/contact">{product.cta}</Link>
+                      <Link href={product.href}>{product.cta}</Link>
                     </Button>
                   </CardContent>
                 </Card>
@@ -482,3 +488,4 @@ export default function HomePage() {
     </main>
   );
 }
+

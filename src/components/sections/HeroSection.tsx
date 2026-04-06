@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { motion } from "framer-motion";
 import useEmblaCarousel from "embla-carousel-react";
@@ -42,6 +42,7 @@ type HeroSlide = {
   image?: string;
   footnote?: string;
   cta: string;
+  href: string;
 };
 
 const slides: HeroSlide[] = [
@@ -54,6 +55,7 @@ const slides: HeroSlide[] = [
     icon: <Globe className="h-5 w-5" />,
     footnote: "Normally EUR 2500+",
     cta: "Start your project",
+    href: "/contact",
   },
   {
     badge: "Real client project",
@@ -64,6 +66,7 @@ const slides: HeroSlide[] = [
     icon: <Sparkles className="h-5 w-5" />,
     image: "/examples/homepage.png",
     cta: "View our work",
+    href: "/#work",
   },
   {
     badge: "Integration product",
@@ -74,16 +77,18 @@ const slides: HeroSlide[] = [
     icon: <Plug className="h-5 w-5" />,
     footnote: "Unify -> Zoho Invoice / Zoho Books",
     cta: "Talk about Zconnect",
+    href: "/contact",
   },
   {
-    badge: "Launching 01/05",
+    badge: "€25/month",
     title: "MarginFlow",
     description: "Margin visibility for small businesses that want clearer numbers.",
-    highlights: ["Track margins", "Spot weak products"],
+    highlights: ["14-day free trial", "Track margins", "Spot weak products"],
     tone: "slate",
     icon: <BarChart3 className="h-5 w-5" />,
-    footnote: "Coming soon",
-    cta: "Join the waitlist",
+    footnote: "Premium trial onboarding",
+    cta: "Start free trial",
+    href: "/marginflow",
   },
 ];
 
@@ -328,7 +333,7 @@ export default function HeroSection() {
 
                         <CardContent className="pt-0">
                           <Button asChild className="w-full">
-                            <Link href={slide.cta === "View our work" ? "/#work" : "/contact"}>
+                            <Link href={slide.href}>
                               {slide.cta}
                             </Link>
                           </Button>
@@ -366,3 +371,4 @@ export default function HeroSection() {
     </section>
   );
 }
+

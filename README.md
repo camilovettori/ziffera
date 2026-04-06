@@ -1,4 +1,4 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+This is the Ziffera institutional site plus the first Ziffera Core foundation work.
 
 ## Getting Started
 
@@ -16,9 +16,65 @@ bun dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Ziffera Core foundation
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+The repo now includes the first control-plane scaffolding for the future
+admin backend:
+
+- database schema under `migrations/`
+- server-side Postgres access in `src/lib/core/`
+- protected admin auth at `/admin`
+- a local bootstrap seed script for the first owner admin
+
+### Stripe foundation
+
+The control plane now understands Stripe subscriptions safely in an internal-first mode:
+
+- central product-to-price mapping in `src/lib/core/stripe.ts`
+- Stripe webhook ingestion at `/api/stripe/webhook`
+- subscription and payment record sync in `src/lib/core/subscriptions.ts`
+- admin-only Stripe customer creation and manual sync actions
+
+### MarginFlow public trial flow
+
+MarginFlow is now subscribable from the public site via:
+
+- `/marginflow`
+- `/marginflow/subscribe`
+- `/marginflow/subscribe/success`
+- `/api/marginflow/subscribe`
+
+The flow creates or reuses the client record, creates or reuses the Stripe customer, then routes the visitor into the promotional Stripe checkout flow with a 14-day free trial.
+
+### Deployment architecture
+
+See [docs/ziffera-core-deployment-architecture.md](docs/ziffera-core-deployment-architecture.md) for the current Render and subdomain plan.
+
+### Environment setup
+
+Copy `.env.example` to `.env.local` and set at least:
+
+- `DATABASE_URL`
+- `SESSION_SECRET`
+- `ZIFFERA_BOOTSTRAP_ADMIN_EMAIL`
+- `ZIFFERA_BOOTSTRAP_ADMIN_PASSWORD`
+
+For Stripe foundation work, also set:
+
+- `STRIPE_SECRET_KEY`
+- `STRIPE_WEBHOOK_SECRET`
+- `STRIPE_MARGINFLOW_MONTHLY_PRICE_ID`
+- `STRIPE_MARGINFLOW_MONTHLY_PROMO_PRICE_ID`
+- `STRIPE_MARGINFLOW_PRODUCT_ID` if you already have a Stripe product record
+
+### Database commands
+
+```bash
+npm run db:migrate
+npm run db:seed:admin
+```
+
+You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
 ## Learn More
 

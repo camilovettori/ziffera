@@ -3,7 +3,6 @@ import { Resend } from "resend";
 
 export const runtime = "nodejs";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
 const fromEmail = "Ziffera <hello@ziffera.ie>";
 const logoUrl = "https://ziffera.ie/logos/ziffera-logo.png";
 
@@ -145,6 +144,8 @@ export async function POST(req: Request) {
         { status: 500 }
       );
     }
+
+    const resend = new Resend(process.env.RESEND_API_KEY);
 
     const adminText = [
       `Name: ${name}`,

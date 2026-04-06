@@ -14,7 +14,6 @@ export async function POST(req: Request) {
       contactMethod,
     } = body;
 
-    // 🛑 validação básica
     if (!fullName || !businessName || !email || !projectType || !message) {
       return NextResponse.json(
         { error: "Missing required fields." },
@@ -22,11 +21,7 @@ export async function POST(req: Request) {
       );
     }
 
-    // 📩 Aqui você decide o que fazer com o lead
-
-    // 👉 OPÇÃO 1 (simples - console)
-    console.log("🚀 NEW LEAD:");
-    console.log({
+    console.log("NEW LEAD:", {
       fullName,
       businessName,
       email,
@@ -37,17 +32,12 @@ export async function POST(req: Request) {
       createdAt: new Date().toISOString(),
     });
 
-    // 👉 depois podemos trocar por:
-    // - enviar email (Resend)
-    // - salvar no DB (Supabase/Postgres)
-    // - enviar para CRM
-
     return NextResponse.json(
       { success: true, message: "Application received." },
       { status: 200 }
     );
   } catch (error) {
-    console.error("❌ ERROR:", error);
+    console.error("START APPLICATION ERROR:", error);
 
     return NextResponse.json(
       { error: "Internal server error." },
