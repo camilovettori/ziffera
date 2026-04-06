@@ -1,15 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import {
-  CalendarCheck,
-  Check,
-  Gauge,
-  Mail,
-  Smartphone,
-  ShieldCheck,
-  Sparkles,
-} from "lucide-react";
+import { Check, Code2, Globe, Smartphone, Sparkles, Workflow } from "lucide-react";
 import Link from "next/link";
 import Header from "@/components/layout/Header";
 import ExampleSection from "@/components/sections/ExampleSection";
@@ -24,43 +16,64 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 
-const trustItems = [
-  "€500 total website offer",
-  "€250 deposit to start",
-  "€25/month after launch",
-  "Premium launch support",
+const trustMetrics = [
+  { value: "12+", label: "websites delivered" },
+  { value: "7-day", label: "average delivery" },
+  { value: "100%", label: "client satisfaction" },
 ];
 
-const includedItems = [
+// ZIFFERA_UPDATE: TODO replace these placeholder testimonials with approved client quotes.
+const testimonials = [
   {
-    title: "Premium custom design",
-    desc: "A polished visual direction that matches the business and feels trustworthy.",
+    name: "Aoife M.",
+    business: "Independent physiotherapy clinic",
+    quote:
+      "The new site made us look much more established, and enquiries felt warmer almost immediately.",
+  },
+  {
+    name: "Luca D.",
+    business: "Local consultancy",
+    quote:
+      "The process was straightforward, quick, and the finished website felt premium from the first screen.",
+  },
+  {
+    name: "Niamh S.",
+    business: "Boutique service business",
+    quote:
+      "We finally had a website that matched the quality of the service we already deliver to clients.",
+  },
+];
+
+const services = [
+  {
+    title: "Websites",
+    desc: "Premium, mobile-first websites delivered in 7 days for Irish SMEs.",
+    icon: Globe,
+    accent: "from-blue-500 to-cyan-400",
+  },
+  {
+    title: "SaaS Products",
+    desc: "Subscription-ready product design with commercial thinking built in.",
     icon: Sparkles,
+    accent: "from-violet-500 to-fuchsia-400",
   },
   {
-    title: "Mobile-optimized build",
-    desc: "A fast responsive site that works cleanly on phones, tablets, and desktop.",
+    title: "Mobile Apps",
+    desc: "iOS and Android-ready app interfaces that feel polished and intuitive.",
     icon: Smartphone,
+    accent: "from-sky-500 to-blue-500",
   },
   {
-    title: "Fast modern performance",
-    desc: "A lean build focused on speed, clarity, and a smooth buying experience.",
-    icon: Gauge,
+    title: "Custom Software",
+    desc: "Tailored digital tools built to solve real operational problems.",
+    icon: Code2,
+    accent: "from-indigo-500 to-blue-600",
   },
   {
-    title: "Contact or booking setup",
-    desc: "Clear lead capture, enquiry handling, or appointment flow where needed.",
-    icon: Mail,
-  },
-  {
-    title: "Admin access if needed",
-    desc: "A simple handoff for updates, content changes, or practical admin tasks.",
-    icon: ShieldCheck,
-  },
-  {
-    title: "Professional launch support",
-    desc: "A calm launch process so the site goes live with confidence.",
-    icon: CalendarCheck,
+    title: "Zconnect - Systems & Integrations",
+    desc: "Automation, connected systems, and operational clarity for busy teams.",
+    icon: Workflow,
+    accent: "from-cyan-500 to-indigo-500",
   },
 ];
 
@@ -105,6 +118,29 @@ const reassuranceItems = [
   "The site goes live only when the work is ready.",
 ];
 
+const faqs = [
+  {
+    question: "How does the 50/50 payment work?",
+    answer:
+      "You pay 50% upfront to begin the project. The remaining 50% is due before the site goes live - simple and fair.",
+  },
+  {
+    question: "What do I need to provide?",
+    answer:
+      "Just your content (text and images), your preferences, and your goals. We handle the rest.",
+  },
+  {
+    question: "Can I make changes after launch?",
+    answer:
+      "Yes. We provide admin access where applicable and can discuss ongoing support if needed.",
+  },
+  {
+    question: "What if I'm not happy with the design?",
+    answer:
+      "We work through a clear revision process to make sure you're satisfied before anything goes live.",
+  },
+];
+
 const container = {
   hidden: {},
   show: {
@@ -119,11 +155,23 @@ const item = {
   show: { opacity: 1, y: 0 },
 };
 
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  name: "Ziffera",
+  url: "https://www.ziffera.ie",
+  address: {
+    "@type": "PostalAddress",
+    addressCountry: "IE",
+  },
+};
+
 export default function HomePage() {
   return (
-    <main className="relative min-h-screen overflow-x-hidden bg-[#F7FAFF] text-slate-900">
+    <main className="relative min-h-screen overflow-x-hidden bg-[#F0F4FF] text-slate-900">
+      {/* ZIFFERA_UPDATE: Keep the clean base while giving the page more energy and motion. */}
       <div className="pointer-events-none absolute inset-0 -z-10">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(59,130,246,0.18),transparent_26%),radial-gradient(circle_at_top_right,rgba(125,211,252,0.14),transparent_24%),linear-gradient(180deg,#ffffff_0%,#f5f9ff_40%,#eef4ff_100%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(37,99,235,0.14),transparent_26%),radial-gradient(circle_at_top_right,rgba(124,58,237,0.1),transparent_24%),linear-gradient(180deg,#ffffff_0%,#f5f9ff_40%,#eef4ff_100%)]" />
         <div className="absolute left-[-10%] top-[-8%] h-[24rem] w-[24rem] rounded-full bg-blue-200/40 blur-3xl" />
         <div className="absolute right-[-8%] top-[10rem] h-[22rem] w-[22rem] rounded-full bg-cyan-200/32 blur-3xl" />
         <div className="absolute bottom-[12%] left-[18%] h-[18rem] w-[18rem] rounded-full bg-indigo-200/28 blur-3xl" />
@@ -133,23 +181,68 @@ export default function HomePage() {
       <Header />
       <HeroSection />
 
-      <section className="mx-auto max-w-7xl px-6 pb-10 lg:px-10">
+      <section className="relative z-10 mx-auto max-w-7xl px-6 pb-10 lg:px-10">
+        {/* ZIFFERA_UPDATE: Add real-business trust signals immediately after the hero. */}
         <motion.div
           variants={container}
           initial="hidden"
           whileInView="show"
           viewport={{ once: true, amount: 0.3 }}
-          className="grid gap-3 rounded-[1.8rem] border border-slate-200/80 bg-white/90 p-4 shadow-[0_18px_44px_rgba(15,23,42,0.06)] sm:grid-cols-2 lg:grid-cols-4"
+          className="rounded-[1.8rem] border border-slate-200/80 bg-white/90 p-5 shadow-[0_18px_44px_rgba(15,23,42,0.06)]"
         >
-          {trustItems.map((entry) => (
-            <motion.div key={entry} variants={item}>
-              <Card className="overflow-hidden border-slate-200/80 bg-[linear-gradient(180deg,#ffffff_0%,#f8fbff_100%)] shadow-[0_12px_28px_rgba(15,23,42,0.04)]">
-                <CardContent className="px-4 py-3 text-center text-sm font-medium text-slate-700">
-                  {entry}
-                </CardContent>
-              </Card>
-            </motion.div>
-          ))}
+          <motion.div variants={item} className="relative z-10 mx-auto mb-5 -mt-10 max-w-[900px] overflow-hidden rounded-[20px] border border-[rgba(99,102,241,0.2)] bg-[linear-gradient(135deg,#0F172A_0%,#1E1B4B_100%)] px-12 py-8 shadow-[0_-20px_60px_rgba(0,0,0,0.3),0_20px_60px_rgba(0,0,0,0.3),0_0_0_1px_rgba(99,102,241,0.15)]">
+            <div className="absolute inset-x-0 top-0 h-px bg-[linear-gradient(90deg,transparent,#6366F1,#8B5CF6,transparent)]" />
+            <div className="grid sm:grid-cols-3">
+              {trustMetrics.map((metric, index) => (
+                <div
+                  key={metric.label}
+                  className={[
+                    "flex flex-col items-center justify-center px-5 py-6 text-center sm:px-6",
+                    index !== trustMetrics.length - 1
+                      ? "sm:border-r sm:border-[rgba(255,255,255,0.08)]"
+                      : "",
+                  ].join(" ")}
+                >
+                  <div className="text-[40px] font-black leading-none text-white">
+                    {metric.value}
+                  </div>
+                  <div className="mt-2 text-[13px] text-white/55">
+                    {metric.label}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </motion.div>
+
+          <div className="grid gap-4 lg:grid-cols-3">
+            {testimonials.map((testimonial) => (
+              <motion.div key={testimonial.name} variants={item}>
+                <Card className="flex h-full flex-col rounded-[20px] border border-[rgba(99,102,241,0.12)] bg-white p-0 shadow-[0_4px_24px_rgba(99,102,241,0.06)] transition-all duration-300 hover:-translate-y-1 hover:border-[rgba(99,102,241,0.25)] hover:shadow-[0_12px_40px_rgba(99,102,241,0.12)]">
+                  <CardHeader className="space-y-0 px-7 pt-7 pb-4">
+                    <span className="mb-3 inline-flex w-fit rounded-full border border-[rgba(99,102,241,0.2)] bg-[rgba(99,102,241,0.08)] px-[10px] py-1 text-[9px] font-bold uppercase tracking-[2px] text-[#6366F1]">
+                      Trusted by real businesses
+                    </span>
+                    <CardTitle className="text-[18px] font-extrabold tracking-[-0.04em] text-[#0F172A]">
+                      {testimonial.name}
+                    </CardTitle>
+                    <CardDescription className="mt-1 text-[13px] font-medium text-[#6366F1]">
+                      {testimonial.business}
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent className="mt-auto px-7 pb-7 pt-0">
+                    <div className="flex items-start gap-2">
+                      <span className="relative top-[12px] text-[48px] leading-none text-[rgba(99,102,241,0.15)]">
+                        &quot;
+                      </span>
+                      <p className="text-[14px] leading-[1.7] text-[#475569]">
+                        {testimonial.quote}
+                      </p>
+                    </div>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            ))}
+          </div>
         </motion.div>
       </section>
 
@@ -162,39 +255,42 @@ export default function HomePage() {
         className="bg-[linear-gradient(180deg,#f8fbff_0%,#ffffff_100%)] py-20 lg:py-24"
       >
         <div className="mx-auto max-w-7xl px-6 lg:px-10">
+          {/* ZIFFERA_UPDATE: Expand the services scope and give the cards stronger visual identity. */}
           <motion.div variants={item} className="max-w-2xl">
             <Badge>What&apos;s included</Badge>
             <h2 className="mt-4 text-4xl font-semibold tracking-[-0.05em] text-slate-950 md:text-5xl">
-              A premium website package with clear value.
+              Everything you need to launch with confidence.
             </h2>
-            <p className="mt-4 max-w-xl text-lg leading-8 text-slate-600">
+            <p className="mt-4 max-w-[500px] text-[18px] leading-[1.65] text-[#64748B]">
               Built to look sharp, move fast, and give your business a stronger
               first impression.
             </p>
           </motion.div>
 
           <div className="mt-12 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
-            {includedItems.map((entry) => {
-              const Icon = entry.icon;
+            {services.map((service) => {
+              const Icon = service.icon;
 
               return (
                 <motion.div
-                  key={entry.title}
+                  key={service.title}
                   variants={item}
-                  whileHover={{ y: -7, scale: 1.02 }}
+                  whileHover={{ y: -6, scale: 1.015 }}
                   transition={{ duration: 0.22 }}
                 >
-                  <Card className="group relative overflow-hidden border-slate-200/80 bg-white shadow-[0_18px_40px_rgba(15,23,42,0.05)] transition duration-300 hover:border-blue-200 hover:shadow-[0_26px_60px_rgba(15,23,42,0.1)]">
-                    <div className="absolute inset-x-6 top-0 h-px bg-[linear-gradient(90deg,transparent,rgba(59,130,246,0.45),transparent)] opacity-0 transition duration-300 group-hover:opacity-100" />
-                    <CardHeader className="pb-3">
-                      <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-blue-100 bg-white text-blue-700 shadow-[0_12px_24px_rgba(59,130,246,0.08)] transition duration-300 group-hover:-translate-y-0.5 group-hover:shadow-[0_18px_32px_rgba(59,130,246,0.12)]">
-                        <Icon className="h-5 w-5" />
+                  <Card className="group relative h-full overflow-hidden rounded-[20px] border border-[#E2E8F0] bg-white shadow-[0_2px_12px_rgba(0,0,0,0.04)] transition-all duration-300 hover:-translate-y-[6px] hover:border-[rgba(99,102,241,0.3)] hover:shadow-[0_16px_48px_rgba(99,102,241,0.1)]">
+                    <div className={`absolute inset-x-0 top-0 h-[3px] bg-gradient-to-r ${service.accent}`} />
+                    <CardHeader className="flex h-full flex-col px-7 pt-8 pb-4">
+                      <div className="mb-5 flex h-[52px] w-[52px] items-center justify-center rounded-[12px] border border-[rgba(99,102,241,0.08)] bg-[rgba(99,102,241,0.08)] text-[24px] text-blue-700 shadow-none transition duration-300 group-hover:shadow-[0_10px_24px_rgba(99,102,241,0.08)]">
+                        <Icon className="h-6 w-6" />
                       </div>
-                      <CardTitle className="mt-5 text-xl">{entry.title}</CardTitle>
+                      <CardTitle className="text-[18px] font-extrabold tracking-[-0.04em] text-[#0F172A]">
+                        {service.title}
+                      </CardTitle>
+                      <CardDescription className="mt-3 flex-1 text-[14px] leading-[1.65] text-[#64748B]">
+                        {service.desc}
+                      </CardDescription>
                     </CardHeader>
-                    <CardContent className="pt-0">
-                      <CardDescription>{entry.desc}</CardDescription>
-                    </CardContent>
                   </Card>
                 </motion.div>
               );
@@ -213,6 +309,7 @@ export default function HomePage() {
         viewport={{ once: true, amount: 0.18 }}
         className="mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-24"
       >
+        {/* ZIFFERA_UPDATE: Keep the existing product proof content after the stronger trust sections. */}
         <motion.div variants={item} className="max-w-2xl">
           <Badge>Built by the same team behind</Badge>
           <h2 className="mt-4 text-4xl font-semibold tracking-[-0.05em] text-slate-950 md:text-5xl">
@@ -261,7 +358,11 @@ export default function HomePage() {
                     ))}
                   </div>
 
-                  <Button asChild className="w-full">
+                  <Button
+                    asChild
+                    className="w-full"
+                    aria-label={`Explore ${product.title}`}
+                  >
                     <Link href={product.href}>{product.cta}</Link>
                   </Button>
                 </CardContent>
@@ -279,39 +380,17 @@ export default function HomePage() {
         viewport={{ once: true, amount: 0.18 }}
         className="mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-24"
       >
-        <div className="grid gap-6 lg:grid-cols-[1.05fr_0.95fr]">
+        {/* ZIFFERA_UPDATE: Reframe pricing with the updated €500 split-50/50 value. */}
+        <div className="grid gap-6 lg:grid-cols-[1.02fr_0.98fr]">
           <motion.div variants={item}>
             <Badge>Pricing</Badge>
             <h2 className="mt-4 text-4xl font-semibold tracking-[-0.05em] text-slate-950 md:text-5xl">
               One clear package.
             </h2>
             <p className="mt-4 max-w-2xl text-lg leading-8 text-slate-600">
-              A premium website package with a simple payment structure that
-              keeps the decision easy.
+              Every project is scoped for clarity - no hidden fees, no surprises.
+              Just one fair price for a site that represents your business properly.
             </p>
-
-            <div className="mt-8 flex flex-wrap gap-3">
-              <Card className="border-slate-200/80 bg-white shadow-[0_14px_32px_rgba(15,23,42,0.05)]">
-                <CardContent className="px-4 py-3 text-sm font-medium text-slate-700">
-                  Website Package
-                </CardContent>
-              </Card>
-              <Card className="border-slate-200/80 bg-white shadow-[0_14px_32px_rgba(15,23,42,0.05)]">
-                <CardContent className="px-4 py-3 text-sm font-medium text-slate-700">
-                  €500 total
-                </CardContent>
-              </Card>
-              <Card className="border-slate-200/80 bg-white shadow-[0_14px_32px_rgba(15,23,42,0.05)]">
-                <CardContent className="px-4 py-3 text-sm font-medium text-slate-700">
-                  €250 to start
-                </CardContent>
-              </Card>
-              <Card className="border-slate-200/80 bg-white shadow-[0_14px_32px_rgba(15,23,42,0.05)]">
-                <CardContent className="px-4 py-3 text-sm font-medium text-slate-700">
-                  €250 before go-live
-                </CardContent>
-              </Card>
-            </div>
           </motion.div>
 
           <motion.div variants={item}>
@@ -319,7 +398,7 @@ export default function HomePage() {
               <CardHeader>
                 <Badge>Start now</Badge>
                 <CardTitle className="mt-4 text-4xl tracking-[-0.05em]">
-                  €250 deposit today
+                  Full project: {"\u20AC"}500 {"\u2014"} split 50/50
                 </CardTitle>
                 <CardDescription className="mt-3 max-w-xl text-base leading-7">
                   Secure your build slot and get the project moving with the
@@ -327,12 +406,32 @@ export default function HomePage() {
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
-                <div className="rounded-[1.4rem] border border-blue-100 bg-white px-5 py-5 text-sm leading-7 text-slate-700">
-                  Start with 50%. Pay the final 50% before delivery. Monthly
-                  support begins when the website goes live.
+                <div className="grid gap-3 sm:grid-cols-2">
+                  <Card className="border-slate-200/80 bg-white shadow-[0_12px_28px_rgba(15,23,42,0.05)]">
+                    <CardContent className="px-4 py-3 text-sm font-medium text-slate-700">
+                      {"\u20AC"}250 to begin
+                    </CardContent>
+                  </Card>
+                  <Card className="border-slate-200/80 bg-white shadow-[0_12px_28px_rgba(15,23,42,0.05)]">
+                    <CardContent className="px-4 py-3 text-sm font-medium text-slate-700">
+                      {"\u20AC"}250 before go-live
+                    </CardContent>
+                  </Card>
                 </div>
-                <Button asChild className="w-full" size="lg">
-                  <Link href="/checkout/setup-deposit">Start project</Link>
+
+                <div className="rounded-[1.4rem] border border-blue-100 bg-white px-5 py-5 text-sm leading-7 text-slate-700">
+                  Less than one month of paid ads. Yours forever.
+                </div>
+
+                <Button
+                  asChild
+                  className="w-full"
+                  size="lg"
+                  aria-label="Get started with a 50 percent deposit to begin"
+                >
+                  <Link href="/checkout/setup-deposit">
+                    Get Started {"\u2014"} 50% deposit to begin
+                  </Link>
                 </Button>
               </CardContent>
             </Card>
@@ -348,6 +447,7 @@ export default function HomePage() {
         className="bg-[linear-gradient(180deg,#ffffff_0%,#f8fbff_100%)] py-20 lg:py-24"
       >
         <div className="mx-auto max-w-7xl px-6 lg:px-10">
+          {/* ZIFFERA_UPDATE: Keep the monthly plan content, but tighten the presentation to preserve the trust ladder. */}
           <div className="grid gap-6 lg:grid-cols-[0.95fr_1.05fr]">
             <motion.div variants={item}>
               <Badge>Monthly plan</Badge>
@@ -355,7 +455,7 @@ export default function HomePage() {
                 What&apos;s included in the monthly plan
               </h2>
               <p className="mt-4 max-w-xl text-lg leading-8 text-slate-600">
-                The €25/month plan starts when the website goes live and keeps
+                The {"\u20AC"}25/month plan starts when the website goes live and keeps
                 the site supported afterwards.
               </p>
             </motion.div>
@@ -406,6 +506,7 @@ export default function HomePage() {
         viewport={{ once: true, amount: 0.2 }}
         className="mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-24"
       >
+        {/* ZIFFERA_UPDATE: Keep the reassurance section as a final friction reducer before the FAQ. */}
         <div className="grid gap-6 lg:grid-cols-[0.95fr_1.05fr]">
           <motion.div variants={item}>
             <Badge>Reassurance</Badge>
@@ -437,62 +538,101 @@ export default function HomePage() {
         </div>
       </motion.section>
 
-      <motion.section
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, amount: 0.2 }}
-        transition={{ duration: 0.55 }}
-        className="mx-auto max-w-7xl px-6 pb-24 pt-4 lg:px-10 lg:pb-32"
-      >
-        <Card className="overflow-hidden border-slate-900/10 bg-[linear-gradient(135deg,#0f172a_0%,#172554_48%,#1d4ed8_100%)] shadow-[0_32px_90px_rgba(15,23,42,0.18)]">
-          <div className="relative grid gap-10 px-8 py-10 lg:grid-cols-[1.08fr_0.92fr] lg:items-center lg:px-10 lg:py-12">
-            <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(125,211,252,0.18),transparent_26%),radial-gradient(circle_at_bottom_left,rgba(59,130,246,0.18),transparent_24%)]" />
-
-            <div className="relative">
-              <Badge className="border-white/20 bg-white/10 text-white">
-                Ready when you are
-              </Badge>
-              <h2 className="mt-4 max-w-2xl text-4xl font-semibold tracking-[-0.06em] text-white md:text-5xl">
-                Ready to launch something serious?
-              </h2>
-              <p className="mt-4 max-w-2xl text-lg leading-8 text-blue-100">
-                Start your project today and secure your build slot with a 50%
-                deposit.
-              </p>
-              <div className="mt-6 flex flex-wrap gap-3 text-sm text-blue-100/90">
-                <span className="rounded-full border border-white/15 bg-white/10 px-4 py-2">
-                  Usually reply within 24 hours
-                </span>
-                <span className="rounded-full border border-white/15 bg-white/10 px-4 py-2">
-                  Prefer to talk first? support@ziffera.ie
-                </span>
-              </div>
-            </div>
-
-            <div className="relative">
-              <Card className="border-white/15 bg-white/10 p-4 shadow-[0_18px_44px_rgba(15,23,42,0.16)] backdrop-blur-xl">
-                <CardContent className="space-y-4 p-0">
-                  <Button
-                    asChild
-                    className="w-full bg-white text-slate-950 shadow-[0_18px_44px_rgba(255,255,255,0.18)] hover:bg-blue-50"
-                    size="lg"
-                  >
-                    <Link href="/checkout/setup-deposit">Start your website</Link>
-                  </Button>
-                  <Button
-                    asChild
-                    variant="outline"
-                    className="w-full border-white/20 bg-white/10 text-white hover:border-white/40 hover:bg-white/15"
-                    size="lg"
-                  >
-                    <Link href="/contact">Prefer to talk first?</Link>
-                  </Button>
-                </CardContent>
-              </Card>
-            </div>
+      <section id="faq" className="mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-24">
+        {/* ZIFFERA_UPDATE: Add a simple FAQ accordion to reduce purchase anxiety before the footer. */}
+        <div className="grid gap-8 lg:grid-cols-[0.92fr_1.08fr]">
+          <div className="max-w-2xl">
+            <Badge>FAQ</Badge>
+            <h2 className="mt-4 text-4xl font-semibold tracking-[-0.05em] text-slate-950 md:text-5xl">
+              A few quick answers before you start.
+            </h2>
+            <p className="mt-4 max-w-xl text-lg leading-8 text-slate-600">
+              Straight answers help people move faster. Here&apos;s what most
+              Irish SME owners want to know first.
+            </p>
           </div>
-        </Card>
-      </motion.section>
+
+          <div className="grid gap-4">
+            {faqs.map((faq) => (
+              <details
+                key={faq.question}
+                className="group rounded-[1.5rem] border border-slate-200/80 bg-white p-6 shadow-[0_18px_50px_rgba(15,23,42,0.06)]"
+              >
+                <summary className="flex cursor-pointer list-none items-center justify-between gap-4 text-left text-lg font-medium tracking-[-0.02em] text-slate-950">
+                  <span>{faq.question}</span>
+                  <span className="text-2xl font-light text-slate-400 transition duration-300 group-open:rotate-45">
+                    +
+                  </span>
+                </summary>
+                <p className="mt-4 max-w-3xl text-sm leading-7 text-slate-600">
+                  {faq.answer}
+                </p>
+              </details>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <footer className="border-t border-slate-200/80 bg-white/80">
+        {/* ZIFFERA_UPDATE: Update the footer tagline while preserving the contact links. */}
+        <div className="mx-auto grid max-w-7xl gap-8 px-6 py-10 lg:grid-cols-[1.05fr_0.95fr] lg:px-10">
+          <div className="max-w-2xl">
+            <Badge variant="secondary">Ziffera</Badge>
+            <p className="mt-4 text-lg leading-8 text-slate-600">
+              Websites. SaaS. Apps. Software. Systems. Built in Ireland.
+            </p>
+          </div>
+
+          <div className="grid gap-5 sm:grid-cols-2">
+            <Card className="border-slate-200/80 bg-white shadow-[0_12px_28px_rgba(15,23,42,0.05)]">
+              <CardContent className="space-y-2 px-5 py-5 text-sm text-slate-700">
+                <div className="text-[10px] uppercase tracking-[0.24em] text-slate-500">
+                  Contact email
+                </div>
+                <a
+                  href="mailto:hello@ziffera.ie"
+                  className="font-medium text-slate-950 transition hover:text-blue-700"
+                  aria-label="Email Ziffera at hello at ziffera dot ie"
+                >
+                  hello@ziffera.ie
+                </a>
+              </CardContent>
+            </Card>
+
+            <Card className="border-slate-200/80 bg-white shadow-[0_12px_28px_rgba(15,23,42,0.05)]">
+              <CardContent className="space-y-2 px-5 py-5 text-sm text-slate-700">
+                <div className="text-[10px] uppercase tracking-[0.24em] text-slate-500">
+                  LinkedIn
+                </div>
+                <a
+                  href="https://www.linkedin.com/company/ziffera"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-medium text-slate-950 transition hover:text-blue-700"
+                  aria-label="Visit Ziffera on LinkedIn"
+                >
+                  LinkedIn profile
+                </a>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+
+        <div className="border-t border-slate-200/80">
+          <div className="mx-auto flex max-w-7xl flex-col gap-3 px-6 py-4 text-sm text-slate-500 lg:flex-row lg:items-center lg:justify-between lg:px-10">
+            <span>
+              {"\u00A9"} 2025 Ziffera. All rights reserved. | Built in Ireland {"\u{1F1EE}\u{1F1EA}"}
+            </span>
+            <span>Ready to launch a better first impression?</span>
+          </div>
+        </div>
+      </footer>
+
+      {/* ZIFFERA_UPDATE: Add LocalBusiness structured data for basic SEO and entity clarity. */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+      />
     </main>
   );
 }

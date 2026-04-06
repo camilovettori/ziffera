@@ -4,7 +4,6 @@ import { Menu, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 
 const navItems = [
@@ -29,46 +28,78 @@ export default function Header() {
 
   return (
     <header className="sticky top-0 z-50 px-4 pt-4 lg:px-6">
+      {/* ZIFFERA_UPDATE: Increase header contrast and logo presence while preserving the existing logo asset. */}
       <div
         className={[
-          "mx-auto max-w-7xl rounded-[1.9rem] border px-5 py-4 backdrop-blur-2xl transition-all duration-500",
+          "mx-auto max-w-7xl rounded-[2rem] border px-5 py-4 backdrop-blur-[20px] transition-all duration-500",
           scrolled
-            ? "border-slate-200/90 bg-white/88 shadow-[0_18px_50px_rgba(15,23,42,0.09)]"
-            : "border-slate-200/70 bg-white/82 shadow-[0_12px_34px_rgba(15,23,42,0.05)]",
+            ? "border-slate-200/90 bg-[linear-gradient(135deg,rgba(255,255,255,0.96)_0%,rgba(244,248,255,0.96)_45%,rgba(233,241,255,0.92)_100%)] shadow-[0_18px_50px_rgba(15,23,42,0.09)]"
+            : "border-white/10 bg-[rgba(10,15,40,0.85)] shadow-[0_18px_50px_rgba(10,15,44,0.34)]",
         ].join(" ")}
       >
-        <div className="flex items-center justify-between gap-4">
-          <div className="flex min-w-0 flex-col items-start">
-            <Link href="/" className="group block shrink-0">
+        <div className="flex items-center justify-between gap-5">
+          <div className="flex min-w-0 items-center gap-3">
+            <Link href="/" className="group relative block shrink-0">
+              <span
+                aria-hidden="true"
+                className={[
+                  "pointer-events-none absolute -inset-3 -z-10 rounded-[1.45rem] opacity-90 blur-xl transition duration-300",
+                  scrolled
+                    ? "bg-[radial-gradient(circle_at_center,rgba(59,130,246,0.16),transparent_70%)]"
+                    : "bg-[radial-gradient(circle_at_center,rgba(96,165,250,0.2),transparent_72%)]",
+                ].join(" ")}
+              />
               <Image
                 src="/logos/ziffera-logo.png"
                 alt="Ziffera logo"
                 width={260}
                 height={90}
                 priority
-                className="h-12 w-auto object-contain transition duration-300 group-hover:opacity-90 lg:h-14"
+                className={[
+                  "logo-pulse h-12 w-auto object-contain transition duration-300 group-hover:scale-[1.02]",
+                  scrolled
+                    ? "drop-shadow-[0_0_12px_rgba(99,102,241,0.3)] lg:h-[4rem]"
+                    : "drop-shadow-[0_0_12px_rgba(99,102,241,0.6)] lg:h-[4.25rem]",
+                ].join(" ")}
               />
             </Link>
 
-            <Badge variant="secondary" className="mt-2 text-[9px] tracking-[0.3em]">
+            <span
+              className={[
+                "text-[10px] font-medium uppercase tracking-[2px]",
+                scrolled ? "text-slate-500" : "text-white/40",
+              ].join(" ")}
+            >
               Websites / Products / Systems
-            </Badge>
+            </span>
           </div>
 
-          <div className="hidden items-center gap-10 md:flex">
-            <nav className="flex items-center gap-7 text-sm text-slate-700">
+          <div className="hidden items-center gap-8 md:flex">
+            <nav
+              className={[
+                "flex items-center gap-8 text-[0.95rem] font-medium",
+                scrolled ? "text-slate-700" : "text-white/70",
+              ].join(" ")}
+            >
               {navItems.map((item) => (
                 <Link
                   key={item.label}
                   href={item.href}
-                  className="relative transition duration-300 hover:text-slate-950 after:absolute after:-bottom-2 after:left-0 after:h-px after:w-0 after:bg-blue-500 after:transition-all after:duration-300 hover:after:w-full"
+                  className={[
+                    "relative transition duration-300 after:absolute after:-bottom-2 after:left-0 after:h-px after:w-0 after:bg-[linear-gradient(135deg,#2563eb,#7c3aed)] after:transition-all after:duration-300 hover:after:w-full",
+                    scrolled ? "hover:text-slate-950" : "hover:text-white",
+                  ].join(" ")}
                 >
                   {item.label}
                 </Link>
               ))}
             </nav>
 
-            <Button asChild>
+            <Button
+              asChild
+              aria-label="Get started with your website project"
+              className="bg-[linear-gradient(135deg,#2563eb_0%,#7c3aed_100%)] px-6 shadow-[0_18px_44px_rgba(37,99,235,0.28)] hover:shadow-[0_24px_56px_rgba(124,58,237,0.36)]"
+            >
               <Link href="/checkout/setup-deposit">Start your website</Link>
             </Button>
           </div>
@@ -77,7 +108,12 @@ export default function Header() {
             type="button"
             variant="outline"
             size="icon"
-            className="md:hidden"
+            className={[
+              "md:hidden shadow-[0_10px_26px_rgba(15,23,42,0.06)]",
+              scrolled
+                ? "border-slate-200/90 bg-white/80 text-slate-700"
+                : "border-white/15 bg-white/10 text-white hover:bg-white/15 hover:border-white/25",
+            ].join(" ")}
             onClick={() => setMobileOpen((prev) => !prev)}
             aria-label="Toggle menu"
           >
@@ -91,19 +127,35 @@ export default function Header() {
             mobileOpen ? "max-h-[28rem] pt-4 opacity-100" : "max-h-0 opacity-0",
           ].join(" ")}
         >
-          <div className="flex flex-col gap-4 rounded-[1.5rem] border border-slate-200/80 bg-white/96 p-4 shadow-[0_18px_46px_rgba(15,23,42,0.08)]">
+          <div
+            className={[
+              "flex flex-col gap-4 rounded-[1.5rem] border p-4 shadow-[0_18px_46px_rgba(15,23,42,0.08)]",
+              scrolled
+                ? "border-slate-200/80 bg-[linear-gradient(135deg,rgba(255,255,255,0.98)_0%,rgba(244,248,255,0.98)_100%)]"
+                : "border-white/10 bg-[linear-gradient(135deg,rgba(10,15,44,0.96)_0%,rgba(17,24,60,0.96)_100%)]",
+            ].join(" ")}
+          >
             {navItems.map((item) => (
               <Link
                 key={item.label}
                 href={item.href}
                 onClick={() => setMobileOpen(false)}
-                className="rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-700 shadow-[0_8px_20px_rgba(15,23,42,0.04)] transition duration-300 hover:border-blue-200 hover:bg-blue-50"
+                className={[
+                  "rounded-2xl border px-4 py-3 text-sm font-medium shadow-[0_8px_20px_rgba(15,23,42,0.04)] transition duration-300",
+                  scrolled
+                    ? "border-slate-200/80 bg-white/85 text-slate-700 hover:border-blue-200 hover:bg-blue-50"
+                    : "border-white/10 bg-white/[0.08] text-white/85 hover:border-white/25 hover:bg-white/[0.12]",
+                ].join(" ")}
               >
                 {item.label}
               </Link>
             ))}
 
-            <Button asChild className="w-full">
+            <Button
+              asChild
+              className="w-full"
+              aria-label="Get started with your website project"
+            >
               <Link href="/checkout/setup-deposit" onClick={() => setMobileOpen(false)}>
                 Start your website
               </Link>

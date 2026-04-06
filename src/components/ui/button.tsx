@@ -13,7 +13,7 @@ export interface ButtonProps
 
 const variantClasses: Record<ButtonVariant, string> = {
   default:
-    "bg-[linear-gradient(135deg,#2563eb_0%,#3b82f6_52%,#60a5fa_100%)] text-white shadow-[0_18px_50px_rgba(59,130,246,0.24)] hover:shadow-[0_24px_64px_rgba(59,130,246,0.34)]",
+    "btn-primary shimmer-hover bg-[linear-gradient(135deg,#4F46E5_0%,#7C3AED_100%)] text-white shadow-[0_4px_24px_rgba(99,102,241,0.45),0_0_0_1px_rgba(139,92,246,0.3)] hover:shadow-[0_10px_34px_rgba(99,102,241,0.52),0_0_0_1px_rgba(139,92,246,0.35)]",
   secondary:
     "bg-blue-50 text-blue-700 border border-blue-100 hover:bg-blue-100",
   outline:
@@ -31,7 +31,7 @@ const sizeClasses: Record<ButtonSize, string> = {
 export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant = "default", size = "default", asChild, children, ...props }, ref) => {
     const classes = cn(
-      "inline-flex items-center justify-center gap-2 rounded-2xl border font-semibold transition duration-300 hover:-translate-y-0.5 hover:scale-[1.02] disabled:pointer-events-none disabled:opacity-60 disabled:hover:translate-y-0 disabled:hover:scale-100",
+      "relative inline-flex items-center justify-center gap-2 rounded-2xl border font-semibold transition duration-300 hover:-translate-y-0.5 hover:scale-[1.02] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/35 focus-visible:ring-offset-2 focus-visible:ring-offset-white disabled:pointer-events-none disabled:opacity-60 disabled:hover:translate-y-0 disabled:hover:scale-100",
       variantClasses[variant],
       sizeClasses[size],
       className
@@ -41,6 +41,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       const child = children as React.ReactElement<{ className?: string }>;
 
       return React.cloneElement(child, {
+        ...props,
         className: cn(classes, child.props.className),
       });
     }

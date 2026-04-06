@@ -9,9 +9,9 @@ export interface BadgeProps extends React.HTMLAttributes<HTMLSpanElement> {
 
 const variantClasses: Record<BadgeVariant, string> = {
   default:
-    "border-blue-200 bg-blue-50 text-blue-700 shadow-[0_10px_24px_rgba(59,130,246,0.08)]",
-  secondary: "border-slate-200 bg-slate-50 text-slate-600",
-  outline: "border-slate-200 bg-white text-slate-600",
+    "gradient-pill shadow-[0_12px_26px_rgba(37,99,235,0.08)]",
+  secondary: "gradient-pill text-slate-700 shadow-[0_10px_24px_rgba(59,130,246,0.06)]",
+  outline: "border-slate-200 bg-white/90 text-slate-600",
 };
 
 export function Badge({

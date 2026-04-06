@@ -3,11 +3,11 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: {
-    default: "Ziffera - Premium Websites & Software",
+    default: "Ziffera | Premium Website Design for Irish Businesses",
     template: "%s | Ziffera",
   },
   description:
-    "Ziffera builds premium websites, scalable systems, and SaaS products designed to help modern businesses grow with clarity, performance, and precision.",
+    "Ziffera builds premium, fast-loading websites for Irish businesses. Custom design, mobile-optimized, delivered in 7 days. Starting at \u20AC650.",
   keywords: [
     "web design Ireland",
     "website development Dublin",
@@ -18,15 +18,30 @@ export const metadata: Metadata = {
   ],
   authors: [{ name: "Ziffera" }],
   openGraph: {
-    title: "Ziffera - Premium Websites & Software",
+    title: "Ziffera | Premium Website Design for Irish Businesses",
     description:
-      "Premium websites and scalable software built for modern businesses.",
-    url: "https://ziffera.ie",
+      "Ziffera builds premium, fast-loading websites for Irish businesses. Custom design, mobile-optimized, delivered in 7 days. Starting at \u20AC650.",
+    url: "https://www.ziffera.ie",
     siteName: "Ziffera",
     locale: "en_IE",
     type: "website",
+    images: [
+      {
+        url: "/examples/homepage.png",
+        width: 1200,
+        height: 630,
+        alt: "Ziffera website preview",
+      },
+    ],
   },
-  metadataBase: new URL("https://ziffera.ie"),
+  twitter: {
+    card: "summary_large_image",
+    title: "Ziffera | Premium Website Design for Irish Businesses",
+    description:
+      "Ziffera builds premium, fast-loading websites for Irish businesses. Custom design, mobile-optimized, delivered in 7 days. Starting at \u20AC650.",
+    images: ["/examples/homepage.png"],
+  },
+  metadataBase: new URL("https://www.ziffera.ie"),
 };
 
 export default function RootLayout({
