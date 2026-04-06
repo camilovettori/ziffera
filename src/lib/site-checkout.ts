@@ -76,7 +76,7 @@ export function listSiteCheckoutFlows(): SiteCheckoutFlowDefinition[] {
       title: "Website Setup Deposit",
       mode: "payment",
       priceId: cleanId(env.stripePriceSetupDeposit),
-      priceLabel: "One-time deposit",
+      priceLabel: "€250 deposit today",
       successPath: "/checkout/setup-deposit/success",
       cancelPath: "/checkout/setup-deposit/cancel",
       trialDays: 0,
@@ -86,7 +86,7 @@ export function listSiteCheckoutFlows(): SiteCheckoutFlowDefinition[] {
       title: "Website Setup Final Payment",
       mode: "payment",
       priceId: cleanId(env.stripePriceSetupFinal),
-      priceLabel: "One-time final payment",
+      priceLabel: "€250 before go-live",
       successPath: "/checkout/setup-final/success",
       cancelPath: "/checkout/setup-final/cancel",
       trialDays: 0,
@@ -121,8 +121,6 @@ export async function createSiteCheckoutSession(input: {
     throw new Error(`${definition.title} is not configured.`);
   }
 
-  const successUrl = `${env.appUrl.replace(/\/$/, "")}${definition.successPath}`;
-  const cancelUrl = `${env.appUrl.replace(/\/$/, "")}${definition.cancelPath}`;
   const customerIdempotencyKey = buildIdempotencyKey({
     prefix: `ziffera-customer:${definition.slug}`,
     payload: {
@@ -151,14 +149,13 @@ export async function createSiteCheckoutSession(input: {
   const checkoutIdempotencyKey = buildIdempotencyKey({
     prefix: `ziffera-checkout:${definition.slug}`,
     payload: {
-      cancelPath: cancelUrl,
+      cancelPath: `${env.appUrl.replace(/\/$/, "")}${definition.cancelPath}`,
       company: input.company ?? "",
       customerId: customer.id,
       email: input.email,
       mode: definition.mode,
       name: input.name,
       priceId: definition.priceId,
-      successPath: successUrl,
       trialDays: definition.trialDays,
     },
   });

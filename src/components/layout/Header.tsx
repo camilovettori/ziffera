@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 const navItems = [
   { label: "Services", href: "/#services" },
   { label: "Work", href: "/#work" },
+  { label: "Products", href: "/#products" },
   { label: "Pricing", href: "/#pricing" },
   { label: "Contact", href: "/contact" },
 ];
@@ -50,7 +51,7 @@ export default function Header() {
             </Link>
 
             <Badge variant="secondary" className="mt-2 text-[9px] tracking-[0.3em]">
-              Websites / Launch Support
+              Websites / Products / Systems
             </Badge>
           </div>
 

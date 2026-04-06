@@ -139,7 +139,7 @@ export default function StartPage() {
                   Launch pricing
                 </div>
                 <div className="mt-3 text-2xl font-semibold tracking-[-0.04em] text-white">
-                  EUR 250 setup + EUR 20/month
+                  EUR 500 total · EUR 25/month after launch
                 </div>
                 <p className="mt-3 text-sm leading-7 text-slate-400">
                   Hosting, maintenance, and support are included for standard
@@ -244,14 +244,14 @@ export default function StartPage() {
                 {[
                   {
                     label: "Promo offer",
-                    value: "EUR 250",
-                    note: "was EUR 1,400",
+                    value: "EUR 500",
+                    note: "50% to start",
                     highlight: true,
                   },
                   {
                     label: "Monthly care",
-                    value: "EUR 20/mo",
-                    note: "hosting and support",
+                    value: "EUR 25/mo",
+                    note: "after launch",
                     highlight: false,
                   },
                   {
@@ -338,10 +338,10 @@ export default function StartPage() {
                 Ziffera starter offer
               </div>
               <div className="mt-4 text-4xl font-semibold tracking-[-0.05em] text-white">
-                EUR 250 + EUR 20/month
+                EUR 500 total · EUR 25/month after launch
               </div>
               <div className="mt-2 text-slate-300">
-                Only 4 clients per month
+                50% to start
               </div>
 
               <div className="mt-6 space-y-3 text-sm text-slate-200">

@@ -25,10 +25,10 @@ import {
 } from "@/components/ui/card";
 
 const trustItems = [
-  "50% deposit to start",
-  "Premium custom design",
-  "7-day delivery target",
-  "Clear launch support",
+  "€500 total website offer",
+  "€250 deposit to start",
+  "€25/month after launch",
+  "Premium launch support",
 ];
 
 const includedItems = [
@@ -62,6 +62,41 @@ const includedItems = [
     desc: "A calm launch process so the site goes live with confidence.",
     icon: CalendarCheck,
   },
+];
+
+const productProof = [
+  {
+    title: "MarginFlow",
+    desc: "A software product that proves Ziffera can ship real digital tools, not just brochure sites.",
+    bullets: ["Product design", "Commercial thinking", "Subscription-ready"],
+    href: "/marginflow",
+    cta: "Explore MarginFlow",
+  },
+  {
+    title: "Zconnect",
+    desc: "Systems and integration work that removes admin and strengthens the technical side of the company.",
+    bullets: ["Automation", "Connected systems", "Operational clarity"],
+    href: "/contact",
+    cta: "Talk about Zconnect",
+  },
+];
+
+const monthlyPlanIncludes = [
+  "Website hosting",
+  "Security updates",
+  "Basic maintenance",
+  "Small text or image updates within reasonable limits",
+  "Ongoing support",
+  "Keeping the website online and running properly",
+];
+
+const monthlyPlanNotIncluded = [
+  "Full redesigns",
+  "New pages",
+  "Advanced SEO",
+  "Ads / marketing management",
+  "Large feature upgrades",
+  "Major booking system changes",
 ];
 
 const reassuranceItems = [
@@ -171,6 +206,72 @@ export default function HomePage() {
       <ExampleSection />
 
       <motion.section
+        id="products"
+        variants={container}
+        initial="hidden"
+        whileInView="show"
+        viewport={{ once: true, amount: 0.18 }}
+        className="mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-24"
+      >
+        <motion.div variants={item} className="max-w-2xl">
+          <Badge>Built by the same team behind</Badge>
+          <h2 className="mt-4 text-4xl font-semibold tracking-[-0.05em] text-slate-950 md:text-5xl">
+            MarginFlow and Zconnect.
+          </h2>
+          <p className="mt-4 max-w-2xl text-lg leading-8 text-slate-600">
+            Ziffera is not just a website service. We also design and build
+            software products and systems, which gives client work a stronger
+            technical foundation.
+          </p>
+        </motion.div>
+
+        <div className="mt-12 grid gap-6 lg:grid-cols-2">
+          {productProof.map((product) => (
+            <motion.div
+              key={product.title}
+              variants={item}
+              whileHover={{ y: -6, scale: 1.015 }}
+              transition={{ duration: 0.22 }}
+            >
+              <Card className="overflow-hidden border-slate-200/80 bg-white shadow-[0_18px_50px_rgba(15,23,42,0.06)] transition duration-300 hover:border-blue-200 hover:shadow-[0_28px_66px_rgba(15,23,42,0.1)]">
+                <CardHeader className="pb-4">
+                  <div className="inline-flex rounded-full border border-blue-200 bg-white/80 px-3 py-1 text-[10px] uppercase tracking-[0.24em] text-blue-700 backdrop-blur">
+                    {product.title}
+                  </div>
+                  <CardTitle className="mt-5 text-3xl tracking-[-0.05em]">
+                    {product.title}
+                  </CardTitle>
+                  <CardDescription className="mt-4 max-w-xl">
+                    {product.desc}
+                  </CardDescription>
+                </CardHeader>
+
+                <CardContent className="space-y-4">
+                  <div className="grid gap-2">
+                    {product.bullets.map((bullet) => (
+                      <div
+                        key={bullet}
+                        className="flex items-center gap-3 rounded-[1.2rem] border border-slate-200 bg-[linear-gradient(180deg,#ffffff_0%,#f8fbff_100%)] px-4 py-3 text-sm text-slate-700"
+                      >
+                        <span className="flex h-5 w-5 items-center justify-center rounded-full bg-blue-50 text-blue-700">
+                          <Check className="h-3.5 w-3.5" />
+                        </span>
+                        {bullet}
+                      </div>
+                    ))}
+                  </div>
+
+                  <Button asChild className="w-full">
+                    <Link href={product.href}>{product.cta}</Link>
+                  </Button>
+                </CardContent>
+              </Card>
+            </motion.div>
+          ))}
+        </div>
+      </motion.section>
+
+      <motion.section
         id="pricing"
         variants={container}
         initial="hidden"
@@ -197,17 +298,17 @@ export default function HomePage() {
               </Card>
               <Card className="border-slate-200/80 bg-white shadow-[0_14px_32px_rgba(15,23,42,0.05)]">
                 <CardContent className="px-4 py-3 text-sm font-medium text-slate-700">
-                  €650 total
+                  €500 total
                 </CardContent>
               </Card>
               <Card className="border-slate-200/80 bg-white shadow-[0_14px_32px_rgba(15,23,42,0.05)]">
                 <CardContent className="px-4 py-3 text-sm font-medium text-slate-700">
-                  €325 to start
+                  €250 to start
                 </CardContent>
               </Card>
               <Card className="border-slate-200/80 bg-white shadow-[0_14px_32px_rgba(15,23,42,0.05)]">
                 <CardContent className="px-4 py-3 text-sm font-medium text-slate-700">
-                  €325 before go-live
+                  €250 before go-live
                 </CardContent>
               </Card>
             </div>
@@ -218,7 +319,7 @@ export default function HomePage() {
               <CardHeader>
                 <Badge>Start now</Badge>
                 <CardTitle className="mt-4 text-4xl tracking-[-0.05em]">
-                  €325 deposit
+                  €250 deposit today
                 </CardTitle>
                 <CardDescription className="mt-3 max-w-xl text-base leading-7">
                   Secure your build slot and get the project moving with the
@@ -227,7 +328,8 @@ export default function HomePage() {
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="rounded-[1.4rem] border border-blue-100 bg-white px-5 py-5 text-sm leading-7 text-slate-700">
-                  Start with 50%. Pay the final 50% before delivery.
+                  Start with 50%. Pay the final 50% before delivery. Monthly
+                  support begins when the website goes live.
                 </div>
                 <Button asChild className="w-full" size="lg">
                   <Link href="/checkout/setup-deposit">Start project</Link>
@@ -248,24 +350,25 @@ export default function HomePage() {
         <div className="mx-auto max-w-7xl px-6 lg:px-10">
           <div className="grid gap-6 lg:grid-cols-[0.95fr_1.05fr]">
             <motion.div variants={item}>
-              <Badge>Reassurance</Badge>
+              <Badge>Monthly plan</Badge>
               <h2 className="mt-4 text-4xl font-semibold tracking-[-0.05em] text-slate-950 md:text-5xl">
-                No risk, no confusion.
+                What&apos;s included in the monthly plan
               </h2>
               <p className="mt-4 max-w-xl text-lg leading-8 text-slate-600">
-                The process stays clear from the first click to the final handoff.
+                The €25/month plan starts when the website goes live and keeps
+                the site supported afterwards.
               </p>
             </motion.div>
 
-            <motion.div variants={item}>
-              <div className="grid gap-3">
-                {reassuranceItems.map((entry) => (
+            <motion.div variants={item} className="grid gap-4">
+              <div className="grid gap-3 sm:grid-cols-2">
+                {monthlyPlanIncludes.map((entry) => (
                   <Card
                     key={entry}
                     className="border-slate-200/80 bg-white shadow-[0_12px_28px_rgba(15,23,42,0.05)]"
                   >
-                    <CardContent className="flex items-center gap-3 px-4 py-4 text-sm text-slate-700">
-                      <span className="flex h-6 w-6 items-center justify-center rounded-full bg-blue-50 text-blue-700">
+                    <CardContent className="flex items-start gap-3 px-4 py-4 text-sm text-slate-700">
+                      <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-blue-50 text-blue-700">
                         <Check className="h-3.5 w-3.5" />
                       </span>
                       {entry}
@@ -273,8 +376,64 @@ export default function HomePage() {
                   </Card>
                 ))}
               </div>
+
+              <Card className="border-slate-200/80 bg-white shadow-[0_12px_28px_rgba(15,23,42,0.05)]">
+                <CardContent className="space-y-3 px-5 py-5 text-sm leading-7 text-slate-700">
+                  <div className="text-[10px] uppercase tracking-[0.24em] text-slate-500">
+                    Not included
+                  </div>
+                  <div className="flex flex-wrap gap-2">
+                    {monthlyPlanNotIncluded.map((entry) => (
+                      <span
+                        key={entry}
+                        className="rounded-full border border-slate-200 bg-slate-50 px-3 py-2 text-xs text-slate-600"
+                      >
+                        {entry}
+                      </span>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
             </motion.div>
           </div>
+        </div>
+      </motion.section>
+
+      <motion.section
+        variants={container}
+        initial="hidden"
+        whileInView="show"
+        viewport={{ once: true, amount: 0.2 }}
+        className="mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-24"
+      >
+        <div className="grid gap-6 lg:grid-cols-[0.95fr_1.05fr]">
+          <motion.div variants={item}>
+            <Badge>Reassurance</Badge>
+            <h2 className="mt-4 text-4xl font-semibold tracking-[-0.05em] text-slate-950 md:text-5xl">
+              No risk, no confusion.
+            </h2>
+            <p className="mt-4 max-w-xl text-lg leading-8 text-slate-600">
+              The process stays clear from the first click to the final handoff.
+            </p>
+          </motion.div>
+
+          <motion.div variants={item}>
+            <div className="grid gap-3">
+              {reassuranceItems.map((entry) => (
+                <Card
+                  key={entry}
+                  className="border-slate-200/80 bg-white shadow-[0_12px_28px_rgba(15,23,42,0.05)]"
+                >
+                  <CardContent className="flex items-center gap-3 px-4 py-4 text-sm text-slate-700">
+                    <span className="flex h-6 w-6 items-center justify-center rounded-full bg-blue-50 text-blue-700">
+                      <Check className="h-3.5 w-3.5" />
+                    </span>
+                    {entry}
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </motion.div>
         </div>
       </motion.section>
 

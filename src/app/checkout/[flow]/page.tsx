@@ -15,6 +15,43 @@ function isCheckoutFlowSlug(value: string): value is SiteCheckoutFlowSlug {
   return value === "monthly" || value === "setup-deposit" || value === "setup-final";
 }
 
+function getCheckoutCopy(flow: SiteCheckoutFlowSlug) {
+  if (flow === "setup-deposit") {
+    return {
+      eyebrow: "Website setup deposit",
+      title: "Secure your project with a 50% deposit.",
+      description:
+        "This deposit reserves your build slot and lets us begin your website project. The remaining 50% is only due before the site goes live.",
+      details: [
+        "€250 deposit today",
+        "€250 before launch",
+        "€25/month after launch",
+      ],
+      buttonLabel: "Continue to secure deposit",
+    };
+  }
+
+  if (flow === "setup-final") {
+    return {
+      eyebrow: "Website final payment",
+      title: "Complete your website before go-live.",
+      description:
+        "Use this payment to settle the remaining balance before the website goes live.",
+      details: ["€250 final payment", "Due before launch", "Monthly plan starts after launch"],
+      buttonLabel: "Continue to final payment",
+    };
+  }
+
+  return {
+    eyebrow: "Monthly plan",
+    title: "Website hosting and support after launch.",
+    description:
+      "The monthly plan starts when the website goes live and keeps the site supported afterwards.",
+    details: ["€25/month", "Starts after launch", "Hosting and maintenance included"],
+    buttonLabel: "Continue to monthly plan",
+  };
+}
+
 export default async function CheckoutFlowPage({
   params,
 }: {
@@ -26,13 +63,7 @@ export default async function CheckoutFlowPage({
   }
 
   const definition = getSiteCheckoutFlowDefinition(flow);
-  const bullets = [
-    definition.priceLabel,
-    definition.mode === "subscription" && definition.trialDays > 0
-      ? `${definition.trialDays}-day free trial`
-      : "Secure embedded checkout",
-    "Built into the Ziffera website",
-  ].filter(Boolean) as string[];
+  const copy = getCheckoutCopy(flow);
 
   return (
     <main className="relative min-h-screen overflow-x-hidden bg-[#F7FAFF] text-slate-900">
@@ -42,26 +73,22 @@ export default async function CheckoutFlowPage({
 
       <section className="mx-auto grid max-w-7xl gap-10 px-6 py-10 lg:grid-cols-[0.94fr_1.06fr] lg:px-10 lg:py-16">
         <div className="max-w-2xl">
-          <Badge>{definition.title}</Badge>
+          <Badge>{copy.eyebrow}</Badge>
           <h1 className="mt-6 text-5xl font-semibold leading-[0.94] tracking-[-0.06em] text-slate-950 md:text-7xl xl:text-[5.25rem]">
-            Embedded checkout
-            <br />
-            inside Ziffera.
+            {copy.title}
           </h1>
           <p className="mt-6 max-w-2xl text-lg leading-8 text-slate-600 md:text-[1.16rem] md:leading-9">
-            A clean, production-ready checkout surface for recurring subscriptions
-            and one-time payments. The experience stays on-site and feels native
-            to the Ziffera brand.
+            {copy.description}
           </p>
 
           <div className="mt-8 grid gap-3 sm:grid-cols-3">
-            {bullets.map((bullet) => (
+            {copy.details.map((detail) => (
               <Card
-                key={bullet}
+                key={detail}
                 className="border-slate-200/80 bg-white shadow-[0_14px_32px_rgba(15,23,42,0.05)]"
               >
                 <CardContent className="px-4 py-3 text-sm font-medium text-slate-700">
-                  {bullet}
+                  {detail}
                 </CardContent>
               </Card>
             ))}
@@ -69,7 +96,8 @@ export default async function CheckoutFlowPage({
 
           <Card className="mt-8 border-blue-100/80 bg-[linear-gradient(180deg,#eff6ff_0%,#ffffff_100%)] shadow-[0_18px_42px_rgba(59,130,246,0.08)]">
             <CardContent className="px-5 py-4 text-sm leading-7 text-slate-700">
-              Support: support@ziffera.ie
+              Secure payment powered by Stripe. Questions? Contact
+              support@ziffera.ie.
             </CardContent>
           </Card>
 
@@ -82,7 +110,7 @@ export default async function CheckoutFlowPage({
 
         <Card className="overflow-hidden border-slate-200/80 bg-[linear-gradient(180deg,#ffffff_0%,#f8fbff_100%)] shadow-[0_28px_84px_rgba(15,23,42,0.1)]">
           <CardHeader className="pb-5">
-            <Badge>Checkout form</Badge>
+            <Badge>Payment form</Badge>
             <CardTitle className="mt-4 text-3xl tracking-[-0.05em]">
               {definition.title}
             </CardTitle>
@@ -97,13 +125,9 @@ export default async function CheckoutFlowPage({
               successHref={definition.successPath}
               cancelHref={definition.cancelPath}
               supportEmail="support@ziffera.ie"
-              buttonLabel={
-                definition.mode === "subscription"
-                  ? "Start free trial"
-                  : "Continue to payment"
-              }
-              checkoutCopy="The secure checkout loads inside this page once your details are confirmed."
-              bullets={bullets}
+              buttonLabel={copy.buttonLabel}
+              checkoutCopy="Complete your payment below to continue."
+              bullets={copy.details}
             />
           </CardContent>
         </Card>

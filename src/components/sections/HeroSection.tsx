@@ -4,14 +4,7 @@ import { motion } from "framer-motion";
 import useEmblaCarousel from "embla-carousel-react";
 import Image from "next/image";
 import Link from "next/link";
-import {
-  Check,
-  ChevronLeft,
-  ChevronRight,
-  Globe,
-  Plug,
-  Sparkles,
-} from "lucide-react";
+import { Check, ChevronLeft, ChevronRight, Globe, Plug, Sparkles } from "lucide-react";
 import { useEffect, useState } from "react";
 import type { ReactNode } from "react";
 import { Badge } from "@/components/ui/badge";
@@ -26,9 +19,9 @@ import {
 import { Separator } from "@/components/ui/separator";
 
 const heroPoints = [
+  "€500 promotional website package",
   "50% deposit to start",
-  "Premium design",
-  "7-day delivery",
+  "€25/month after launch",
 ];
 
 type HeroSlide = {
@@ -47,48 +40,47 @@ type HeroSlide = {
 const slides: HeroSlide[] = [
   {
     badge: "Website package",
-    title: "€650 total",
-    description: "Pay 50% to begin and 50% before the site goes live.",
+    title: "€500 total",
+    description: "Pay 50% to begin and 50% before the website goes live.",
     highlights: ["Custom design", "Mobile optimized"],
     tone: "blue",
     icon: <Globe className="h-5 w-5" />,
-    footnote: "Premium website projects built to convert.",
+    footnote: "A clear commercial offer for serious businesses.",
     cta: "Start your website",
     href: "/checkout/setup-deposit",
   },
   {
-    badge: "Fast delivery",
-    title: "Launch in 7 days",
-    description: "A focused process that gets your business online quickly.",
-    highlights: ["Clear scope", "Direct communication"],
+    badge: "Product proof",
+    title: "MarginFlow",
+    description: "A software product that shows Ziffera can build real systems, not just brochure sites.",
+    highlights: ["Product thinking", "Commercial clarity"],
     tone: "slate",
     icon: <Sparkles className="h-5 w-5" />,
-    footnote: "Built for real businesses, not template work.",
-    cta: "Start your website",
-    href: "/checkout/setup-deposit",
+    footnote: "Built by the same team that handles client work.",
+    cta: "Explore MarginFlow",
+    href: "/marginflow",
   },
   {
-    badge: "Real client project",
+    badge: "Systems proof",
+    title: "Zconnect",
+    description: "Integration work that removes admin and proves the technical side of the company.",
+    highlights: ["Automation", "Connected systems"],
+    tone: "blue",
+    icon: <Plug className="h-5 w-5" />,
+    footnote: "Digital company capability, not just design output.",
+    cta: "Talk about Zconnect",
+    href: "/contact",
+  },
+  {
+    badge: "Client proof",
     title: "Frequency Framed",
-    description: "A real e-commerce build with a polished storefront.",
-    highlights: ["Stripe checkout", "Admin tools"],
+    description: "A real client build with Stripe, checkout, and a polished storefront.",
+    highlights: ["Premium presentation", "Conversion-focused"],
     tone: "blue",
     icon: <Sparkles className="h-5 w-5" />,
     image: "/examples/homepage.png",
     cta: "View our work",
     href: "/#work",
-  },
-  {
-    badge: "Launch support",
-    title: "Built for real businesses",
-    description:
-      "The handoff is clean, the site is polished, and the next step is obvious.",
-    highlights: ["Admin access", "Contact or booking setup"],
-    tone: "blue",
-    icon: <Plug className="h-5 w-5" />,
-    footnote: "No generic agency noise.",
-    cta: "Start your website",
-    href: "/checkout/setup-deposit",
   },
 ];
 
@@ -101,9 +93,7 @@ export default function HeroSection() {
   const [paused, setPaused] = useState(false);
 
   useEffect(() => {
-    if (!emblaApi) {
-      return;
-    }
+    if (!emblaApi) return;
 
     const onSelect = () => setSelectedIndex(emblaApi.selectedScrollSnap());
 
@@ -118,9 +108,7 @@ export default function HeroSection() {
   }, [emblaApi]);
 
   useEffect(() => {
-    if (!emblaApi || paused) {
-      return;
-    }
+    if (!emblaApi || paused) return;
 
     const interval = window.setInterval(() => {
       emblaApi.scrollNext();
@@ -144,7 +132,7 @@ export default function HeroSection() {
         transition={{ duration: 0.65, ease: "easeOut" }}
         className="relative z-10 max-w-3xl"
       >
-        <Badge>Premium website projects</Badge>
+        <Badge>Websites / Products / Systems</Badge>
 
         <motion.h1
           initial={{ opacity: 0, y: 16 }}
@@ -152,10 +140,10 @@ export default function HeroSection() {
           transition={{ duration: 0.7, delay: 0.05 }}
           className="mt-6 max-w-4xl text-5xl font-semibold leading-[0.92] tracking-[-0.06em] text-slate-950 md:text-7xl xl:text-[5.5rem]"
         >
-          Get your business online
+          Premium websites built to
           <br />
           <span className="bg-[linear-gradient(180deg,#1d4ed8_0%,#3b82f6_45%,#7dd3fc_100%)] bg-clip-text text-transparent">
-            in 7 days.
+            grow your business.
           </span>
         </motion.h1>
 
@@ -165,8 +153,8 @@ export default function HeroSection() {
           transition={{ duration: 0.7, delay: 0.12 }}
           className="mt-6 max-w-2xl text-lg leading-8 text-slate-600 md:text-[1.16rem] md:leading-9"
         >
-          We design and build premium websites that help real businesses look
-          professional, build trust, and get more customers.
+          Modern, professional websites for real businesses - with a clear
+          process, fast delivery, and ongoing support.
         </motion.p>
 
         <motion.p
@@ -175,7 +163,7 @@ export default function HeroSection() {
           transition={{ duration: 0.7, delay: 0.18 }}
           className="mt-4 max-w-2xl text-sm leading-7 text-slate-500"
         >
-          Pay only 50% to start.
+          Promotional offer: €500 total · 50% to start · €25/month after launch
         </motion.p>
 
         <motion.div
@@ -225,9 +213,9 @@ export default function HeroSection() {
           <div className="rounded-[1.6rem] border border-slate-200 bg-[linear-gradient(180deg,#ffffff_0%,#f8fbff_100%)] p-3 shadow-[0_14px_28px_rgba(15,23,42,0.05)] sm:p-4">
             <div className="mb-3 flex items-center justify-between gap-3">
               <div className="flex items-center gap-2">
-                <Badge variant="secondary">Featured offer</Badge>
+                <Badge variant="secondary">Featured preview</Badge>
                 <span className="hidden text-[10px] uppercase tracking-[0.24em] text-slate-400 sm:inline">
-                  compact preview
+                  compact view
                 </span>
               </div>
               <div className="flex gap-2">
