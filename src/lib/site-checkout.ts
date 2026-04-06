@@ -207,7 +207,6 @@ export async function createSiteCheckoutSession(input: {
         customer_email: input.email,
         company: input.company ?? "",
       },
-      return_url: successUrl,
     },
     {
       idempotencyKey: checkoutIdempotencyKey,
