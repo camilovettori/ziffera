@@ -28,23 +28,32 @@ admin backend:
 
 ### Stripe foundation
 
-The control plane now understands Stripe subscriptions safely in an internal-first mode:
+The site now uses Stripe embedded checkout inside the Ziffera pages for the main payment flow:
 
-- central product-to-price mapping in `src/lib/core/stripe.ts`
-- Stripe webhook ingestion at `/api/stripe/webhook`
-- subscription and payment record sync in `src/lib/core/subscriptions.ts`
-- admin-only Stripe customer creation and manual sync actions
+- normalized price mapping in `src/lib/site-checkout.ts`
+- embedded checkout inside `/checkout/[flow]`
+- recurring monthly checkout plus one-time payment flows
+- graceful success and cancel states inside the site
+- no webhook handling in this phase
 
-### MarginFlow public trial flow
+### Public checkout flow
 
-MarginFlow is now subscribable from the public site via:
+The primary site checkout routes are:
 
-- `/marginflow`
-- `/marginflow/subscribe`
-- `/marginflow/subscribe/success`
-- `/api/marginflow/subscribe`
+- `/checkout/monthly`
+- `/checkout/monthly/success`
+- `/checkout/monthly/cancel`
+- `/checkout/setup-deposit`
+- `/checkout/setup-deposit/success`
+- `/checkout/setup-deposit/cancel`
+- `/checkout/setup-final`
+- `/checkout/setup-final/success`
+- `/checkout/setup-final/cancel`
+- `/api/checkout/monthly`
+- `/api/checkout/setup-deposit`
+- `/api/checkout/setup-final`
 
-The flow creates or reuses the client record, creates or reuses the Stripe customer, then routes the visitor into the promotional Stripe checkout flow with a 14-day free trial.
+The primary flow captures the customer details on-site, creates a Stripe customer, then loads the embedded checkout inside the Ziffera page.
 
 ### Deployment architecture
 
@@ -61,11 +70,11 @@ Copy `.env.example` to `.env.local` and set at least:
 
 For Stripe foundation work, also set:
 
+- `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY`
 - `STRIPE_SECRET_KEY`
-- `STRIPE_WEBHOOK_SECRET`
-- `STRIPE_MARGINFLOW_MONTHLY_PRICE_ID`
-- `STRIPE_MARGINFLOW_MONTHLY_PROMO_PRICE_ID`
-- `STRIPE_MARGINFLOW_PRODUCT_ID` if you already have a Stripe product record
+- `STRIPE_PRICE_MONTHLY_PLAN`
+- `STRIPE_PRICE_SETUP_DEPOSIT`
+- `STRIPE_PRICE_SETUP_FINAL`
 
 ### Database commands
 

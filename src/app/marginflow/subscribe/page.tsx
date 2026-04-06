@@ -1,16 +1,9 @@
 import Link from "next/link";
-import { ArrowLeft, Check, Shield } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
 import { SubscribeForm } from "./subscribe-form";
-
-const sidePoints = [
-  "€25/month promotional plan",
-  "14-day free trial",
-  "Ziffera Core manages your access record",
-];
 
 export default function MarginFlowSubscribePage() {
   return (
@@ -26,7 +19,7 @@ export default function MarginFlowSubscribePage() {
           <div>
             <Badge>MarginFlow trial</Badge>
             <p className="mt-2 text-sm text-slate-600">
-              Secure checkout handled by Ziffera Core and Stripe.
+              Secure embedded checkout handled by Ziffera Core and Stripe.
             </p>
           </div>
           <Button asChild variant="outline">
@@ -48,24 +41,9 @@ export default function MarginFlowSubscribePage() {
           </h1>
           <p className="mt-6 max-w-2xl text-lg leading-8 text-slate-600 md:text-[1.16rem] md:leading-9">
             Give us your details once, and Ziffera Core will create the client
-            record, link the Stripe customer, and route you into the trial flow.
+            record, link the Stripe customer, and load checkout directly on this
+            page.
           </p>
-
-          <div className="mt-8 grid gap-3 sm:grid-cols-3">
-            {sidePoints.map((point) => (
-              <Card
-                key={point}
-                className="border-slate-200/80 bg-[linear-gradient(180deg,#ffffff_0%,#f8fbff_100%)] shadow-[0_12px_28px_rgba(15,23,42,0.05)]"
-              >
-                <CardContent className="flex items-center gap-3 px-4 py-3 text-sm font-medium text-slate-700">
-                  <span className="flex h-5 w-5 items-center justify-center rounded-full bg-blue-50 text-blue-700">
-                    <Check className="h-3.5 w-3.5" />
-                  </span>
-                  {point}
-                </CardContent>
-              </Card>
-            ))}
-          </div>
 
           <Card className="mt-8 border-blue-100/80 bg-[linear-gradient(180deg,#eff6ff_0%,#ffffff_100%)] shadow-[0_18px_42px_rgba(59,130,246,0.08)]">
             <CardContent className="px-5 py-4 text-sm leading-7 text-slate-700">
@@ -82,26 +60,13 @@ export default function MarginFlowSubscribePage() {
                 A simple, premium start.
               </CardTitle>
               <CardDescription className="mt-3 max-w-2xl text-base leading-7">
-                Add your name, email, and optional company name. We will take it
-                from there.
+                Add your name, email, and optional company name. Checkout will
+                appear below once your details are confirmed.
               </CardDescription>
             </CardHeader>
 
             <CardContent className="space-y-6">
               <SubscribeForm />
-
-              <Separator />
-
-              <div className="rounded-[1.4rem] border border-blue-100 bg-white/80 px-4 py-4 text-sm leading-7 text-slate-700">
-                <div className="flex items-start gap-3">
-                  <Shield className="mt-0.5 h-5 w-5 shrink-0 text-blue-700" />
-                  <p>
-                    Stripe handles the payment step securely. We only keep the
-                    commercial record needed to manage your trial and support
-                    status in Ziffera Core.
-                  </p>
-                </div>
-              </div>
             </CardContent>
           </Card>
         </div>
@@ -109,3 +74,4 @@ export default function MarginFlowSubscribePage() {
     </main>
   );
 }
+

@@ -46,14 +46,15 @@ export async function POST(request: Request) {
       return NextResponse.json({
         success: true,
         alreadySubscribed: true,
-        redirectUrl: "/marginflow/subscribe/success?status=existing",
+        successUrl: "/marginflow/subscribe/success?status=existing",
       });
     }
 
     return NextResponse.json({
       success: true,
-      checkoutUrl: result.checkoutUrl,
-      redirectUrl: result.checkoutUrl,
+      checkoutSessionId: result.checkoutSessionId,
+      clientSecret: result.clientSecret,
+      successUrl: "/marginflow/subscribe/success",
     });
   } catch (error) {
     console.error("MarginFlow subscribe route failed", error);

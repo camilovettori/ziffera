@@ -34,8 +34,13 @@ export function getStripeCatalog(): StripeCatalogEntry[] {
       productCode: "marginflow",
       productName: "MarginFlow",
       stripeProductId: cleanId(env.stripeMarginflowProductId),
-      monthlyPriceId: cleanId(env.stripeMarginflowMonthlyPriceId),
-      monthlyPromoPriceId: cleanId(env.stripeMarginflowMonthlyPromoPriceId),
+      monthlyPriceId:
+        cleanId(env.stripePriceMonthlyPlan) ??
+        cleanId(env.stripeMarginflowMonthlyPriceId),
+      monthlyPromoPriceId:
+        cleanId(env.stripePriceMonthlyPlan) ??
+        cleanId(env.stripeMarginflowMonthlyPromoPriceId) ??
+        cleanId(env.stripeMarginflowMonthlyPriceId),
       trialDays: env.stripeMarginflowTrialDays,
     },
   ];
@@ -134,4 +139,3 @@ export function getStripeTrialDaysForProductCode(productCode: string) {
   const entry = getStripeCatalogEntryByProductCode(productCode);
   return entry?.trialDays ?? 14;
 }
-

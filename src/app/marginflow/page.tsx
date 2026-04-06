@@ -14,7 +14,7 @@ const highlights = [
 const features = [
   "€25/month promotional pricing",
   "14-day free trial",
-  "Secure Stripe checkout",
+  "Secure embedded Stripe checkout",
   "Admin-friendly client setup",
 ];
 
@@ -56,14 +56,14 @@ export default function MarginFlowPage() {
             </Card>
             <Card className="border-slate-200/80 bg-white shadow-[0_14px_32px_rgba(15,23,42,0.05)]">
               <CardContent className="px-4 py-3 text-sm font-medium text-slate-700">
-                Secure Stripe checkout
+                Secure embedded checkout
               </CardContent>
             </Card>
           </div>
 
           <div className="mt-9 flex flex-wrap gap-4">
             <Button asChild size="lg">
-              <Link href="/marginflow/subscribe">
+              <Link href="/checkout/monthly">
                 Start free trial
                 <ArrowRight className="h-4 w-4" />
               </Link>
@@ -124,8 +124,8 @@ export default function MarginFlowPage() {
                 €25 / month
               </CardTitle>
               <CardDescription className="mt-3 max-w-xl text-base leading-7">
-                A focused promotional plan with a 14-day free trial and a
-                secure checkout flow managed through Ziffera Core.
+                A focused promotional plan with a 14-day free trial and a secure
+                embedded checkout flow managed through Ziffera Core.
               </CardDescription>
             </CardHeader>
             <CardContent>

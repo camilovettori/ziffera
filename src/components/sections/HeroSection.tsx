@@ -88,7 +88,7 @@ const slides: HeroSlide[] = [
     icon: <BarChart3 className="h-5 w-5" />,
     footnote: "Premium trial onboarding",
     cta: "Start free trial",
-    href: "/marginflow",
+    href: "/checkout/monthly",
   },
 ];
 

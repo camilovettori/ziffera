@@ -72,7 +72,7 @@ const products = [
     gradient: "from-blue-50 via-white to-sky-50",
     accent: "MF",
     cta: "Start free trial",
-    href: "/marginflow",
+    href: "/checkout/monthly",
     note: "Premium, calm, and designed for practical decisions.",
   },
   {
