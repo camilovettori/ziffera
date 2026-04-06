@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 import {
   createSiteCheckoutSession,
-  getSiteCheckoutFlowDefinition,
   type SiteCheckoutFlowSlug,
 } from "@/lib/site-checkout";
 
@@ -55,7 +54,6 @@ export async function POST(
       );
     }
 
-    const definition = getSiteCheckoutFlowDefinition(flow);
     const checkout = await createSiteCheckoutSession({
       slug: flow,
       name,
@@ -64,10 +62,7 @@ export async function POST(
     });
 
     return NextResponse.json({
-      success: true,
-      checkoutSessionId: checkout.sessionId,
       clientSecret: checkout.clientSecret,
-      successUrl: definition.successPath,
     });
   } catch (error) {
     console.error("Checkout flow route failed", error);
@@ -81,4 +76,3 @@ export async function POST(
     );
   }
 }
-

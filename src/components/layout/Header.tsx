@@ -10,8 +10,7 @@ import { Button } from "@/components/ui/button";
 const navItems = [
   { label: "Services", href: "/#services" },
   { label: "Work", href: "/#work" },
-  { label: "Offers", href: "/#offers" },
-  { label: "Products", href: "/#products" },
+  { label: "Pricing", href: "/#pricing" },
   { label: "Contact", href: "/contact" },
 ];
 
@@ -51,7 +50,7 @@ export default function Header() {
             </Link>
 
             <Badge variant="secondary" className="mt-2 text-[9px] tracking-[0.3em]">
-              Websites / Systems / SaaS
+              Websites / Launch Support
             </Badge>
           </div>
 
@@ -69,7 +68,7 @@ export default function Header() {
             </nav>
 
             <Button asChild>
-              <Link href="/contact">Start your project</Link>
+              <Link href="/checkout/setup-deposit">Start your website</Link>
             </Button>
           </div>
 
@@ -104,8 +103,8 @@ export default function Header() {
             ))}
 
             <Button asChild className="w-full">
-              <Link href="/contact" onClick={() => setMobileOpen(false)}>
-                Start your project
+              <Link href="/checkout/setup-deposit" onClick={() => setMobileOpen(false)}>
+                Start your website
               </Link>
             </Button>
           </div>

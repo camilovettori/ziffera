@@ -1,8 +1,9 @@
 "use client";
 
-import { useEffect, useRef, useState, type FormEvent } from "react";
+import { useMemo, useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
-import { loadStripe } from "@stripe/stripe-js/pure";
+import { EmbeddedCheckout, EmbeddedCheckoutProvider } from "@stripe/react-stripe-js";
+import { loadStripe } from "@stripe/stripe-js";
 import { Loader2, Shield } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -10,10 +11,7 @@ import { cn } from "@/lib/utils";
 
 type SubmitResponse = {
   success?: boolean;
-  alreadySubscribed?: boolean;
   clientSecret?: string;
-  checkoutSessionId?: string;
-  successUrl?: string;
   error?: string;
 };
 
@@ -29,11 +27,6 @@ const initialFormState: CheckoutFormState = {
   company: "",
 };
 
-type EmbeddedCheckoutInstance = {
-  mount(location: string | HTMLElement): void;
-  destroy(): void;
-};
-
 export type EmbeddedCheckoutFlowProps = {
   apiPath: string;
   successHref: string;
@@ -44,6 +37,9 @@ export type EmbeddedCheckoutFlowProps = {
   bullets: string[];
   companyLabel?: string;
 };
+
+const stripePublishableKey = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY;
+const stripePromise = stripePublishableKey ? loadStripe(stripePublishableKey) : null;
 
 export function EmbeddedCheckoutFlow({
   apiPath,
@@ -62,79 +58,21 @@ export function EmbeddedCheckoutFlow({
   );
   const [feedback, setFeedback] = useState("");
   const [clientSecret, setClientSecret] = useState<string | null>(null);
-  const [sessionId, setSessionId] = useState<string | null>(null);
-  const [mounted, setMounted] = useState(false);
-  const checkoutRef = useRef<EmbeddedCheckoutInstance | null>(null);
-  const checkoutContainerRef = useRef<HTMLDivElement | null>(null);
 
-  const resetCheckout = () => {
-    checkoutRef.current?.destroy();
-    checkoutRef.current = null;
-    setMounted(false);
-    setClientSecret(null);
-    setSessionId(null);
-    setStatus("idle");
-    setFeedback("");
-  };
+  const hasStripeConfig = Boolean(stripePublishableKey && stripePromise);
 
-  useEffect(() => {
-    if (!clientSecret || !checkoutContainerRef.current) {
-      return;
-    }
-
-    const publishableKey = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY;
-    if (!publishableKey) {
-      setStatus("error");
-      setFeedback("Stripe checkout is not configured yet.");
-      return;
-    }
-
-    let cancelled = false;
-
-    const mountEmbeddedCheckout = async () => {
-      try {
-        setStatus("loading");
-        const stripe = await loadStripe(publishableKey);
-        if (!stripe || cancelled) {
-          return;
-        }
-
-        checkoutRef.current?.destroy();
-        checkoutRef.current = await stripe.createEmbeddedCheckoutPage({
-          clientSecret,
-          onComplete: () => {
-            router.replace(successHref);
-          },
-        });
-
-        if (cancelled || !checkoutContainerRef.current) {
-          checkoutRef.current?.destroy();
-          checkoutRef.current = null;
-          return;
-        }
-
-        checkoutRef.current.mount(checkoutContainerRef.current);
-        setMounted(true);
-        setStatus("idle");
-      } catch (error) {
-        if (cancelled) {
-          return;
-        }
-
-        console.error("Failed to mount embedded checkout", error);
-        setStatus("error");
-        setFeedback("We could not load checkout right now. Please try again.");
-      }
-    };
-
-    mountEmbeddedCheckout();
-
-    return () => {
-      cancelled = true;
-      checkoutRef.current?.destroy();
-      checkoutRef.current = null;
-    };
-  }, [clientSecret, router, successHref]);
+  const stripeOptions = useMemo(
+    () =>
+      clientSecret
+        ? {
+            clientSecret,
+            onComplete: () => {
+              router.replace(successHref);
+            },
+          }
+        : null,
+    [clientSecret, router, successHref]
+  );
 
   const handleChange = (key: keyof CheckoutFormState, value: string) => {
     setFormData((current) => ({ ...current, [key]: value }));
@@ -157,9 +95,14 @@ export function EmbeddedCheckoutFlow({
       return;
     }
 
+    if (!hasStripeConfig) {
+      setStatus("error");
+      setFeedback("Stripe checkout is not configured yet.");
+      return;
+    }
+
     setStatus("submitting");
     setFeedback("");
-    let submitFailed = false;
 
     try {
       const response = await fetch(apiPath, {
@@ -176,19 +119,13 @@ export function EmbeddedCheckoutFlow({
         throw new Error(result.error ?? "We could not start checkout right now.");
       }
 
-      if (result.alreadySubscribed) {
-        router.replace(result.successUrl ?? successHref);
-        return;
-      }
-
       if (!result.clientSecret) {
         throw new Error("We could not start checkout right now.");
       }
 
-      setSessionId(result.checkoutSessionId ?? null);
       setClientSecret(result.clientSecret);
+      setStatus("loading");
     } catch (error) {
-      submitFailed = true;
       console.error("Embedded checkout submit failed", error);
       setStatus("error");
       setFeedback(
@@ -196,10 +133,6 @@ export function EmbeddedCheckoutFlow({
           ? error.message
           : "We could not start checkout right now."
       );
-    } finally {
-      if (!submitFailed) {
-        setStatus("idle");
-      }
     }
   };
 
@@ -226,7 +159,10 @@ export function EmbeddedCheckoutFlow({
         </div>
       </div>
 
-      <form onSubmit={handleSubmit} className={cn("space-y-6", clientSecret && "hidden")}>
+      <form
+        onSubmit={handleSubmit}
+        className={cn("space-y-6", clientSecret && "hidden")}
+      >
         <div className="grid gap-5 md:grid-cols-2">
           <div className="space-y-2">
             <label className="text-[10px] uppercase tracking-[0.24em] text-slate-500">
@@ -297,11 +233,17 @@ export function EmbeddedCheckoutFlow({
       {clientSecret ? (
         <div className="space-y-4">
           <div className="flex flex-wrap items-center justify-between gap-3 rounded-[1.2rem] border border-slate-200/80 bg-white/90 px-4 py-3 text-sm text-slate-600">
-            <span>
-              Checkout session ready {sessionId ? <span className="text-slate-400">({sessionId})</span> : null}
-            </span>
+            <span>Secure checkout loaded inside the page.</span>
             <div className="flex flex-wrap gap-2">
-              <Button type="button" variant="outline" onClick={resetCheckout}>
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => {
+                  setClientSecret(null);
+                  setStatus("idle");
+                  setFeedback("");
+                }}
+              >
                 Edit details
               </Button>
               <Button type="button" variant="ghost" onClick={() => router.push(cancelHref)}>
@@ -317,16 +259,29 @@ export function EmbeddedCheckoutFlow({
               </p>
             ) : null}
 
-            <div ref={checkoutContainerRef} className="min-h-[640px]" />
-
-            {mounted ? null : (
+            {stripeOptions && stripePromise ? (
+              <div className="min-h-[640px]">
+                <EmbeddedCheckoutProvider
+                  stripe={stripePromise}
+                  options={stripeOptions}
+                >
+                  <EmbeddedCheckout />
+                </EmbeddedCheckoutProvider>
+              </div>
+            ) : (
               <div className="flex min-h-[320px] items-center justify-center rounded-[1.2rem] border border-dashed border-slate-200 bg-slate-50 text-sm text-slate-500">
                 Loading secure checkout...
               </div>
             )}
           </div>
         </div>
-      ) : null}
+      ) : (
+        <div className="flex min-h-[240px] items-center justify-center rounded-[1.5rem] border border-dashed border-slate-200 bg-slate-50 text-sm text-slate-500">
+          {status === "error" && feedback
+            ? feedback
+            : "Your checkout will load here after the form is submitted."}
+        </div>
+      )}
     </div>
   );
 }

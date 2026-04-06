@@ -1,16 +1,14 @@
-﻿"use client";
+"use client";
 
 import { motion } from "framer-motion";
 import {
+  CalendarCheck,
   Check,
-  Code2,
-  Globe,
-  Layers3,
-  LifeBuoy,
-  Link2,
-  MessageSquare,
-  ShoppingCart,
-  Settings2,
+  Gauge,
+  Mail,
+  Smartphone,
+  ShieldCheck,
+  Sparkles,
 } from "lucide-react";
 import Link from "next/link";
 import Header from "@/components/layout/Header";
@@ -25,90 +23,51 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
 
-const trustItems = ["Websites", "E-commerce", "Systems", "Integrations"];
+const trustItems = [
+  "50% deposit to start",
+  "Premium custom design",
+  "7-day delivery target",
+  "Clear launch support",
+];
 
-const services = [
+const includedItems = [
   {
-    title: "Websites",
-    desc: "Polished sites that help people trust you faster.",
-    icon: Globe,
+    title: "Premium custom design",
+    desc: "A polished visual direction that matches the business and feels trustworthy.",
+    icon: Sparkles,
   },
   {
-    title: "E-commerce",
-    desc: "Stripe-ready stores with clean checkout and admin tools.",
-    icon: ShoppingCart,
+    title: "Mobile-optimized build",
+    desc: "A fast responsive site that works cleanly on phones, tablets, and desktop.",
+    icon: Smartphone,
   },
   {
-    title: "Systems",
-    desc: "Practical dashboards, workflows, and internal tools.",
-    icon: Settings2,
+    title: "Fast modern performance",
+    desc: "A lean build focused on speed, clarity, and a smooth buying experience.",
+    icon: Gauge,
   },
   {
-    title: "Integrations",
-    desc: "Connect the tools you already use and remove manual admin.",
-    icon: Link2,
+    title: "Contact or booking setup",
+    desc: "Clear lead capture, enquiry handling, or appointment flow where needed.",
+    icon: Mail,
+  },
+  {
+    title: "Admin access if needed",
+    desc: "A simple handoff for updates, content changes, or practical admin tasks.",
+    icon: ShieldCheck,
+  },
+  {
+    title: "Professional launch support",
+    desc: "A calm launch process so the site goes live with confidence.",
+    icon: CalendarCheck,
   },
 ];
 
-const launchChecklist = [
-  "Full website",
-  "E-commerce ready",
-  "Stripe integration",
-  "Admin dashboard",
-];
-
-const products = [
-  {
-    badge: "€25/month",
-    title: "MarginFlow",
-    desc: "Margin visibility software for small businesses that want clearer numbers.",
-    bullets: [
-      "14-day free trial",
-      "Track margins in one place",
-      "Make better decisions",
-    ],
-    gradient: "from-blue-50 via-white to-sky-50",
-    accent: "MF",
-    cta: "Start free trial",
-    href: "/checkout/monthly",
-    note: "Premium, calm, and designed for practical decisions.",
-  },
-  {
-    badge: "Launching 01/05",
-    title: "Zconnect",
-    desc: "Unify Zoho Invoice and Zoho Books and remove repetitive admin work.",
-    bullets: ["Automate invoices", "Sync business data", "Custom connections"],
-    gradient: "from-slate-50 via-white to-blue-50",
-    accent: "ZC",
-    cta: "Talk about Zconnect",
-    href: "/contact",
-    note: "Need another platform connection? Get in touch.",
-  },
-];
-
-const whyItems = [
-  {
-    title: "Clear communication",
-    desc: "Simple updates, direct feedback, and no unnecessary agency noise.",
-    icon: MessageSquare,
-  },
-  {
-    title: "Practical design",
-    desc: "The work should look premium and still help the business move forward.",
-    icon: Layers3,
-  },
-  {
-    title: "Software thinking",
-    desc: "We care about structure, maintainability, and how the system actually works.",
-    icon: Code2,
-  },
-  {
-    title: "Ongoing support",
-    desc: "You are not left alone after launch. We stay focused on keeping things useful.",
-    icon: LifeBuoy,
-  },
+const reassuranceItems = [
+  "You only pay 50% to begin.",
+  "You review and approve the website before the final payment.",
+  "The site goes live only when the work is ready.",
 ];
 
 const container = {
@@ -137,7 +96,6 @@ export default function HomePage() {
       </div>
 
       <Header />
-
       <HeroSection />
 
       <section className="mx-auto max-w-7xl px-6 pb-10 lg:px-10">
@@ -170,44 +128,37 @@ export default function HomePage() {
       >
         <div className="mx-auto max-w-7xl px-6 lg:px-10">
           <motion.div variants={item} className="max-w-2xl">
-            <Badge>Services</Badge>
+            <Badge>What&apos;s included</Badge>
             <h2 className="mt-4 text-4xl font-semibold tracking-[-0.05em] text-slate-950 md:text-5xl">
-              What Ziffera builds.
+              A premium website package with clear value.
             </h2>
             <p className="mt-4 max-w-xl text-lg leading-8 text-slate-600">
-              Simple offers, clean design, and practical builds that help
-              growing businesses look better and work smarter.
+              Built to look sharp, move fast, and give your business a stronger
+              first impression.
             </p>
           </motion.div>
 
-          <div className="mt-12 grid gap-5 md:grid-cols-2 xl:grid-cols-4">
-            {services.map((service, index) => {
-              const Icon = service.icon;
+          <div className="mt-12 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+            {includedItems.map((entry) => {
+              const Icon = entry.icon;
 
               return (
                 <motion.div
-                  key={service.title}
+                  key={entry.title}
                   variants={item}
                   whileHover={{ y: -7, scale: 1.02 }}
                   transition={{ duration: 0.22 }}
                 >
-                  <Card
-                    className={[
-                      "group relative overflow-hidden border-slate-200/80 bg-white shadow-[0_18px_40px_rgba(15,23,42,0.05)] transition duration-300 hover:border-blue-200 hover:shadow-[0_26px_60px_rgba(15,23,42,0.1)]",
-                      index % 2 === 0
-                        ? "bg-[linear-gradient(180deg,#ffffff_0%,#f8fbff_100%)]"
-                        : "bg-[linear-gradient(180deg,#ffffff_0%,#eef5ff_100%)]",
-                    ].join(" ")}
-                  >
+                  <Card className="group relative overflow-hidden border-slate-200/80 bg-white shadow-[0_18px_40px_rgba(15,23,42,0.05)] transition duration-300 hover:border-blue-200 hover:shadow-[0_26px_60px_rgba(15,23,42,0.1)]">
                     <div className="absolute inset-x-6 top-0 h-px bg-[linear-gradient(90deg,transparent,rgba(59,130,246,0.45),transparent)] opacity-0 transition duration-300 group-hover:opacity-100" />
                     <CardHeader className="pb-3">
                       <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-blue-100 bg-white text-blue-700 shadow-[0_12px_24px_rgba(59,130,246,0.08)] transition duration-300 group-hover:-translate-y-0.5 group-hover:shadow-[0_18px_32px_rgba(59,130,246,0.12)]">
                         <Icon className="h-5 w-5" />
                       </div>
-                      <CardTitle className="mt-5 text-xl">{service.title}</CardTitle>
+                      <CardTitle className="mt-5 text-xl">{entry.title}</CardTitle>
                     </CardHeader>
                     <CardContent className="pt-0">
-                      <CardDescription>{service.desc}</CardDescription>
+                      <CardDescription>{entry.desc}</CardDescription>
                     </CardContent>
                   </Card>
                 </motion.div>
@@ -220,216 +171,114 @@ export default function HomePage() {
       <ExampleSection />
 
       <motion.section
-        id="offers"
-        variants={item}
-        initial="hidden"
-        whileInView="show"
-        viewport={{ once: true, amount: 0.22 }}
-        className="mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-24"
-      >
-        <Card className="overflow-hidden border-blue-100/80 bg-white shadow-[0_28px_80px_rgba(15,23,42,0.1)]">
-          <div className="grid gap-0 lg:grid-cols-[1.06fr_0.94fr]">
-            <CardContent className="p-6 lg:p-10">
-              <Badge>Limited</Badge>
-              <h2 className="mt-5 max-w-xl text-4xl font-semibold tracking-[-0.06em] text-slate-950 md:text-5xl">
-                Launch offer - limited spots
-              </h2>
-
-              <div className="mt-6 flex flex-wrap items-end gap-3">
-                <div className="text-5xl font-semibold tracking-[-0.06em] text-slate-950 md:text-6xl">
-                  EUR 650
-                </div>
-                <div className="pb-2 text-sm font-medium text-slate-500">
-                  Normally EUR 2500+
-                </div>
-              </div>
-
-              <p className="mt-4 max-w-xl text-lg leading-8 text-slate-600">
-                A serious launch offer for a clean, modern website that feels
-                trustworthy from the first click.
-              </p>
-
-              <div className="mt-8 flex flex-wrap gap-4">
-                <Button asChild size="lg">
-                  <Link href="/contact">Start your project</Link>
-                </Button>
-                <Button asChild variant="outline" size="lg">
-                  <Link href="/#work">See the proof</Link>
-                </Button>
-              </div>
-            </CardContent>
-
-            <CardContent className="border-t border-slate-200 bg-[linear-gradient(180deg,#f8fbff_0%,#ffffff_100%)] p-6 lg:border-l lg:border-t-0 lg:p-10">
-              <motion.div
-                variants={container}
-                initial="hidden"
-                whileInView="show"
-                viewport={{ once: true, amount: 0.4 }}
-                className="space-y-3"
-              >
-                {launchChecklist.map((entry) => (
-                  <motion.div key={entry} variants={item}>
-                    <Card className="border-slate-200/80 bg-white shadow-[0_12px_28px_rgba(15,23,42,0.05)]">
-                      <CardContent className="flex items-center gap-3 px-4 py-4 text-sm text-slate-700">
-                        <span className="flex h-6 w-6 items-center justify-center rounded-full bg-blue-50 text-blue-700">
-                          <Check className="h-3.5 w-3.5" />
-                        </span>
-                        {entry}
-                      </CardContent>
-                    </Card>
-                  </motion.div>
-                ))}
-              </motion.div>
-
-              <Separator className="my-6" />
-              <div className="rounded-[1.6rem] border border-blue-100 bg-blue-50 px-4 py-4 text-sm text-slate-700">
-                Only 5 spots available
-                <span className="mt-1 block text-slate-500">
-                  Optional monthly support from €25/month.
-                </span>
-              </div>
-            </CardContent>
-          </div>
-        </Card>
-      </motion.section>
-
-      <motion.section
-        id="products"
+        id="pricing"
         variants={container}
         initial="hidden"
         whileInView="show"
         viewport={{ once: true, amount: 0.18 }}
+        className="mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-24"
+      >
+        <div className="grid gap-6 lg:grid-cols-[1.05fr_0.95fr]">
+          <motion.div variants={item}>
+            <Badge>Pricing</Badge>
+            <h2 className="mt-4 text-4xl font-semibold tracking-[-0.05em] text-slate-950 md:text-5xl">
+              One clear package.
+            </h2>
+            <p className="mt-4 max-w-2xl text-lg leading-8 text-slate-600">
+              A premium website package with a simple payment structure that
+              keeps the decision easy.
+            </p>
+
+            <div className="mt-8 flex flex-wrap gap-3">
+              <Card className="border-slate-200/80 bg-white shadow-[0_14px_32px_rgba(15,23,42,0.05)]">
+                <CardContent className="px-4 py-3 text-sm font-medium text-slate-700">
+                  Website Package
+                </CardContent>
+              </Card>
+              <Card className="border-slate-200/80 bg-white shadow-[0_14px_32px_rgba(15,23,42,0.05)]">
+                <CardContent className="px-4 py-3 text-sm font-medium text-slate-700">
+                  €650 total
+                </CardContent>
+              </Card>
+              <Card className="border-slate-200/80 bg-white shadow-[0_14px_32px_rgba(15,23,42,0.05)]">
+                <CardContent className="px-4 py-3 text-sm font-medium text-slate-700">
+                  €325 to start
+                </CardContent>
+              </Card>
+              <Card className="border-slate-200/80 bg-white shadow-[0_14px_32px_rgba(15,23,42,0.05)]">
+                <CardContent className="px-4 py-3 text-sm font-medium text-slate-700">
+                  €325 before go-live
+                </CardContent>
+              </Card>
+            </div>
+          </motion.div>
+
+          <motion.div variants={item}>
+            <Card className="overflow-hidden border-blue-100/80 bg-[linear-gradient(180deg,#eff6ff_0%,#ffffff_100%)] shadow-[0_24px_72px_rgba(59,130,246,0.08)]">
+              <CardHeader>
+                <Badge>Start now</Badge>
+                <CardTitle className="mt-4 text-4xl tracking-[-0.05em]">
+                  €325 deposit
+                </CardTitle>
+                <CardDescription className="mt-3 max-w-xl text-base leading-7">
+                  Secure your build slot and get the project moving with the
+                  existing embedded Stripe checkout flow.
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="rounded-[1.4rem] border border-blue-100 bg-white px-5 py-5 text-sm leading-7 text-slate-700">
+                  Start with 50%. Pay the final 50% before delivery.
+                </div>
+                <Button asChild className="w-full" size="lg">
+                  <Link href="/checkout/setup-deposit">Start project</Link>
+                </Button>
+              </CardContent>
+            </Card>
+          </motion.div>
+        </div>
+      </motion.section>
+
+      <motion.section
+        variants={container}
+        initial="hidden"
+        whileInView="show"
+        viewport={{ once: true, amount: 0.2 }}
         className="bg-[linear-gradient(180deg,#ffffff_0%,#f8fbff_100%)] py-20 lg:py-24"
       >
         <div className="mx-auto max-w-7xl px-6 lg:px-10">
-          <motion.div variants={item} className="max-w-2xl">
-            <Badge>Products</Badge>
-            <h2 className="mt-4 text-4xl font-semibold tracking-[-0.05em] text-slate-950 md:text-5xl">
-              Practical products with clear value.
-            </h2>
-            <p className="mt-4 max-w-xl text-lg leading-8 text-slate-600">
-              Small-business tools that reduce admin and make it easier to run
-              the business day to day.
-            </p>
-          </motion.div>
+          <div className="grid gap-6 lg:grid-cols-[0.95fr_1.05fr]">
+            <motion.div variants={item}>
+              <Badge>Reassurance</Badge>
+              <h2 className="mt-4 text-4xl font-semibold tracking-[-0.05em] text-slate-950 md:text-5xl">
+                No risk, no confusion.
+              </h2>
+              <p className="mt-4 max-w-xl text-lg leading-8 text-slate-600">
+                The process stays clear from the first click to the final handoff.
+              </p>
+            </motion.div>
 
-          <div className="mt-12 grid gap-6 lg:grid-cols-2">
-            {products.map((product) => (
-              <motion.div
-                key={product.title}
-                variants={item}
-                whileHover={{ y: -6, scale: 1.015 }}
-                transition={{ duration: 0.22 }}
-              >
-                <Card
-                  className={[
-                    "group relative overflow-hidden border-slate-200/80 shadow-[0_18px_50px_rgba(15,23,42,0.06)] transition duration-300 hover:border-blue-200 hover:shadow-[0_28px_66px_rgba(15,23,42,0.1)]",
-                    `bg-gradient-to-b ${product.gradient}`,
-                  ].join(" ")}
-                >
-                  <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(59,130,246,0.12),transparent_30%),radial-gradient(circle_at_bottom_left,rgba(125,211,252,0.12),transparent_28%)] opacity-0 transition duration-300 group-hover:opacity-100" />
-                  <CardHeader className="relative pb-4">
-                    <div className="inline-flex rounded-full border border-blue-200 bg-white/80 px-3 py-1 text-[10px] uppercase tracking-[0.24em] text-blue-700 backdrop-blur">
-                      {product.badge}
-                    </div>
-                    <div className="mt-5 flex items-start justify-between gap-4">
-                      <div>
-                        <CardTitle className="text-3xl tracking-[-0.05em]">
-                          {product.title}
-                        </CardTitle>
-                        <CardDescription className="mt-4 max-w-xl">
-                          {product.desc}
-                        </CardDescription>
-                      </div>
-                      <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-[1.2rem] border border-white/70 bg-white text-sm font-semibold text-blue-700 shadow-[0_16px_30px_rgba(59,130,246,0.12)]">
-                        {product.accent}
-                      </div>
-                    </div>
-                  </CardHeader>
-
-                  <CardContent className="relative space-y-4">
-                    <div className="grid gap-2">
-                      {product.bullets.map((bullet) => (
-                        <div
-                          key={bullet}
-                          className="flex items-center gap-3 rounded-[1.2rem] border border-slate-200 bg-white px-4 py-3 text-sm text-slate-700"
-                        >
-                          <span className="flex h-5 w-5 items-center justify-center rounded-full bg-blue-50 text-blue-700">
-                            <Check className="h-3.5 w-3.5" />
-                          </span>
-                          {bullet}
-                        </div>
-                      ))}
-                    </div>
-
-                    {product.note ? (
-                      <>
-                        <Separator />
-                        <div className="rounded-[1.4rem] border border-blue-100 bg-white/80 px-4 py-4 text-sm leading-7 text-slate-700">
-                          {product.note}
-                        </div>
-                      </>
-                    ) : null}
-                  </CardContent>
-
-                  <CardContent className="pt-0">
-                    <Button asChild className="w-full">
-                      <Link href={product.href}>{product.cta}</Link>
-                    </Button>
-                  </CardContent>
-                </Card>
-              </motion.div>
-            ))}
+            <motion.div variants={item}>
+              <div className="grid gap-3">
+                {reassuranceItems.map((entry) => (
+                  <Card
+                    key={entry}
+                    className="border-slate-200/80 bg-white shadow-[0_12px_28px_rgba(15,23,42,0.05)]"
+                  >
+                    <CardContent className="flex items-center gap-3 px-4 py-4 text-sm text-slate-700">
+                      <span className="flex h-6 w-6 items-center justify-center rounded-full bg-blue-50 text-blue-700">
+                        <Check className="h-3.5 w-3.5" />
+                      </span>
+                      {entry}
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </motion.div>
           </div>
         </div>
       </motion.section>
 
       <motion.section
-        id="why"
-        variants={container}
-        initial="hidden"
-        whileInView="show"
-        viewport={{ once: true, amount: 0.2 }}
-        className="mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-24"
-      >
-        <motion.div variants={item} className="max-w-2xl">
-          <Badge>Why Ziffera</Badge>
-          <h2 className="mt-4 text-4xl font-semibold tracking-[-0.05em] text-slate-950 md:text-5xl">
-            Built to feel clear, capable, and easy to trust.
-          </h2>
-        </motion.div>
-
-        <div className="mt-12 grid gap-5 md:grid-cols-2 xl:grid-cols-4">
-          {whyItems.map((entry) => {
-            const Icon = entry.icon;
-
-            return (
-              <motion.div
-                key={entry.title}
-                variants={item}
-                whileHover={{ y: -6, scale: 1.02 }}
-                transition={{ duration: 0.22 }}
-              >
-                <Card className="group relative overflow-hidden border-slate-200/80 bg-white shadow-[0_18px_44px_rgba(15,23,42,0.05)] transition duration-300 hover:border-blue-200 hover:shadow-[0_28px_62px_rgba(15,23,42,0.1)]">
-                  <div className="absolute right-4 top-4 h-14 w-14 rounded-full bg-blue-200/20 blur-2xl transition duration-300 group-hover:bg-blue-200/35" />
-                  <CardHeader className="pb-3">
-                    <div className="flex h-11 w-11 items-center justify-center rounded-2xl border border-blue-100 bg-[linear-gradient(135deg,#eff6ff_0%,#ffffff_100%)] text-blue-700 shadow-[0_12px_24px_rgba(59,130,246,0.08)]">
-                      <Icon className="h-5 w-5" />
-                    </div>
-                    <CardTitle className="mt-5 text-xl">{entry.title}</CardTitle>
-                  </CardHeader>
-                  <CardContent className="pt-0">
-                    <CardDescription>{entry.desc}</CardDescription>
-                  </CardContent>
-                </Card>
-              </motion.div>
-            );
-          })}
-        </div>
-      </motion.section>
-
-      <motion.section
-        id="contact"
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, amount: 0.2 }}
@@ -445,18 +294,18 @@ export default function HomePage() {
                 Ready when you are
               </Badge>
               <h2 className="mt-4 max-w-2xl text-4xl font-semibold tracking-[-0.06em] text-white md:text-5xl">
-                Need a website, store, or custom system?
+                Ready to launch something serious?
               </h2>
               <p className="mt-4 max-w-2xl text-lg leading-8 text-blue-100">
-                Let&apos;s build something clear, modern, and easy for customers to
-                trust.
+                Start your project today and secure your build slot with a 50%
+                deposit.
               </p>
               <div className="mt-6 flex flex-wrap gap-3 text-sm text-blue-100/90">
                 <span className="rounded-full border border-white/15 bg-white/10 px-4 py-2">
                   Usually reply within 24 hours
                 </span>
                 <span className="rounded-full border border-white/15 bg-white/10 px-4 py-2">
-                  Clear next step
+                  Prefer to talk first? support@ziffera.ie
                 </span>
               </div>
             </div>
@@ -469,7 +318,7 @@ export default function HomePage() {
                     className="w-full bg-white text-slate-950 shadow-[0_18px_44px_rgba(255,255,255,0.18)] hover:bg-blue-50"
                     size="lg"
                   >
-                    <Link href="/contact">Start your project</Link>
+                    <Link href="/checkout/setup-deposit">Start your website</Link>
                   </Button>
                   <Button
                     asChild
@@ -477,7 +326,7 @@ export default function HomePage() {
                     className="w-full border-white/20 bg-white/10 text-white hover:border-white/40 hover:bg-white/15"
                     size="lg"
                   >
-                    <Link href="/#work">View real work</Link>
+                    <Link href="/contact">Prefer to talk first?</Link>
                   </Button>
                 </CardContent>
               </Card>
@@ -488,4 +337,3 @@ export default function HomePage() {
     </main>
   );
 }
-

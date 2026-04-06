@@ -1,11 +1,10 @@
-﻿"use client";
+"use client";
 
 import { motion } from "framer-motion";
 import useEmblaCarousel from "embla-carousel-react";
 import Image from "next/image";
 import Link from "next/link";
 import {
-  BarChart3,
   Check,
   ChevronLeft,
   ChevronRight,
@@ -27,9 +26,9 @@ import {
 import { Separator } from "@/components/ui/separator";
 
 const heroPoints = [
-  "Clear communication",
-  "Fast, modern builds",
-  "Built for real businesses",
+  "50% deposit to start",
+  "Premium design",
+  "7-day delivery",
 ];
 
 type HeroSlide = {
@@ -47,48 +46,49 @@ type HeroSlide = {
 
 const slides: HeroSlide[] = [
   {
-    badge: "Launch offer",
-    title: "Professional website from EUR 650",
-    description: "A clean, credible website for a strong first impression.",
+    badge: "Website package",
+    title: "€650 total",
+    description: "Pay 50% to begin and 50% before the site goes live.",
     highlights: ["Custom design", "Mobile optimized"],
     tone: "blue",
     icon: <Globe className="h-5 w-5" />,
-    footnote: "Normally EUR 2500+",
-    cta: "Start your project",
-    href: "/contact",
+    footnote: "Premium website projects built to convert.",
+    cta: "Start your website",
+    href: "/checkout/setup-deposit",
+  },
+  {
+    badge: "Fast delivery",
+    title: "Launch in 7 days",
+    description: "A focused process that gets your business online quickly.",
+    highlights: ["Clear scope", "Direct communication"],
+    tone: "slate",
+    icon: <Sparkles className="h-5 w-5" />,
+    footnote: "Built for real businesses, not template work.",
+    cta: "Start your website",
+    href: "/checkout/setup-deposit",
   },
   {
     badge: "Real client project",
     title: "Frequency Framed",
     description: "A real e-commerce build with a polished storefront.",
     highlights: ["Stripe checkout", "Admin tools"],
-    tone: "slate",
+    tone: "blue",
     icon: <Sparkles className="h-5 w-5" />,
     image: "/examples/homepage.png",
     cta: "View our work",
     href: "/#work",
   },
   {
-    badge: "Integration product",
-    title: "Zconnect",
-    description: "A simple integration that removes repetitive admin work.",
-    highlights: ["Automate invoices", "Custom connections"],
+    badge: "Launch support",
+    title: "Built for real businesses",
+    description:
+      "The handoff is clean, the site is polished, and the next step is obvious.",
+    highlights: ["Admin access", "Contact or booking setup"],
     tone: "blue",
     icon: <Plug className="h-5 w-5" />,
-    footnote: "Unify -> Zoho Invoice / Zoho Books",
-    cta: "Talk about Zconnect",
-    href: "/contact",
-  },
-  {
-    badge: "€25/month",
-    title: "MarginFlow",
-    description: "Margin visibility for small businesses that want clearer numbers.",
-    highlights: ["14-day free trial", "Track margins", "Spot weak products"],
-    tone: "slate",
-    icon: <BarChart3 className="h-5 w-5" />,
-    footnote: "Premium trial onboarding",
-    cta: "Start free trial",
-    href: "/checkout/monthly",
+    footnote: "No generic agency noise.",
+    cta: "Start your website",
+    href: "/checkout/setup-deposit",
   },
 ];
 
@@ -144,7 +144,7 @@ export default function HeroSection() {
         transition={{ duration: 0.65, ease: "easeOut" }}
         className="relative z-10 max-w-3xl"
       >
-        <Badge>Modern websites, smart systems, and integrations</Badge>
+        <Badge>Premium website projects</Badge>
 
         <motion.h1
           initial={{ opacity: 0, y: 16 }}
@@ -152,10 +152,10 @@ export default function HeroSection() {
           transition={{ duration: 0.7, delay: 0.05 }}
           className="mt-6 max-w-4xl text-5xl font-semibold leading-[0.92] tracking-[-0.06em] text-slate-950 md:text-7xl xl:text-[5.5rem]"
         >
-          Modern websites and smart systems
+          Get your business online
           <br />
           <span className="bg-[linear-gradient(180deg,#1d4ed8_0%,#3b82f6_45%,#7dd3fc_100%)] bg-clip-text text-transparent">
-            for growing businesses.
+            in 7 days.
           </span>
         </motion.h1>
 
@@ -165,8 +165,8 @@ export default function HeroSection() {
           transition={{ duration: 0.7, delay: 0.12 }}
           className="mt-6 max-w-2xl text-lg leading-8 text-slate-600 md:text-[1.16rem] md:leading-9"
         >
-          Ziffera builds websites, stores, systems, and integrations that help
-          businesses look sharper and move faster.
+          We design and build premium websites that help real businesses look
+          professional, build trust, and get more customers.
         </motion.p>
 
         <motion.p
@@ -175,8 +175,7 @@ export default function HeroSection() {
           transition={{ duration: 0.7, delay: 0.18 }}
           className="mt-4 max-w-2xl text-sm leading-7 text-slate-500"
         >
-          A good fit for small businesses, local brands, and growing teams that
-          want something polished without the agency noise.
+          Pay only 50% to start.
         </motion.p>
 
         <motion.div
@@ -186,7 +185,7 @@ export default function HeroSection() {
           className="mt-9 flex flex-wrap gap-4"
         >
           <Button asChild size="lg">
-            <Link href="/contact">Start your project</Link>
+            <Link href="/checkout/setup-deposit">Start your website</Link>
           </Button>
 
           <Button asChild variant="outline" size="lg">
@@ -226,7 +225,7 @@ export default function HeroSection() {
           <div className="rounded-[1.6rem] border border-slate-200 bg-[linear-gradient(180deg,#ffffff_0%,#f8fbff_100%)] p-3 shadow-[0_14px_28px_rgba(15,23,42,0.05)] sm:p-4">
             <div className="mb-3 flex items-center justify-between gap-3">
               <div className="flex items-center gap-2">
-                <Badge variant="secondary">Featured showcase</Badge>
+                <Badge variant="secondary">Featured offer</Badge>
                 <span className="hidden text-[10px] uppercase tracking-[0.24em] text-slate-400 sm:inline">
                   compact preview
                 </span>
@@ -333,9 +332,7 @@ export default function HeroSection() {
 
                         <CardContent className="pt-0">
                           <Button asChild className="w-full">
-                            <Link href={slide.href}>
-                              {slide.cta}
-                            </Link>
+                            <Link href={slide.href}>{slide.cta}</Link>
                           </Button>
                         </CardContent>
                       </Card>
@@ -371,4 +368,3 @@ export default function HeroSection() {
     </section>
   );
 }
-

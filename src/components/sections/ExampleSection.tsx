@@ -126,7 +126,7 @@ export default function ExampleSection() {
 
           <div className="mt-8 flex flex-wrap gap-4">
             <Button asChild size="lg">
-              <Link href="/contact">Start your project</Link>
+              <Link href="/checkout/setup-deposit">Start your website</Link>
             </Button>
 
             <Button asChild variant="outline" size="lg">
