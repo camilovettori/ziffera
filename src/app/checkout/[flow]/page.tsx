@@ -2,7 +2,13 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { EmbeddedCheckoutFlow } from "@/components/checkout/embedded-checkout-flow";
 import {
   getSiteCheckoutFlowDefinition,
@@ -19,14 +25,10 @@ function getCheckoutCopy(flow: SiteCheckoutFlowSlug) {
   if (flow === "setup-deposit") {
     return {
       eyebrow: "Website setup deposit",
-      title: "Secure your project with a 50% deposit.",
+      title: "Secure your project with a €200 deposit.",
       description:
-        "This deposit reserves your build slot and lets us begin your website project. The remaining 50% is only due before the site goes live.",
-      details: [
-        "€250 deposit today",
-        "€250 before launch",
-        "€25/month after launch",
-      ],
+        "The website setup is €400 total, paid as €200 to begin and €200 before the site goes live. The monthly support plan starts after launch.",
+      details: ["€200 deposit today", "€200 before launch", "€400 setup total"],
       buttonLabel: "Continue to secure deposit",
     };
   }
@@ -34,10 +36,10 @@ function getCheckoutCopy(flow: SiteCheckoutFlowSlug) {
   if (flow === "setup-final") {
     return {
       eyebrow: "Website final payment",
-      title: "Complete your website before go-live.",
+      title: "Complete the final €200 before go-live.",
       description:
-        "Use this payment to settle the remaining balance before the website goes live.",
-      details: ["€250 final payment", "Due before launch", "Monthly plan starts after launch"],
+        "This payment settles the remaining setup balance before the website goes live.",
+      details: ["€200 final payment", "€400 setup total", "Monthly plan starts after launch"],
       buttonLabel: "Continue to final payment",
     };
   }

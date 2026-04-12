@@ -6,50 +6,35 @@ import Image from "next/image";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
-const proofPoints = ["Live in 6 days", "Stripe integrated", "Client-managed"];
+const proofPoints = [
+  "Live website at frequencyframed.ie",
+  "Stripe checkout and admin flow included",
+  "A real client build, not a mock-up gallery",
+];
 
-const proofShots = [
+const proofSpecs = [
   {
-    src: "/examples/homepage.png",
-    alt: "Frequency Framed homepage preview",
-    label: "Homepage",
-    caption: "A cleaner hierarchy that leads visitors toward action.",
+    title: "Homepage",
+    text: "Clear structure that leads visitors toward action.",
   },
   {
-    src: "/examples/checkout.png",
-    alt: "Frequency Framed checkout preview",
-    label: "Checkout",
-    caption: "A simple Stripe flow that removes friction at purchase.",
+    title: "Checkout",
+    text: "Embedded Stripe flow with a simple payment path.",
   },
   {
-    src: "/examples/admin.png",
-    alt: "Frequency Framed admin preview",
-    label: "Admin",
-    caption: "Client-friendly controls for practical day-to-day management.",
-  },
-  {
-    src: "/examples/mobileFF.jpg",
-    alt: "Frequency Framed mobile preview",
-    label: "Mobile",
-    caption: "Responsive presentation that keeps the brand sharp on smaller screens.",
+    title: "Admin",
+    text: "Practical controls for ongoing management.",
   },
 ];
 
 export default function ExampleSection() {
   return (
     <section className="bg-[linear-gradient(180deg,#f8fbff_0%,#ffffff_100%)] py-20 lg:py-24">
-      {/* ZIFFERA_UPDATE: Give the case study section more visual weight and a clearer conversion path. */}
       <div
         id="work"
-        className="mx-auto grid max-w-7xl gap-10 px-6 lg:grid-cols-[0.96fr_1.04fr] lg:px-10"
+        className="mx-auto grid max-w-7xl gap-10 px-6 lg:grid-cols-[0.94fr_1.06fr] lg:px-10"
       >
         <motion.div
           initial={{ opacity: 0, y: 18 }}
@@ -67,22 +52,22 @@ export default function ExampleSection() {
           <Card className="mt-5 border-none bg-transparent shadow-none">
             <CardContent className="px-0">
               <CardDescription className="max-w-xl text-lg leading-8 text-slate-600">
-                A real e-commerce build with Stripe, an admin panel, and a polished
-                storefront.
+                The only real project featured on the homepage. A live e-commerce
+                build with Stripe, an admin panel, and a polished storefront.
               </CardDescription>
             </CardContent>
           </Card>
 
           <div className="mt-6 rounded-[1.6rem] border border-blue-100 bg-white px-5 py-4 shadow-[0_16px_38px_rgba(59,130,246,0.08)]">
             <div className="text-[10px] uppercase tracking-[0.28em] text-blue-700">
-              Result snapshot
+              Live proof
             </div>
             <div className="mt-2 text-base font-semibold text-slate-900">
-              Live in 6 days. Stripe integrated. Client-managed.
+              Frequency Framed is live at frequencyframed.ie.
             </div>
           </div>
 
-          <div className="mt-8 grid gap-3 sm:grid-cols-3">
+          <div className="mt-8 grid gap-3">
             {proofPoints.map((point) => (
               <Card
                 key={point}
@@ -105,7 +90,7 @@ export default function ExampleSection() {
               aria-label="Get started with a website like Frequency Framed"
             >
               <Link href="/checkout/setup-deposit">
-                Want a site like this? <ArrowRight className="h-4 w-4" />
+                Start a similar build <ArrowRight className="h-4 w-4" />
               </Link>
             </Button>
 
@@ -120,7 +105,7 @@ export default function ExampleSection() {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                View our work
+                View live proof
               </a>
             </Button>
           </div>
@@ -135,9 +120,9 @@ export default function ExampleSection() {
         >
           <Card className="overflow-hidden border-slate-200 bg-white/95 p-4 shadow-[0_24px_70px_rgba(15,23,42,0.08)] lg:p-5">
             <div className="flex items-center justify-between gap-4">
-              <Badge variant="secondary">Curated gallery</Badge>
+              <Badge variant="secondary">Frequency Framed</Badge>
               <div className="rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-[10px] uppercase tracking-[0.24em] text-blue-700">
-                Frequency Framed
+                Live client work
               </div>
             </div>
 
@@ -161,31 +146,22 @@ export default function ExampleSection() {
             </div>
           </Card>
 
-          <div className="grid gap-4 sm:grid-cols-2">
-            {proofShots.map((shot) => (
+          <div className="grid gap-4 sm:grid-cols-3">
+            {proofSpecs.map((shot) => (
               <Card
-                key={shot.src}
+                key={shot.title}
                 className="overflow-hidden border-slate-200 bg-white shadow-[0_18px_50px_rgba(15,23,42,0.06)]"
               >
-                <div className="relative aspect-[16/10] bg-slate-100">
-                  <Image
-                    src={shot.src}
-                    alt={shot.alt}
-                    fill
-                    sizes="(max-width: 768px) 100vw, 28vw"
-                    className="object-cover object-top"
-                  />
-                </div>
                 <CardHeader className="pb-3">
                   <div className="flex items-center justify-between gap-4">
-                    <Badge variant="outline">{shot.label}</Badge>
+                    <Badge variant="outline">{shot.title}</Badge>
                     <Sparkles className="h-4 w-4 text-blue-600" />
                   </div>
                   <CardTitle className="mt-4 text-xl tracking-[-0.04em] text-slate-950">
                     Frequency Framed
                   </CardTitle>
                   <CardDescription className="mt-2 max-w-xl text-sm leading-6 text-slate-600">
-                    {shot.caption}
+                    {shot.text}
                   </CardDescription>
                 </CardHeader>
               </Card>

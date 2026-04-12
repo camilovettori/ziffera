@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Check, Clock3, ShieldCheck, Sparkles } from "lucide-react";
+import { Check, ShieldCheck, Sparkles } from "lucide-react";
 import Link from "next/link";
 import HeroCarousel from "@/components/ui/HeroCarousel";
 import { Badge } from "@/components/ui/badge";
@@ -10,9 +10,9 @@ import { Card, CardContent, CardDescription } from "@/components/ui/card";
 
 const heroTrustPoints = [
   {
-    title: "Fast turnaround",
-    text: "Average delivery in 7 days when content is ready.",
-    icon: Clock3,
+    title: "Real proof only",
+    text: "Frequency Framed is the only public project shown on the homepage.",
+    icon: Check,
   },
   {
     title: "Built to convert",
@@ -21,7 +21,7 @@ const heroTrustPoints = [
   },
   {
     title: "Simple process",
-    text: "50% deposit to begin, final 50% before launch.",
+    text: "€400 setup, paid as €200 to begin and €200 before go-live.",
     icon: ShieldCheck,
   },
 ];
@@ -50,7 +50,6 @@ export default function HeroSection() {
           "radial-gradient(ellipse 90% 70% at 15% 40%, rgba(59,130,246,0.22) 0%, transparent 65%), radial-gradient(ellipse 70% 90% at 85% 20%, rgba(124,58,237,0.18) 0%, transparent 60%), radial-gradient(ellipse 60% 60% at 60% 85%, rgba(16,185,129,0.08) 0%, transparent 55%), linear-gradient(160deg, #060917 0%, #0B0F28 35%, #0D0B22 65%, #080C1F 100%)",
       }}
     >
-      {/* ZIFFERA_UPDATE: Replace the pale hero with a dark animated gradient, floating blobs, and stronger visual hierarchy. */}
       <div className="absolute inset-0 -z-20 bg-[linear-gradient(160deg,#060917_0%,#0B0F28_35%,#0D0B22_65%,#080C1F_100%)]" />
       <div
         className="hero-grid-overlay absolute inset-0 z-0 pointer-events-none opacity-70"
@@ -90,7 +89,7 @@ export default function HeroSection() {
         >
           <Badge className="inline-flex items-center gap-2 rounded-full border border-[rgba(99,102,241,0.28)] bg-[rgba(99,102,241,0.12)] px-4 py-1.5 text-[10px] font-bold uppercase tracking-[2.5px] text-[#A5B4FC] shadow-[0_10px_24px_rgba(37,99,235,0.10)] backdrop-blur-md">
             <span className="h-1.5 w-1.5 rounded-full bg-[#818CF8] shadow-[0_0_6px_#818CF8] animate-pulse [animation-duration:2s]" />
-            Irish websites / products / systems
+            Websites / products / systems
           </Badge>
 
           <motion.h1
@@ -109,10 +108,11 @@ export default function HeroSection() {
             initial={{ opacity: 0, y: 18 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.12 }}
-            className="mt-6 mb-8 max-w-[480px] text-[17px] font-normal leading-[1.75] text-[rgba(255,255,255,0.78)]"
+            className="mt-6 mb-8 max-w-[480px] text-[17px] font-normal leading-[1.75] text-[#CBD5F5]"
           >
             We design and build websites, SaaS products, apps, custom software,
-            and connected systems - for Irish businesses that want results.
+            and connected systems for Irish businesses that want a serious
+            digital presence.
           </motion.p>
 
           <motion.div
@@ -124,11 +124,11 @@ export default function HeroSection() {
             <Button
               asChild
               size="lg"
-              aria-label="Get started with a 50 percent deposit to begin"
+              aria-label="Get started with the €400 setup and €25 per month offer"
               className="btn-primary shimmer-hover bg-[linear-gradient(135deg,#4F46E5_0%,#7C3AED_100%)] px-8 text-white shadow-[0_4px_24px_rgba(99,102,241,0.45),0_0_0_1px_rgba(139,92,246,0.3)] hover:shadow-[0_10px_34px_rgba(99,102,241,0.52),0_0_0_1px_rgba(139,92,246,0.35)]"
             >
               <Link href="/checkout/setup-deposit">
-                Get Started {"\u2014"} 50% deposit to begin
+                Get Started {"\u2014"} €400 setup + €25/month
               </Link>
             </Button>
           </motion.div>
@@ -137,7 +137,7 @@ export default function HeroSection() {
             initial={{ opacity: 0, y: 18 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.28 }}
-            className="mt-4 flex items-center gap-2 text-[13px] font-medium text-[rgba(255,255,255,0.55)]"
+            className="mt-4 flex items-center gap-2 text-[13px] font-medium text-slate-300"
           >
             <span className="flex h-5 w-5 items-center justify-center rounded-full bg-white/10 text-cyan-200 shadow-[0_0_8px_#22C55E]">
               <Check className="h-3.5 w-3.5" />
@@ -157,17 +157,17 @@ export default function HeroSection() {
               return (
                 <Card
                   key={point.title}
-                  className="hero-feature-card rounded-[16px] border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.05)] shadow-[0_18px_42px_rgba(5,10,28,0.26)] backdrop-blur-[12px]"
-                >
+                className="hero-feature-card rounded-[16px] border border-white/20 bg-[rgba(255,255,255,0.10)] shadow-[0_10px_30px_rgba(0,0,0,0.5)] backdrop-blur-[12px]"
+              >
                   <CardContent className="flex items-center gap-4 px-[22px] py-[18px]">
-                    <div className="flex h-11 min-w-11 shrink-0 items-center justify-center rounded-[12px] border border-[rgba(99,102,241,0.25)] bg-[rgba(99,102,241,0.15)] text-[18px] text-[#A5B4FC] shadow-[0_14px_28px_rgba(37,99,235,0.14)]">
+                    <div className="flex h-11 min-w-11 shrink-0 items-center justify-center rounded-[12px] border border-[rgba(99,102,241,0.25)] bg-[rgba(99,102,241,0.18)] text-[18px] text-[#A5B4FC] shadow-[0_14px_28px_rgba(37,99,235,0.14)]">
                       <Icon className="h-5 w-5" />
                     </div>
                     <div className="space-y-1">
                       <div className="mb-1 text-[15px] font-bold text-white">
                         {point.title}
                       </div>
-                      <CardDescription className="max-w-xl text-[13px] leading-[1.6] text-[rgba(255,255,255,0.55)]">
+                      <CardDescription className="max-w-xl text-[13px] leading-[1.6] text-slate-300">
                         {point.text}
                       </CardDescription>
                     </div>
