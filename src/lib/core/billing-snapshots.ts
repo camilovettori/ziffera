@@ -246,7 +246,7 @@ async function buildSnapshotRowsForClient(client: ClientRecord) {
          c.support_email AS client_support_email,
          c.website_url AS client_website_url,
          p.code AS product_code,
-         p.name AS product_name,
+         COALESCE(p.public_name, p.name) AS product_name,
          p.slug AS product_slug,
          p.product_kind,
          p.sort_order AS product_sort_order,

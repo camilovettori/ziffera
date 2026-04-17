@@ -11,21 +11,30 @@ import type {
   ClientRecord,
   EntitlementRecord,
   PaymentRecord,
+  ProductBillingInterval,
+  ProductBillingType,
   ProductConnectionRecord,
   ProductRecord,
   ServiceStatus,
 } from "@/lib/core/models";
 
 export type DashboardSummary = {
-  totalClients: number;
   activeClients: number;
-  suspendedClients: number;
-  productsCount: number;
-  activeEntitlementsCount: number;
-  subscriptionsCount: number;
-  paymentRecordsCount: number;
-  recentAuditEvents: AuditLogListItem[];
+  activeSubscriptions: number;
+  mrrCents: number;
+  billingIssues: number;
+  attentionClients: number;
   attentionItems: string[];
+  recentEvents: DashboardEventItem[];
+};
+
+export type DashboardEventItem = {
+  id: string;
+  kind: "audit" | "billing";
+  title: string;
+  detail: string;
+  createdAt: string;
+  tone: "neutral" | "warn" | "critical";
 };
 
 export type AuditLogListItem = {
@@ -44,13 +53,41 @@ export type ClientListItem = ClientRecord & {
   entitlementCount: number;
   subscriptionCount: number;
   paymentCount: number;
+  assignedProduct: ProductSummary | null;
+  currentSubscription: ClientSubscriptionView | null;
 };
 
 export type ProductListItem = ProductRecord & {
   entitlementCount: number;
   activeClientCount: number;
+  assignedClientCount: number;
+  activeSubscriptionCount: number;
   productConnection: ProductConnectionRecord | null;
+  displayName: string;
 };
+
+export type ProductCatalogView = Pick<
+  ProductRecord,
+  | "id"
+  | "code"
+  | "name"
+  | "public_name"
+  | "slug"
+  | "product_kind"
+  | "billing_type"
+  | "billing_interval"
+  | "amount_cents"
+  | "currency"
+  | "stripe_product_id"
+  | "stripe_price_id"
+  | "stripe_payment_link_url"
+  | "is_active"
+>;
+
+export type ProductSummary = Pick<
+  ProductRecord,
+  "id" | "code" | "name" | "public_name" | "slug" | "product_kind" | "billing_type" | "billing_interval" | "amount_cents" | "currency" | "stripe_product_id" | "stripe_price_id" | "stripe_payment_link_url" | "is_active"
+>;
 
 export type ProductConnectionListItem = ProductConnectionRecord & {
   productName: string;
@@ -69,6 +106,8 @@ export type ClientDetail = ClientRecord & {
   entitlements: ClientEntitlementView[];
   subscriptions: ClientSubscriptionView[];
   payments: PaymentRecord[];
+  assignedProduct: ProductSummary | null;
+  currentSubscription: ClientSubscriptionView | null;
 };
 
 export type ClientEntitlementView = EntitlementRecord & {
@@ -179,24 +218,42 @@ export async function writeAuditLog(input: {
 }
 
 export async function getDashboardSummary(): Promise<DashboardSummary> {
-  const [counts, auditLogs, attention] = await Promise.all([
+  const [counts, auditLogs, billingEvents, attention] = await Promise.all([
     query<{
-      total_clients: string;
       active_clients: string;
-      suspended_clients: string;
-      products_count: string;
-      active_entitlements_count: string;
-      subscriptions_count: string;
-      payment_records_count: string;
+      active_subscriptions: string;
+      mrr_cents: string;
+      billing_issues: string;
+      attention_clients: string;
     }>(`
       SELECT
-        COUNT(*) AS total_clients,
         COUNT(*) FILTER (WHERE service_status = 'active') AS active_clients,
-        COUNT(*) FILTER (WHERE service_status = 'suspended') AS suspended_clients,
-        (SELECT COUNT(*) FROM products WHERE is_active = TRUE) AS products_count,
-        (SELECT COUNT(*) FROM entitlements WHERE entitlement_status = 'active') AS active_entitlements_count,
-        (SELECT COUNT(*) FROM subscriptions) AS subscriptions_count,
-        (SELECT COUNT(*) FROM payment_records) AS payment_records_count
+        (SELECT COUNT(*) FROM subscriptions WHERE status IN ('active', 'trialing')) AS active_subscriptions,
+        COALESCE((
+          SELECT ROUND(SUM(
+            CASE
+              WHEN billing_interval = 'year' THEN amount_cents / 12.0
+              ELSE amount_cents
+            END
+          ))
+          FROM subscriptions
+          WHERE status IN ('active', 'trialing')
+        ), 0) AS mrr_cents,
+        (
+          SELECT COUNT(*)
+          FROM payment_records
+          WHERE payment_status = 'failed'
+        ) +
+        (
+          SELECT COUNT(*)
+          FROM subscriptions
+          WHERE status = 'past_due'
+        ) AS billing_issues,
+        COUNT(*) FILTER (
+          WHERE billing_status = 'overdue'
+             OR service_status = 'suspended'
+             OR assigned_product_id IS NULL
+        ) AS attention_clients
       FROM clients
     `),
     query<{
@@ -223,11 +280,32 @@ export async function getDashboardSummary(): Promise<DashboardSummary> {
       ORDER BY a.created_at DESC
       LIMIT 6
     `),
+    query<{
+      id: string;
+      created_at: string;
+      kind: string;
+      title: string;
+      detail: string;
+      payment_status: string | null;
+    }>(`
+      SELECT
+        pr.id,
+        COALESCE(pr.paid_at, pr.created_at) AS created_at,
+        'billing' AS kind,
+        c.name AS title,
+        COALESCE(pr.description, pr.payment_status || ' payment') AS detail,
+        pr.payment_status
+      FROM payment_records pr
+      INNER JOIN clients c ON c.id = pr.client_id
+      ORDER BY created_at DESC
+      LIMIT 6
+    `),
     query<{ item: string }>(`
       SELECT item FROM (
         SELECT CASE
-          WHEN service_status = 'suspended' THEN name || ' is suspended'
-          WHEN billing_status = 'overdue' THEN name || ' is overdue'
+          WHEN billing_status = 'overdue' THEN name || ' billing is overdue'
+          WHEN service_status = 'suspended' THEN name || ' service is suspended'
+          WHEN assigned_product_id IS NULL THEN name || ' needs an assigned product'
           ELSE NULL
         END AS item
         FROM clients
@@ -238,26 +316,39 @@ export async function getDashboardSummary(): Promise<DashboardSummary> {
   ]);
 
   return {
-    totalClients: toNumber(counts.rows[0]?.total_clients),
     activeClients: toNumber(counts.rows[0]?.active_clients),
-    suspendedClients: toNumber(counts.rows[0]?.suspended_clients),
-    productsCount: toNumber(counts.rows[0]?.products_count),
-    activeEntitlementsCount: toNumber(
-      counts.rows[0]?.active_entitlements_count
-    ),
-    subscriptionsCount: toNumber(counts.rows[0]?.subscriptions_count),
-    paymentRecordsCount: toNumber(counts.rows[0]?.payment_records_count),
-    recentAuditEvents: auditLogs.rows.map((row) => ({
-      id: row.id,
-      action: row.action,
-      entityType: row.entity_type,
-      entityId: row.entity_id,
-      createdAt: row.created_at,
-      actorName: row.actor_name,
-      actorEmail: row.actor_email,
-      metadata: toJsonRecord(row.metadata),
-    })),
+    activeSubscriptions: toNumber(counts.rows[0]?.active_subscriptions),
+    mrrCents: toNumber(counts.rows[0]?.mrr_cents),
+    billingIssues: toNumber(counts.rows[0]?.billing_issues),
+    attentionClients: toNumber(counts.rows[0]?.attention_clients),
     attentionItems: attention.rows.map((row) => row.item),
+    recentEvents: [
+      ...auditLogs.rows.map((row) => ({
+        id: row.id,
+        kind: "audit" as const,
+        title: row.action,
+        detail: `${row.entity_type} / ${row.entity_id}`,
+        createdAt: row.created_at,
+        tone: "neutral" as const,
+      })),
+      ...billingEvents.rows.map((row) => ({
+        id: row.id,
+        kind: row.kind as "audit" | "billing",
+        title: row.title,
+        detail: row.detail,
+        createdAt: row.created_at,
+        tone:
+          row.kind === "billing" && row.payment_status === "failed"
+            ? ("critical" as const)
+            : row.kind === "billing"
+              ? ("warn" as const)
+              : ("neutral" as const),
+      })),
+    ]
+      .sort((left, right) =>
+        new Date(right.createdAt).getTime() - new Date(left.createdAt).getTime()
+      )
+      .slice(0, 8),
   };
 }
 
@@ -268,6 +359,25 @@ export async function listClients(): Promise<ClientListItem[]> {
       entitlement_count: string;
       subscription_count: string;
       payment_count: string;
+      assigned_product_id: string | null;
+      assigned_product_name: string | null;
+      assigned_product_public_name: string | null;
+      assigned_product_slug: string | null;
+      assigned_product_code: string | null;
+      assigned_product_kind: string | null;
+      assigned_product_billing_type: ProductBillingType | null;
+      assigned_product_billing_interval: ProductBillingInterval | null;
+      assigned_product_amount_cents: number | null;
+      assigned_product_currency: string | null;
+      assigned_product_stripe_product_id: string | null;
+      assigned_product_stripe_price_id: string | null;
+      assigned_product_stripe_payment_link_url: string | null;
+      assigned_product_is_active: boolean | null;
+      current_subscription_id: string | null;
+      current_subscription_status: string | null;
+      current_subscription_amount_cents: number | null;
+      current_subscription_currency: string | null;
+      current_subscription_interval: string | null;
     }
   >(`
     SELECT
@@ -276,12 +386,59 @@ export async function listClients(): Promise<ClientListItem[]> {
       COUNT(DISTINCT e.id) AS entitlement_count,
       COUNT(DISTINCT s.id) AS subscription_count,
       COUNT(DISTINCT pr.id) AS payment_count
+      , ap.id AS assigned_product_id
+      , ap.name AS assigned_product_name
+      , ap.public_name AS assigned_product_public_name
+      , ap.slug AS assigned_product_slug
+      , ap.code AS assigned_product_code
+      , ap.product_kind AS assigned_product_kind
+      , ap.billing_type AS assigned_product_billing_type
+      , ap.billing_interval AS assigned_product_billing_interval
+      , ap.amount_cents AS assigned_product_amount_cents
+      , ap.currency AS assigned_product_currency
+      , ap.stripe_product_id AS assigned_product_stripe_product_id
+      , ap.stripe_price_id AS assigned_product_stripe_price_id
+      , ap.stripe_payment_link_url AS assigned_product_stripe_payment_link_url
+      , ap.is_active AS assigned_product_is_active
+      , cs.id AS current_subscription_id
+      , cs.status AS current_subscription_status
+      , cs.amount_cents AS current_subscription_amount_cents
+      , cs.currency AS current_subscription_currency
+      , cs.billing_interval AS current_subscription_interval
     FROM clients c
     LEFT JOIN client_contacts cc ON cc.client_id = c.id
     LEFT JOIN entitlements e ON e.client_id = c.id
     LEFT JOIN subscriptions s ON s.client_id = c.id
     LEFT JOIN payment_records pr ON pr.client_id = c.id
+    LEFT JOIN products ap ON ap.id = c.assigned_product_id
+    LEFT JOIN LATERAL (
+      SELECT *
+      FROM subscriptions cs
+      WHERE cs.client_id = c.id
+        AND cs.product_id = c.assigned_product_id
+      ORDER BY cs.updated_at DESC, cs.created_at DESC
+      LIMIT 1
+    ) cs ON TRUE
     GROUP BY c.id
+      , ap.id
+      , ap.name
+      , ap.public_name
+      , ap.slug
+      , ap.code
+      , ap.product_kind
+      , ap.billing_type
+      , ap.billing_interval
+      , ap.amount_cents
+      , ap.currency
+      , ap.stripe_product_id
+      , ap.stripe_price_id
+      , ap.stripe_payment_link_url
+      , ap.is_active
+      , cs.id
+      , cs.status
+      , cs.amount_cents
+      , cs.currency
+      , cs.billing_interval
     ORDER BY c.created_at DESC
   `);
 
@@ -291,13 +448,102 @@ export async function listClients(): Promise<ClientListItem[]> {
     entitlementCount: toNumber(row.entitlement_count),
     subscriptionCount: toNumber(row.subscription_count),
     paymentCount: toNumber(row.payment_count),
+    assignedProduct: row.assigned_product_id
+      ? {
+          id: row.assigned_product_id,
+          code: row.assigned_product_code ?? "",
+          name: row.assigned_product_name ?? "",
+          public_name: row.assigned_product_public_name,
+          slug: row.assigned_product_slug ?? "",
+          product_kind: (row.assigned_product_kind ?? "service") as ProductRecord["product_kind"],
+          billing_type: row.assigned_product_billing_type ?? "recurring",
+          billing_interval: row.assigned_product_billing_interval,
+          amount_cents: row.assigned_product_amount_cents,
+          currency: row.assigned_product_currency ?? "EUR",
+          stripe_product_id: row.assigned_product_stripe_product_id,
+          stripe_price_id: row.assigned_product_stripe_price_id,
+          stripe_payment_link_url: row.assigned_product_stripe_payment_link_url,
+          is_active: row.assigned_product_is_active ?? true,
+        }
+      : null,
+    currentSubscription: row.current_subscription_id
+      ? {
+          id: row.current_subscription_id,
+          productName: row.assigned_product_public_name ?? row.assigned_product_name ?? "",
+          status: row.current_subscription_status ?? "",
+          billingInterval: row.current_subscription_interval ?? "month",
+          amountCents: toNumber(row.current_subscription_amount_cents),
+          currency: row.current_subscription_currency ?? "EUR",
+          currentPeriodEndAt: null,
+          trialEndAt: null,
+        }
+      : null,
   }));
 }
 
 export async function getClientById(clientId: string): Promise<ClientDetail | null> {
-  const result = await query<ClientRecord>(`SELECT * FROM clients WHERE id = $1 LIMIT 1`, [
-    clientId,
-  ]);
+  const result = await query<
+    ClientRecord & {
+      assigned_product_code: string | null;
+      assigned_product_name: string | null;
+      assigned_product_public_name: string | null;
+      assigned_product_slug: string | null;
+      assigned_product_kind: string | null;
+      assigned_product_billing_type: ProductBillingType | null;
+      assigned_product_billing_interval: ProductBillingInterval | null;
+      assigned_product_amount_cents: number | null;
+      assigned_product_currency: string | null;
+      assigned_product_stripe_product_id: string | null;
+      assigned_product_stripe_price_id: string | null;
+      assigned_product_stripe_payment_link_url: string | null;
+      assigned_product_is_active: boolean | null;
+      current_subscription_id: string | null;
+      current_subscription_status: string | null;
+      current_subscription_billing_interval: string | null;
+      current_subscription_amount_cents: number | null;
+      current_subscription_currency: string | null;
+      current_subscription_current_period_end_at: string | null;
+      current_subscription_trial_end_at: string | null;
+    }
+  >(
+    `
+      SELECT
+        c.*,
+        ap.code AS assigned_product_code,
+        ap.name AS assigned_product_name,
+        ap.public_name AS assigned_product_public_name,
+        ap.slug AS assigned_product_slug,
+        ap.product_kind AS assigned_product_kind,
+        ap.billing_type AS assigned_product_billing_type,
+        ap.billing_interval AS assigned_product_billing_interval,
+        ap.amount_cents AS assigned_product_amount_cents,
+        ap.currency AS assigned_product_currency,
+        ap.stripe_product_id AS assigned_product_stripe_product_id,
+        ap.stripe_price_id AS assigned_product_stripe_price_id,
+        ap.stripe_payment_link_url AS assigned_product_stripe_payment_link_url,
+        ap.is_active AS assigned_product_is_active,
+        cs.id AS current_subscription_id,
+        cs.status AS current_subscription_status,
+        cs.billing_interval AS current_subscription_billing_interval,
+        cs.amount_cents AS current_subscription_amount_cents,
+        cs.currency AS current_subscription_currency,
+        cs.current_period_end_at AS current_subscription_current_period_end_at,
+        cs.trial_end_at AS current_subscription_trial_end_at
+      FROM clients c
+      LEFT JOIN products ap ON ap.id = c.assigned_product_id
+      LEFT JOIN LATERAL (
+        SELECT *
+        FROM subscriptions cs
+        WHERE cs.client_id = c.id
+          AND cs.product_id = c.assigned_product_id
+        ORDER BY cs.updated_at DESC, cs.created_at DESC
+        LIMIT 1
+      ) cs ON TRUE
+      WHERE c.id = $1
+      LIMIT 1
+    `,
+    [clientId]
+  );
 
   const client = result.rows[0];
   if (!client) {
@@ -316,7 +562,7 @@ export async function getClientById(clientId: string): Promise<ClientDetail | nu
         product_is_active: boolean;
       }
     >(
-      `SELECT e.*, p.name AS product_name, p.slug AS product_slug, p.is_active AS product_is_active
+      `SELECT e.*, COALESCE(p.public_name, p.name) AS product_name, p.slug AS product_slug, p.is_active AS product_is_active
        FROM entitlements e
        INNER JOIN products p ON p.id = e.product_id
        WHERE e.client_id = $1
@@ -333,7 +579,7 @@ export async function getClientById(clientId: string): Promise<ClientDetail | nu
       current_period_end_at: string | null;
       trial_end_at: string | null;
     }>(
-      `SELECT s.id, p.name AS product_name, s.status, s.billing_interval, s.amount_cents, s.currency, s.current_period_end_at, s.trial_end_at
+      `SELECT s.id, COALESCE(p.public_name, p.name) AS product_name, s.status, s.billing_interval, s.amount_cents, s.currency, s.current_period_end_at, s.trial_end_at
        FROM subscriptions s
        INNER JOIN products p ON p.id = s.product_id
        WHERE s.client_id = $1
@@ -348,6 +594,48 @@ export async function getClientById(clientId: string): Promise<ClientDetail | nu
 
   return {
     ...client,
+    assignedProduct: client.assigned_product_id
+      ? {
+          id: client.assigned_product_id,
+          code: client.assigned_product_code ?? "",
+          name: client.assigned_product_name ?? "",
+          public_name: client.assigned_product_public_name,
+          slug: client.assigned_product_slug ?? "",
+          product_kind: (client.assigned_product_kind ?? "service") as ProductRecord["product_kind"],
+          billing_type: client.assigned_product_billing_type ?? "recurring",
+          billing_interval: client.assigned_product_billing_interval,
+          amount_cents: client.assigned_product_amount_cents,
+          currency: client.assigned_product_currency ?? "EUR",
+          stripe_product_id: client.assigned_product_stripe_product_id,
+          stripe_price_id: client.assigned_product_stripe_price_id,
+          stripe_payment_link_url: client.assigned_product_stripe_payment_link_url,
+          is_active: client.assigned_product_is_active ?? true,
+        }
+      : null,
+    currentSubscription: client.current_subscription_id
+      ? {
+          id: client.current_subscription_id,
+          productName:
+            client.assigned_product_public_name ?? client.assigned_product_name ?? "",
+          status: client.current_subscription_status ?? "",
+          billingInterval: client.current_subscription_billing_interval ?? "month",
+          amountCents: toNumber(client.current_subscription_amount_cents),
+          currency: client.current_subscription_currency ?? "EUR",
+          currentPeriodEndAt: client.current_subscription_current_period_end_at,
+          trialEndAt: client.current_subscription_trial_end_at,
+        }
+      : subscriptions.rows[0]
+        ? {
+            id: subscriptions.rows[0].id,
+            productName: subscriptions.rows[0].product_name,
+            status: subscriptions.rows[0].status,
+            billingInterval: subscriptions.rows[0].billing_interval,
+            amountCents: subscriptions.rows[0].amount_cents,
+            currency: subscriptions.rows[0].currency,
+            currentPeriodEndAt: subscriptions.rows[0].current_period_end_at,
+            trialEndAt: subscriptions.rows[0].trial_end_at,
+          }
+      : null,
     contacts: contacts.rows,
     entitlements: entitlements.rows.map((row) => ({
       ...row,
@@ -374,6 +662,8 @@ export async function listProducts(): Promise<ProductListItem[]> {
     ProductRecord & {
       entitlement_count: string;
       active_client_count: string;
+      assigned_client_count: string;
+      active_subscription_count: string;
       connection_id: string | null;
       connection_app_url: string | null;
       connection_api_url: string | null;
@@ -390,6 +680,8 @@ export async function listProducts(): Promise<ProductListItem[]> {
       p.*,
       COUNT(DISTINCT e.id) AS entitlement_count,
       COUNT(DISTINCT e.client_id) FILTER (WHERE e.entitlement_status = 'active') AS active_client_count,
+      COUNT(DISTINCT c.id) FILTER (WHERE c.assigned_product_id = p.id) AS assigned_client_count,
+      COUNT(DISTINCT s.id) FILTER (WHERE s.status IN ('active', 'trialing')) AS active_subscription_count,
       pc.id AS connection_id,
       pc.app_url AS connection_app_url,
       pc.api_url AS connection_api_url,
@@ -402,6 +694,8 @@ export async function listProducts(): Promise<ProductListItem[]> {
       pc.updated_at AS connection_updated_at
     FROM products p
     LEFT JOIN entitlements e ON e.product_id = p.id
+    LEFT JOIN subscriptions s ON s.product_id = p.id
+    LEFT JOIN clients c ON c.assigned_product_id = p.id
     LEFT JOIN product_connections pc ON pc.product_id = p.id
     GROUP BY p.id
     , pc.id
@@ -419,6 +713,8 @@ export async function listProducts(): Promise<ProductListItem[]> {
     ...row,
     entitlementCount: toNumber(row.entitlement_count),
     activeClientCount: toNumber(row.active_client_count),
+    assignedClientCount: toNumber(row.assigned_client_count),
+    activeSubscriptionCount: toNumber(row.active_subscription_count),
     productConnection: row.connection_id
       ? {
           id: row.connection_id,
@@ -434,6 +730,7 @@ export async function listProducts(): Promise<ProductListItem[]> {
           updated_at: row.connection_updated_at ?? row.updated_at,
         }
       : null,
+    displayName: row.public_name ?? row.name,
   }));
 }
 
@@ -466,7 +763,7 @@ export async function getProductById(productId: string): Promise<ProductDetail |
     ...product,
     entitlements: entitlements.rows.map((row) => ({
       ...row,
-      productName: product.name,
+      productName: product.public_name ?? product.name,
       productSlug: product.slug,
       productIsActive: product.is_active,
       clientName: row.client_name,
@@ -487,7 +784,7 @@ export async function listProductConnections(): Promise<ProductConnectionListIte
   >(
     `SELECT
       pc.*,
-      p.name AS product_name,
+      COALESCE(p.public_name, p.name) AS product_name,
       p.slug AS product_slug,
       p.product_kind AS product_kind,
       p.is_active AS product_is_active
@@ -586,7 +883,7 @@ export async function getClientProductAccessMatrix(
   }>(
     `SELECT
       p.id AS product_id,
-      p.name AS product_name,
+      COALESCE(p.public_name, p.name) AS product_name,
       p.slug AS product_slug,
       p.product_kind AS product_kind,
       p.is_active AS product_is_active,
@@ -658,7 +955,7 @@ export async function listPayments(): Promise<PaymentListItem[]> {
   const result = await query<
     PaymentRecord & { client_name: string; product_name: string | null }
   >(
-    `SELECT pr.*, c.name AS client_name, p.name AS product_name
+    `SELECT pr.*, c.name AS client_name, COALESCE(p.public_name, p.name) AS product_name
      FROM payment_records pr
      INNER JOIN clients c ON c.id = pr.client_id
      LEFT JOIN products p ON p.id = pr.product_id
@@ -686,7 +983,7 @@ export async function listEntitlements(): Promise<EntitlementListItem[]> {
       e.*,
       c.name AS client_name,
       c.slug AS client_slug,
-      p.name AS product_name,
+      COALESCE(p.public_name, p.name) AS product_name,
       p.slug AS product_slug,
       p.is_active AS product_is_active
      FROM entitlements e
@@ -749,6 +1046,7 @@ export async function createClient(input: {
   legalName?: string;
   companyName?: string;
   clientType: string;
+  assignedProductId?: string | null;
   billingEmail?: string;
   websiteUrl?: string;
   supportEmail?: string;
@@ -784,6 +1082,7 @@ export async function createClient(input: {
       company_name,
       slug,
       billing_project_key,
+      assigned_product_id,
       client_type,
       billing_status,
       service_status,
@@ -792,7 +1091,7 @@ export async function createClient(input: {
       billing_email,
       website_url,
       support_email
-    ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12)
+    ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13)
     RETURNING *`,
     [
       name,
@@ -800,6 +1099,7 @@ export async function createClient(input: {
       input.companyName?.trim() || null,
       slug,
       slug,
+      input.assignedProductId ?? null,
       input.clientType,
       input.billingStatus ?? "none",
       input.serviceStatus ?? "active",
@@ -836,6 +1136,7 @@ export async function updateClient(
     legalName?: string;
     companyName?: string;
     clientType: string;
+    assignedProductId?: string | null;
     billingEmail?: string;
     websiteUrl?: string;
     supportEmail?: string;
@@ -853,21 +1154,23 @@ export async function updateClient(
       legal_name = $2,
       company_name = $3,
       client_type = $4,
-      billing_email = $5,
-      website_url = $6,
-      support_email = $7,
-      internal_notes = $8,
-      billing_status = $9,
-      service_status = $10,
-      service_status_reason = $11,
+      assigned_product_id = $5,
+      billing_email = $6,
+      website_url = $7,
+      support_email = $8,
+      internal_notes = $9,
+      billing_status = $10,
+      service_status = $11,
+      service_status_reason = $12,
       updated_at = NOW()
-    WHERE id = $12
+    WHERE id = $13
     RETURNING *`,
     [
       input.name.trim(),
       input.legalName?.trim() || null,
       input.companyName?.trim() || null,
       input.clientType,
+      input.assignedProductId ?? null,
       input.billingEmail?.trim() || null,
       input.websiteUrl?.trim() || null,
       input.supportEmail?.trim() || null,
@@ -896,6 +1199,193 @@ export async function updateClient(
   await refreshClientBillingSnapshotForClientId(client.id);
 
   return client;
+}
+
+export async function createProduct(input: {
+  name: string;
+  publicName?: string;
+  productKind: ProductRecord["product_kind"];
+  billingType: ProductBillingType;
+  billingInterval?: ProductBillingInterval | null;
+  amountCents?: number;
+  currency?: string;
+  description?: string;
+  publicUrl?: string;
+  stripeProductId?: string;
+  stripePriceId?: string;
+  stripePaymentLinkUrl?: string;
+  isActive?: boolean;
+  sortOrder?: number;
+  actorAdminId?: string | null;
+}) {
+  const name = input.name.trim();
+  const slugBase = slugify(input.publicName || input.name);
+  let slug = slugBase || `product-${Date.now()}`;
+  let code = slugify(input.name) || `product-${Date.now()}`;
+  let suffix = 2;
+
+  while (true) {
+    const codeResult = await query<{ id: string }>(
+      `SELECT id FROM products WHERE code = $1 OR slug = $2 LIMIT 1`,
+      [code, slug]
+    );
+
+    if (!codeResult.rows[0]) {
+      break;
+    }
+
+    code = `${slugBase || "product"}-${suffix}`;
+    slug = `${slugBase || "product"}-${suffix}`;
+    suffix += 1;
+  }
+
+  const result = await query<ProductRecord>(
+    `INSERT INTO products (
+      code,
+      name,
+      public_name,
+      slug,
+      product_kind,
+      billing_type,
+      billing_interval,
+      description,
+      public_url,
+      sort_order,
+      amount_cents,
+      currency,
+      stripe_product_id,
+      stripe_price_id,
+      stripe_payment_link_url,
+      is_active
+    ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16)
+    RETURNING *`,
+    [
+      code,
+      name,
+      input.publicName?.trim() || name,
+      slug,
+      input.productKind,
+      input.billingType,
+      input.billingInterval ?? null,
+      input.description?.trim() || null,
+      input.publicUrl?.trim() || null,
+      input.sortOrder ?? 0,
+      input.amountCents ?? 0,
+      input.currency ?? "EUR",
+      input.stripeProductId?.trim() || null,
+      input.stripePriceId?.trim() || null,
+      input.stripePaymentLinkUrl?.trim() || null,
+      input.isActive ?? true,
+    ]
+  );
+
+  const product = result.rows[0];
+  if (!product) {
+    throw new Error("Failed to create product.");
+  }
+
+  await writeAuditLog({
+    actorAdminId: input.actorAdminId ?? null,
+    action: "product.create",
+    entityType: "product",
+    entityId: product.id,
+    afterData: product as unknown as Record<string, unknown>,
+  });
+
+  return product;
+}
+
+export async function updateProduct(
+  productId: string,
+  input: {
+    name: string;
+    publicName?: string;
+    productKind: ProductRecord["product_kind"];
+    billingType: ProductBillingType;
+    billingInterval?: ProductBillingInterval | null;
+    amountCents?: number;
+    currency?: string;
+    description?: string;
+    publicUrl?: string;
+    stripeProductId?: string;
+    stripePriceId?: string;
+    stripePaymentLinkUrl?: string;
+    isActive?: boolean;
+    sortOrder?: number;
+    actorAdminId?: string | null;
+  }
+) {
+  const before = await getProductById(productId);
+  const result = await query<ProductRecord>(
+    `UPDATE products SET
+      name = $1,
+      public_name = $2,
+      product_kind = $3,
+      billing_type = $4,
+      billing_interval = $5,
+      amount_cents = $6,
+      currency = $7,
+      description = $8,
+      public_url = $9,
+      sort_order = $10,
+      stripe_product_id = $11,
+      stripe_price_id = $12,
+      stripe_payment_link_url = $13,
+      is_active = $14,
+      updated_at = NOW()
+    WHERE id = $15
+    RETURNING *`,
+    [
+      input.name.trim(),
+      input.publicName?.trim() || input.name.trim(),
+      input.productKind,
+      input.billingType,
+      input.billingInterval ?? null,
+      input.amountCents ?? 0,
+      input.currency ?? "EUR",
+      input.description?.trim() || null,
+      input.publicUrl?.trim() || null,
+      input.sortOrder ?? 0,
+      input.stripeProductId?.trim() || null,
+      input.stripePriceId?.trim() || null,
+      input.stripePaymentLinkUrl?.trim() || null,
+      input.isActive ?? true,
+      productId,
+    ]
+  );
+
+  const product = result.rows[0];
+  if (!product) {
+    throw new Error("Failed to update product.");
+  }
+
+  await writeAuditLog({
+    actorAdminId: input.actorAdminId ?? null,
+    action: "product.update",
+    entityType: "product",
+    entityId: product.id,
+    beforeData: before as unknown as Record<string, unknown>,
+    afterData: product as unknown as Record<string, unknown>,
+  });
+
+  const relatedClients = await query<{ client_id: string }>(
+    `SELECT DISTINCT client_id FROM (
+       SELECT id AS client_id FROM clients WHERE assigned_product_id = $1
+       UNION ALL
+       SELECT client_id FROM subscriptions WHERE product_id = $1
+       UNION ALL
+       SELECT client_id FROM entitlements WHERE product_id = $1
+     ) related`,
+    [productId]
+  );
+
+  await Promise.all(
+    relatedClients.rows.map((row) =>
+      refreshClientBillingSnapshotForClientId(row.client_id)
+    )
+  );
+
+  return product;
 }
 
 export async function upsertClientContact(input: {
@@ -1071,6 +1561,23 @@ export async function setProductActive(input: {
     beforeData: before as unknown as Record<string, unknown>,
     afterData: product as unknown as Record<string, unknown>,
   });
+
+  const relatedClients = await query<{ client_id: string }>(
+    `SELECT DISTINCT client_id FROM (
+       SELECT id AS client_id FROM clients WHERE assigned_product_id = $1
+       UNION ALL
+       SELECT client_id FROM subscriptions WHERE product_id = $1
+       UNION ALL
+       SELECT client_id FROM entitlements WHERE product_id = $1
+     ) related`,
+    [input.productId]
+  );
+
+  await Promise.all(
+    relatedClients.rows.map((row) =>
+      refreshClientBillingSnapshotForClientId(row.client_id)
+    )
+  );
 
   return product;
 }

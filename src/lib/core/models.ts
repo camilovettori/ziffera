@@ -21,6 +21,8 @@ export const PRODUCT_KINDS = [
   "project",
   "integration",
 ] as const;
+export const PRODUCT_BILLING_TYPES = ["recurring", "one_off"] as const;
+export const PRODUCT_BILLING_INTERVALS = ["month", "year"] as const;
 export const SUBSCRIPTION_STATUSES = [
   "trialing",
   "active",
@@ -52,6 +54,8 @@ export type ClientType = (typeof CLIENT_TYPES)[number];
 export type BillingStatus = (typeof BILLING_STATUSES)[number];
 export type ServiceStatus = (typeof SERVICE_STATUSES)[number];
 export type ProductKind = (typeof PRODUCT_KINDS)[number];
+export type ProductBillingType = (typeof PRODUCT_BILLING_TYPES)[number];
+export type ProductBillingInterval = (typeof PRODUCT_BILLING_INTERVALS)[number];
 export type SubscriptionStatus = (typeof SUBSCRIPTION_STATUSES)[number];
 export type EntitlementStatus = (typeof ENTITLEMENT_STATUSES)[number];
 export type PaymentStatus = (typeof PAYMENT_STATUSES)[number];
@@ -87,6 +91,7 @@ export interface ClientRecord {
   company_name: string | null;
   slug: string;
   billing_project_key: string;
+  assigned_product_id: string | null;
   client_type: ClientType;
   billing_status: BillingStatus;
   service_status: ServiceStatus;
@@ -126,13 +131,19 @@ export interface ProductRecord {
   id: string;
   code: string;
   name: string;
+  public_name: string | null;
   slug: string;
   product_kind: ProductKind;
+  billing_type: ProductBillingType;
+  billing_interval: ProductBillingInterval | null;
   description: string | null;
   public_url: string | null;
   sort_order: number;
-  default_price_cents: number | null;
-  default_currency: string;
+  amount_cents: number | null;
+  currency: string;
+  stripe_product_id: string | null;
+  stripe_price_id: string | null;
+  stripe_payment_link_url: string | null;
   is_active: boolean;
   created_at: string;
   updated_at: string;

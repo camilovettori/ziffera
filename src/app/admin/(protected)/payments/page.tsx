@@ -81,7 +81,7 @@ export default async function PaymentsPage() {
               <SelectField
                 label="Product"
                 name="productId"
-                options={[["", "No product"], ...products.map((product) => [product.id, product.name] as [string, string])]}
+                options={[["", "No product"], ...products.map((product) => [product.id, product.displayName] as [string, string])]}
               />
               <SelectField
                 label="Payment status"

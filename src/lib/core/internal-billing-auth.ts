@@ -80,6 +80,7 @@ export async function authenticateInternalBillingRequest(
       client_billing_email: string | null;
       client_support_email: string | null;
       client_website_url: string | null;
+      client_assigned_product_id: string | null;
       client_legal_name: string | null;
       client_company_name: string | null;
       client_type: ClientRecord["client_type"];
@@ -98,6 +99,7 @@ export async function authenticateInternalBillingRequest(
        c.billing_email AS client_billing_email,
        c.support_email AS client_support_email,
        c.website_url AS client_website_url,
+       c.assigned_product_id AS client_assigned_product_id,
        c.legal_name AS client_legal_name,
        c.company_name AS client_company_name,
        c.client_type AS client_type,
@@ -128,6 +130,7 @@ export async function authenticateInternalBillingRequest(
       company_name: row.client_company_name,
       slug: row.client_slug,
       billing_project_key: row.client_billing_project_key,
+      assigned_product_id: row.client_assigned_product_id,
       client_type: row.client_type,
       billing_status: row.client_billing_status,
       service_status: row.client_service_status,
@@ -150,4 +153,3 @@ export async function authenticateInternalBillingRequest(
     },
   };
 }
-

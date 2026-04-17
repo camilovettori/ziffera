@@ -681,7 +681,7 @@ export async function listSubscriptions(filters: {
         c.slug AS client_slug,
         c.billing_status AS client_billing_status,
         c.service_status AS client_service_status,
-        p.name AS product_name,
+        COALESCE(p.public_name, p.name) AS product_name,
         p.slug AS product_slug,
         p.is_active AS product_is_active,
         COALESCE((
@@ -759,7 +759,7 @@ export async function getSubscriptionById(
         c.billing_email AS client_billing_email,
         c.support_email AS client_support_email,
         pc.email AS primary_contact_email,
-        p.name AS product_name,
+        COALESCE(p.public_name, p.name) AS product_name,
         p.slug AS product_slug,
         p.description AS product_description,
         p.is_active AS product_is_active

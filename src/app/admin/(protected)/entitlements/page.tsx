@@ -32,9 +32,9 @@ export default async function EntitlementsPage() {
       </div>
 
       <div className="grid gap-4 md:grid-cols-3">
-        <Stat label="Clients" value={summary.totalClients} />
-        <Stat label="Products" value={summary.productsCount} />
-        <Stat label="Active entitlements" value={summary.activeEntitlementsCount} />
+        <Stat label="Clients" value={summary.activeClients} />
+        <Stat label="Products" value={products.length} />
+        <Stat label="Active entitlements" value={entitlements.length} />
       </div>
 
       <div className="grid gap-6 xl:grid-cols-[0.9fr_1.1fr]">
@@ -50,7 +50,7 @@ export default async function EntitlementsPage() {
           <CardContent>
             <form action={setEntitlementAction} className="space-y-4">
               <SelectField label="Client" name="clientId" options={clients.map((client) => [client.id, client.name])} />
-              <SelectField label="Product" name="productId" options={products.map((product) => [product.id, product.name])} />
+              <SelectField label="Product" name="productId" options={products.map((product) => [product.id, product.displayName])} />
               <SelectField
                 label="Status"
                 name="entitlementStatus"

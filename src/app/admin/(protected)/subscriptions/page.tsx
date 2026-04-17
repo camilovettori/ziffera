@@ -80,7 +80,7 @@ export default async function SubscriptionsPage({
               label="Product"
               name="productId"
               defaultValue={params.productId ?? ""}
-              options={[["", "All products"], ...products.map((product) => [product.id, product.name] as [string, string])]}
+              options={[["", "All products"], ...products.map((product) => [product.id, product.displayName] as [string, string])]}
             />
             <div className="flex items-end">
               <button className="inline-flex h-12 items-center justify-center rounded-2xl bg-slate-950 px-5 text-sm font-semibold text-white transition hover:bg-slate-800">

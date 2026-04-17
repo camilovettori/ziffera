@@ -16,6 +16,7 @@ const clientFormSchema = z.object({
   legalName: z.string().optional(),
   companyName: z.string().optional(),
   clientType: z.enum(["saas", "project", "mixed"]),
+  assignedProductId: z.string().uuid().optional().or(z.literal("")),
   billingEmail: z.string().email().optional().or(z.literal("")),
   websiteUrl: z.string().url().optional().or(z.literal("")),
   supportEmail: z.string().email().optional().or(z.literal("")),
@@ -28,6 +29,34 @@ const clientFormSchema = z.object({
     .optional(),
   serviceStatusReason: z.string().optional(),
 });
+
+function normalizeWebsiteUrl(value: string | null) {
+  const trimmed = cleanOptional(value);
+  if (!trimmed) {
+    return undefined;
+  }
+
+  if (/^https?:\/\//i.test(trimmed)) {
+    return trimmed;
+  }
+
+  return `https://${trimmed}`;
+}
+
+function validationErrorMessage(
+  scope: string,
+  error: z.ZodError
+) {
+  const fieldErrorsMap = error.flatten().fieldErrors as Record<string, string[] | undefined>;
+  const fieldErrors = Object.entries(fieldErrorsMap)
+    .filter(([, messages]) => Boolean(messages && messages.length))
+    .map(([field, messages]) => `${field}: ${messages?.join(", ")}`)
+    .join("; ");
+  const formErrors = error.flatten().formErrors.join("; ");
+
+  const details = [fieldErrors, formErrors].filter(Boolean).join(" | ");
+  return details ? `${scope} validation failed: ${details}` : `${scope} validation failed.`;
+}
 
 const contactFormSchema = z.object({
   clientId: z.string().uuid(),
@@ -65,8 +94,9 @@ export async function createClientAction(formData: FormData) {
     legalName: formData.get("legalName"),
     companyName: formData.get("companyName"),
     clientType: formData.get("clientType"),
+    assignedProductId: cleanOptional(formData.get("assignedProductId")?.toString() ?? null),
     billingEmail: cleanOptional(formData.get("billingEmail")?.toString() ?? null),
-    websiteUrl: cleanOptional(formData.get("websiteUrl")?.toString() ?? null),
+    websiteUrl: normalizeWebsiteUrl(formData.get("websiteUrl")?.toString() ?? null),
     supportEmail: cleanOptional(formData.get("supportEmail")?.toString() ?? null),
     internalNotes: cleanOptional(formData.get("internalNotes")?.toString() ?? null),
     billingStatus: formData.get("billingStatus") || undefined,
@@ -77,7 +107,7 @@ export async function createClientAction(formData: FormData) {
   });
 
   if (!parsed.success) {
-    throw new Error("Please complete the required client fields.");
+    throw new Error(validationErrorMessage("Client creation", parsed.error));
   }
 
   const client = await createClient({
@@ -99,8 +129,9 @@ export async function updateClientAction(formData: FormData) {
     legalName: formData.get("legalName"),
     companyName: formData.get("companyName"),
     clientType: formData.get("clientType"),
+    assignedProductId: cleanOptional(formData.get("assignedProductId")?.toString() ?? null),
     billingEmail: cleanOptional(formData.get("billingEmail")?.toString() ?? null),
-    websiteUrl: cleanOptional(formData.get("websiteUrl")?.toString() ?? null),
+    websiteUrl: normalizeWebsiteUrl(formData.get("websiteUrl")?.toString() ?? null),
     supportEmail: cleanOptional(formData.get("supportEmail")?.toString() ?? null),
     internalNotes: cleanOptional(formData.get("internalNotes")?.toString() ?? null),
     billingStatus: formData.get("billingStatus") || undefined,
@@ -111,7 +142,7 @@ export async function updateClientAction(formData: FormData) {
   });
 
   if (!parsed.success) {
-    throw new Error("Please complete the required client fields.");
+    throw new Error(validationErrorMessage("Client update", parsed.error));
   }
 
   await updateClient(parsed.data.clientId, {

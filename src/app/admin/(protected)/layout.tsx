@@ -9,11 +9,8 @@ const navItems = [
   { label: "Dashboard", href: "/admin" },
   { label: "Clients", href: "/admin/clients" },
   { label: "Products", href: "/admin/products" },
-  { label: "Infrastructure", href: "/admin/infrastructure" },
   { label: "Subscriptions", href: "/admin/subscriptions" },
-  { label: "Entitlements", href: "/admin/entitlements" },
   { label: "Payments", href: "/admin/payments" },
-  { label: "Service Controls", href: "/admin/service-controls" },
 ];
 
 export default async function ProtectedAdminLayout({

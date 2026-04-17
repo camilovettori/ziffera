@@ -281,7 +281,7 @@ export default async function SubscriptionDetailPage({
                   : "border-slate-200 bg-[linear-gradient(180deg,#ffffff_0%,#f8fbff_100%)]"
               }`}
             >
-              <div className="text-sm font-medium text-slate-950">{product.name}</div>
+              <div className="text-sm font-medium text-slate-950">{product.displayName}</div>
               <div className="mt-1 text-xs uppercase tracking-[0.22em] text-slate-500">
                 {product.code}
               </div>

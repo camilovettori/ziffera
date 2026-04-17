@@ -39,6 +39,10 @@ export default async function ClientDetailPage({
           <p className="mt-3 text-sm uppercase tracking-[0.22em] text-slate-500">
             Billing: {client.billing_status} · Service: {client.service_status}
           </p>
+          <p className="mt-2 text-sm text-slate-600">
+            Assigned product:{" "}
+            {client.assignedProduct?.public_name ?? client.assignedProduct?.name ?? "Unassigned"}
+          </p>
         </div>
         <Link
           href="/admin/clients"
@@ -82,6 +86,15 @@ export default async function ClientDetailPage({
                   ]}
                 />
                 <SelectField
+                  label="Assigned product"
+                  name="assignedProductId"
+                  defaultValue={client.assigned_product_id ?? ""}
+                  options={[
+                    ["", "Unassigned"],
+                    ...products.map((product) => [product.id, product.displayName] as [string, string]),
+                  ]}
+                />
+                <SelectField
                   label="Billing status"
                   name="billingStatus"
                   defaultValue={client.billing_status}
@@ -108,6 +121,17 @@ export default async function ClientDetailPage({
                   ["paid_in_full", "Paid in full"],
                 ]}
               />
+
+              <div className="rounded-[1.4rem] border border-slate-200 bg-slate-50 px-4 py-4 text-sm leading-7 text-slate-600">
+                <div className="text-[10px] uppercase tracking-[0.22em] text-slate-500">
+                  Current subscription summary
+                </div>
+                <div className="mt-1">
+                  {client.currentSubscription
+                    ? `${client.currentSubscription.status} · ${client.currentSubscription.amountCents / 100} ${client.currentSubscription.currency} · ${client.currentSubscription.billingInterval}`
+                    : "No subscription linked to the assigned product yet."}
+                </div>
+              </div>
 
               <div className="space-y-2">
                 <label className="text-[10px] uppercase tracking-[0.24em] text-slate-500">
@@ -157,7 +181,7 @@ export default async function ClientDetailPage({
                   label="Product"
                   name="productId"
                   defaultValue={products[0]?.id ?? ""}
-                  options={products.map((product) => [product.id, product.name])}
+                  options={products.map((product) => [product.id, product.displayName])}
                 />
                 <SelectField
                   label="State"
