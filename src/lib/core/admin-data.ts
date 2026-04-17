@@ -1,6 +1,10 @@
 import "server-only";
 
 import { query, withTransaction } from "@/lib/core/db";
+import {
+  ensureClientBillingIntegrationForClientId,
+  refreshClientBillingSnapshotForClientId,
+} from "@/lib/core/billing-snapshots";
 import type {
   BillingStatus,
   ClientContactRecord,
@@ -779,6 +783,7 @@ export async function createClient(input: {
       legal_name,
       company_name,
       slug,
+      billing_project_key,
       client_type,
       billing_status,
       service_status,
@@ -793,6 +798,7 @@ export async function createClient(input: {
       name,
       input.legalName?.trim() || null,
       input.companyName?.trim() || null,
+      slug,
       slug,
       input.clientType,
       input.billingStatus ?? "none",
@@ -809,6 +815,8 @@ export async function createClient(input: {
   if (!client) {
     throw new Error("Failed to create client.");
   }
+
+  await ensureClientBillingIntegrationForClientId(client.id);
 
   await writeAuditLog({
     actorAdminId: input.actorAdminId ?? null,
@@ -884,6 +892,8 @@ export async function updateClient(
     beforeData: before as unknown as Record<string, unknown>,
     afterData: client as unknown as Record<string, unknown>,
   });
+
+  await refreshClientBillingSnapshotForClientId(client.id);
 
   return client;
 }
@@ -1030,6 +1040,8 @@ export async function setClientStatus(input: {
     },
   });
 
+  await refreshClientBillingSnapshotForClientId(client.id);
+
   return client;
 }
 
@@ -1139,6 +1151,8 @@ export async function setEntitlement(input: {
     },
   });
 
+  await refreshClientBillingSnapshotForClientId(input.clientId);
+
   return entitlement;
 }
 
@@ -1198,6 +1212,8 @@ export async function createPaymentRecord(input: {
     entityId: payment.id,
     afterData: payment as unknown as Record<string, unknown>,
   });
+
+  await refreshClientBillingSnapshotForClientId(input.clientId);
 
   return payment;
 }

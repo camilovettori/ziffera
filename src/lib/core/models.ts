@@ -86,6 +86,7 @@ export interface ClientRecord {
   legal_name: string | null;
   company_name: string | null;
   slug: string;
+  billing_project_key: string;
   client_type: ClientType;
   billing_status: BillingStatus;
   service_status: ServiceStatus;
@@ -94,6 +95,16 @@ export interface ClientRecord {
   billing_email: string | null;
   website_url: string | null;
   support_email: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface ClientBillingIntegrationRecord {
+  id: string;
+  client_id: string;
+  project_key: string;
+  status: "active" | "disabled";
+  last_synced_at: string | null;
   created_at: string;
   updated_at: string;
 }
@@ -281,6 +292,57 @@ export interface StripeWebhookEventRecord {
   processing_status: "received" | "processing" | "processed" | "ignored" | "failed";
   payload: Record<string, unknown>;
   error_message: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface ClientSubscriptionSnapshotRecord {
+  id: string;
+  client_id: string;
+  product_id: string;
+  subscription_id: string | null;
+  project_key: string;
+  product_sort_order: number;
+  client_name: string;
+  client_slug: string;
+  billing_project_key: string;
+  client_billing_status: BillingStatus;
+  client_service_status: ServiceStatus;
+  client_billing_email: string | null;
+  client_support_email: string | null;
+  client_website_url: string | null;
+  product_code: string;
+  product_name: string;
+  product_slug: string;
+  product_kind: ProductKind;
+  product_is_active: boolean;
+  subscription_name: string | null;
+  subscription_status: SubscriptionStatus;
+  billing_interval: "month" | "year";
+  amount_cents: number;
+  currency: string;
+  trial_start_at: string | null;
+  trial_end_at: string | null;
+  current_period_start_at: string | null;
+  current_period_end_at: string | null;
+  cancel_at_period_end: boolean;
+  manual_override_status: string | null;
+  entitlement_status: EntitlementStatus | null;
+  access_source: EntitlementRecord["access_source"] | null;
+  stripe_customer_id: string | null;
+  stripe_subscription_id: string | null;
+  stripe_price_id: string | null;
+  stripe_product_id: string | null;
+  stripe_latest_invoice_id: string | null;
+  stripe_latest_invoice_status: string | null;
+  latest_payment_status: PaymentStatus | null;
+  latest_payment_amount_cents: number | null;
+  latest_payment_currency: string | null;
+  latest_payment_paid_at: string | null;
+  latest_payment_description: string | null;
+  snapshot_version: number;
+  snapshot_payload: Record<string, unknown>;
+  synced_at: string;
   created_at: string;
   updated_at: string;
 }

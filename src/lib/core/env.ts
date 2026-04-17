@@ -16,6 +16,7 @@ const envSchema = z.object({
   RESEND_API_KEY: z.string().optional(),
   STRIPE_SECRET_KEY: z.string().optional(),
   STRIPE_WEBHOOK_SECRET: z.string().optional(),
+  ZIFFERA_INTERNAL_BILLING_API_TOKEN: z.string().optional(),
   STRIPE_MARGINFLOW_PRODUCT_ID: z.string().optional(),
   STRIPE_MARGINFLOW_MONTHLY_PRICE_ID: z.string().optional(),
   STRIPE_MARGINFLOW_MONTHLY_PROMO_PRICE_ID: z.string().optional(),
@@ -43,6 +44,7 @@ type EnvShape = {
   resendApiKey?: string;
   stripeSecretKey?: string;
   stripeWebhookSecret?: string;
+  internalBillingApiToken?: string;
   stripeMarginflowProductId?: string;
   stripeMarginflowMonthlyPriceId?: string;
   stripeMarginflowMonthlyPromoPriceId?: string;
@@ -85,6 +87,7 @@ export function getEnv(): EnvShape {
     resendApiKey: parsed.data.RESEND_API_KEY,
     stripeSecretKey: parsed.data.STRIPE_SECRET_KEY,
     stripeWebhookSecret: parsed.data.STRIPE_WEBHOOK_SECRET,
+    internalBillingApiToken: parsed.data.ZIFFERA_INTERNAL_BILLING_API_TOKEN,
     stripeMarginflowProductId: parsed.data.STRIPE_MARGINFLOW_PRODUCT_ID,
     stripeMarginflowMonthlyPriceId:
       parsed.data.STRIPE_MARGINFLOW_MONTHLY_PRICE_ID,

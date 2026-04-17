@@ -2,6 +2,7 @@ import "server-only";
 
 import Stripe from "stripe";
 import { query } from "@/lib/core/db";
+import { refreshClientBillingSnapshotForClientId } from "@/lib/core/billing-snapshots";
 import { writeAuditLog, setEntitlement } from "@/lib/core/admin-data";
 import { createEmailEvent } from "@/lib/core/emails";
 import type {
@@ -400,6 +401,8 @@ async function upsertSubscriptionRow(input: {
     }
   }
 
+  await refreshClientBillingSnapshotForClientId(subscription.client_id);
+
   return subscription;
 }
 
@@ -526,6 +529,8 @@ export async function updateSubscriptionRecord(input: {
     beforeData: before as unknown as Record<string, unknown>,
     afterData: subscription as unknown as Record<string, unknown>,
   });
+
+  await refreshClientBillingSnapshotForClientId(subscription.client_id);
 
   return subscription;
 }
@@ -920,6 +925,8 @@ export async function createStripeCustomerForSubscription(input: {
     [customer.id, detail.id]
   );
 
+  await refreshClientBillingSnapshotForClientId(detail.client_id);
+
   await writeAuditLog({
     actorAdminId: input.actorAdminId ?? null,
     action: "stripe.customer.create",
@@ -1215,6 +1222,8 @@ export async function syncSubscriptionFromStripeObject(input: {
     },
   });
 
+  await refreshClientBillingSnapshotForClientId(subscription.client_id);
+
   return subscription;
 }
 
@@ -1367,6 +1376,8 @@ export async function syncInvoicePaymentFromStripeObject(input: {
       sourceEventType: input.sourceEventType ?? null,
     },
   });
+
+  await refreshClientBillingSnapshotForClientId(clientId);
 
   return paymentResult.rows[0] ?? null;
 }
