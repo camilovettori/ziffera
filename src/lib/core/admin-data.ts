@@ -1201,6 +1201,72 @@ export async function updateClient(
   return client;
 }
 
+export async function updateClientProfile(
+  clientId: string,
+  input: {
+    name: string;
+    legalName?: string;
+    companyName?: string;
+    clientType: string;
+    assignedProductId?: string | null;
+    billingEmail?: string;
+    websiteUrl?: string;
+    supportEmail?: string;
+    internalNotes?: string;
+    billingStatus?: BillingStatus;
+    actorAdminId?: string | null;
+  }
+) {
+  const before = await getClientById(clientId);
+  const result = await query<ClientRecord>(
+    `UPDATE clients SET
+      name = $1,
+      legal_name = $2,
+      company_name = $3,
+      client_type = $4,
+      assigned_product_id = $5,
+      billing_email = $6,
+      website_url = $7,
+      support_email = $8,
+      internal_notes = $9,
+      billing_status = $10,
+      updated_at = NOW()
+    WHERE id = $11
+    RETURNING *`,
+    [
+      input.name.trim(),
+      input.legalName?.trim() || null,
+      input.companyName?.trim() || null,
+      input.clientType,
+      input.assignedProductId ?? null,
+      input.billingEmail?.trim() || null,
+      input.websiteUrl?.trim() || null,
+      input.supportEmail?.trim() || null,
+      input.internalNotes?.trim() || null,
+      input.billingStatus ?? "none",
+      clientId,
+    ]
+  );
+
+  const client = result.rows[0];
+  if (!client) {
+    throw new Error("Failed to update client.");
+  }
+
+  await writeAuditLog({
+    actorAdminId: input.actorAdminId ?? null,
+    action: "client.update",
+    entityType: "client",
+    entityId: client.id,
+    beforeData: before as unknown as Record<string, unknown>,
+    afterData: client as unknown as Record<string, unknown>,
+  });
+
+  await refreshClientBillingSnapshotForClientId(client.id);
+
+  return client;
+}
+
 export async function createProduct(input: {
   name: string;
   publicName?: string;

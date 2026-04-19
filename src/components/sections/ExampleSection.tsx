@@ -16,16 +16,16 @@ const proofPoints = [
 
 const proofSpecs = [
   {
-    title: "Homepage",
-    text: "Clear structure that leads visitors toward action.",
+    title: "Live e-commerce",
+    text: "Full storefront with gallery, artwork pages, and cart.",
   },
   {
-    title: "Checkout",
-    text: "Embedded Stripe flow with a simple payment path.",
+    title: "Stripe checkout",
+    text: "Direct payments with a clean, embedded checkout flow.",
   },
   {
-    title: "Admin",
-    text: "Practical controls for ongoing management.",
+    title: "Admin panel",
+    text: "Client manages products and orders without a developer.",
   },
 ];
 
@@ -43,7 +43,7 @@ export default function ExampleSection() {
           transition={{ duration: 0.55 }}
           className="max-w-2xl"
         >
-          <Badge>Real client project</Badge>
+          <Badge>Real client work</Badge>
 
           <h2 className="mt-4 text-4xl font-semibold tracking-[-0.05em] text-slate-950 md:text-5xl">
             Frequency Framed.
@@ -52,8 +52,10 @@ export default function ExampleSection() {
           <Card className="mt-5 border-none bg-transparent shadow-none">
             <CardContent className="px-0">
               <CardDescription className="max-w-xl text-lg leading-8 text-slate-600">
-                The only real project featured on the homepage. A live e-commerce
-                build with Stripe, an admin panel, and a polished storefront.
+                A live e-commerce build with Stripe checkout, an admin panel,
+                and a polished storefront. One of 3 projects delivered so far —
+                shown here because it&apos;s the most complete proof of what
+                Ziffera builds.
               </CardDescription>
             </CardContent>
           </Card>
@@ -105,7 +107,7 @@ export default function ExampleSection() {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                View live proof
+                View live site → frequencyframed.ie
               </a>
             </Button>
           </div>

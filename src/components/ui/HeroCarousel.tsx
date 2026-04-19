@@ -1,26 +1,45 @@
 "use client";
+import { useEffect, useState } from "react";
 import { Check, Clock3, ShieldCheck, Sparkles } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 
+const slides = [
+  { src: "/examples/homepage.png", alt: "Frequency Framed homepage" },
+  { src: "/examples/checkout.png", alt: "Frequency Framed checkout" },
+  { src: "/examples/gallery.png", alt: "Frequency Framed gallery" },
+  { src: "/examples/admin.png", alt: "Frequency Framed admin panel" },
+  { src: "/examples/cart.png", alt: "Frequency Framed cart" },
+  { src: "/examples/mobileFF.jpg", alt: "Frequency Framed mobile view" },
+];
+
 const proofHighlights = [
   {
-    title: "Live client site",
-    text: "Frequency Framed is the only public proof on the homepage.",
+    title: "Live e-commerce",
+    text: "Full storefront with gallery, artwork pages, and cart.",
   },
   {
-    title: "Real checkout",
-    text: "The live project includes Stripe, admin access, and a clean handoff.",
+    title: "Stripe checkout",
+    text: "Direct payments with a clean embedded checkout flow.",
   },
   {
-    title: "Premium finish",
-    text: "Designed to feel like a serious software company, not a template.",
+    title: "Admin panel",
+    text: "Client manages products and orders without a developer.",
   },
 ];
 
 export default function HeroCarousel() {
+  const [current, setCurrent] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrent((prev) => (prev + 1) % slides.length);
+    }, 3000);
+    return () => clearInterval(timer);
+  }, []);
+
   return (
     <div className="mx-auto w-full max-w-[520px]">
       <div className="overflow-hidden rounded-[24px] border border-white/20 bg-[rgba(8,12,27,0.92)] shadow-[0_0_0_1px_rgba(99,102,241,0.16),0_50px_100px_rgba(0,0,0,0.62),0_0_80px_rgba(59,130,246,0.1)] backdrop-blur-2xl">
@@ -55,14 +74,27 @@ export default function HeroCarousel() {
             </div>
 
             <div className="relative aspect-[16/11] bg-slate-950">
-              <Image
-                src="/examples/homepage.png"
-                alt="Frequency Framed homepage preview"
-                fill
-                sizes="(max-width: 1024px) 100vw, 52vw"
-                className="object-cover object-top"
-                priority
-              />
+              {slides.map((slide, i) => (
+                <Image
+                  key={slide.src}
+                  src={slide.src}
+                  alt={slide.alt}
+                  fill
+                  sizes="(max-width: 1024px) 100vw, 52vw"
+                  className={`object-cover object-top transition-opacity duration-700 ${i === current ? "opacity-100" : "opacity-0"}`}
+                  priority={i === 0}
+                />
+              ))}
+              <div className="absolute bottom-3 left-0 right-0 flex justify-center gap-1.5 z-10">
+                {slides.map((_, i) => (
+                  <button
+                    key={i}
+                    onClick={() => setCurrent(i)}
+                    aria-label={`Go to slide ${i + 1}`}
+                    className={`rounded-full transition-all duration-300 ${i === current ? "w-4 h-1.5 bg-white" : "w-1.5 h-1.5 bg-white/40"}`}
+                  />
+                ))}
+              </div>
             </div>
           </div>
 

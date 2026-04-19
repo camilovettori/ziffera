@@ -19,31 +19,31 @@ import {
 const services = [
   {
     title: "Websites",
-    desc: "Premium, mobile-first websites delivered in 7 days for Irish SMEs.",
+    desc: "Clean, fast, mobile-first websites delivered in 7 days.",
     icon: Globe,
     accent: "from-blue-500 to-cyan-400",
   },
   {
-    title: "SaaS Products",
-    desc: "Subscription-ready product design with commercial thinking built in.",
+    title: "E-commerce",
+    desc: "Online stores with Stripe, product management, and admin access.",
     icon: Sparkles,
     accent: "from-violet-500 to-fuchsia-400",
   },
   {
-    title: "Mobile Apps",
-    desc: "iOS and Android-ready app interfaces that feel polished and intuitive.",
+    title: "SaaS Products",
+    desc: "Subscription-ready digital products with real commercial thinking.",
     icon: Smartphone,
     accent: "from-sky-500 to-blue-500",
   },
   {
-    title: "Custom Software",
-    desc: "Tailored digital tools built to solve real operational problems.",
+    title: "Mobile Apps",
+    desc: "iOS and Android interfaces that feel polished and intuitive.",
     icon: Code2,
     accent: "from-indigo-500 to-blue-600",
   },
   {
-    title: "Zconnect - Systems & Integrations",
-    desc: "Automation, connected systems, and operational clarity for busy teams.",
+    title: "Systems & Integrations",
+    desc: "Automation and connected systems that remove admin work.",
     icon: Workflow,
     accent: "from-cyan-500 to-indigo-500",
   },
@@ -54,7 +54,7 @@ const productProof = [
     title: "MarginFlow",
     desc: "A software product that proves Ziffera can ship real digital tools, not just brochure sites.",
     bullets: ["Product design", "Commercial thinking", "Subscription-ready"],
-    href: "/marginflow",
+    href: "/products/marginflow",
     cta: "Explore MarginFlow",
   },
   {
@@ -164,13 +164,13 @@ export default function HomePage() {
       >
         <div className="mx-auto max-w-7xl px-6 lg:px-10">
           <motion.div variants={item} className="max-w-2xl">
-            <Badge>What&apos;s included</Badge>
+            <Badge>Services</Badge>
             <h2 className="mt-4 text-4xl font-semibold tracking-[-0.05em] text-slate-950 md:text-5xl">
-              Everything you need to launch with confidence.
+              What we build.
             </h2>
             <p className="mt-4 max-w-[500px] text-[18px] leading-[1.65] text-slate-700">
-              Built to look sharp, move fast, and give your business a stronger
-              first impression.
+              Websites, e-commerce stores, SaaS products, apps, and systems.
+              Every build is clean, fast, and ready to work for your business.
             </p>
           </motion.div>
 
@@ -287,12 +287,11 @@ export default function HomePage() {
           <motion.div variants={item}>
             <Badge>Pricing</Badge>
             <h2 className="mt-4 text-4xl font-semibold tracking-[-0.05em] text-slate-950 md:text-5xl">
-              One clear package.
+              One clear price.
             </h2>
             <p className="mt-4 max-w-2xl text-lg leading-8 text-slate-700">
-              The website offer is simple: €400 setup plus €25/month after
-              launch. No hidden fees, no bloated package names, just a clear
-              offer for a serious business website.
+              €400 setup. €25/month after launch. No hidden fees. No long
+              contracts. Just a clear offer for a serious business website.
             </p>
           </motion.div>
 

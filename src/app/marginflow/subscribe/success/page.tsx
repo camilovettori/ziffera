@@ -32,7 +32,7 @@ export default function MarginFlowSubscribeSuccessPage() {
                 <Link href="/">Back to Ziffera</Link>
               </Button>
               <Button asChild variant="outline">
-                <Link href="/marginflow">Review MarginFlow</Link>
+                <Link href="/products/marginflow">Review MarginFlow</Link>
               </Button>
             </div>
           </CardContent>

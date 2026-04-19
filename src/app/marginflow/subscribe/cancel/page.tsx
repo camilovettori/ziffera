@@ -31,7 +31,7 @@ export default function MarginFlowSubscribeCancelPage() {
                 <Link href="/marginflow/subscribe">Try again</Link>
               </Button>
               <Button asChild variant="outline">
-                <Link href="/marginflow">Back to MarginFlow</Link>
+                <Link href="/products/marginflow">Back to MarginFlow</Link>
               </Button>
             </div>
           </CardContent>

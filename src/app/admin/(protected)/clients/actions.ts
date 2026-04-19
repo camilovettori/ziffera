@@ -7,11 +7,12 @@ import { requireAdminSession } from "@/lib/core/auth";
 import {
   createClient,
   setClientStatus,
-  updateClient,
+  updateClientProfile,
   upsertClientContact,
 } from "@/lib/core/admin-data";
+import { refreshClientBillingSnapshotForClientId } from "@/lib/core/billing-snapshots";
 
-const clientFormSchema = z.object({
+const clientProfileSchema = z.object({
   name: z.string().min(2),
   legalName: z.string().optional(),
   companyName: z.string().optional(),
@@ -24,10 +25,17 @@ const clientFormSchema = z.object({
   billingStatus: z
     .enum(["none", "trial", "current", "overdue", "paid_in_full"])
     .optional(),
+});
+
+const clientCreateSchema = clientProfileSchema.extend({
   serviceStatus: z
     .enum(["active", "trial", "overdue", "suspended", "inactive", "paid_in_full"])
     .optional(),
   serviceStatusReason: z.string().optional(),
+});
+
+const clientUpdateSchema = clientProfileSchema.extend({
+  clientId: z.string().uuid(),
 });
 
 function normalizeWebsiteUrl(value: string | null) {
@@ -89,7 +97,7 @@ export async function createClientAction(formData: FormData) {
   "use server";
   const session = await requireAdminSession();
 
-  const parsed = clientFormSchema.safeParse({
+  const parsed = clientCreateSchema.safeParse({
     name: formData.get("name"),
     legalName: formData.get("legalName"),
     companyName: formData.get("companyName"),
@@ -120,10 +128,10 @@ export async function createClientAction(formData: FormData) {
   redirect(`/admin/clients/${client.id}`);
 }
 
-export async function updateClientAction(formData: FormData) {
+export async function updateClientProfileAction(formData: FormData) {
   "use server";
   const session = await requireAdminSession();
-  const parsed = clientFormSchema.extend({ clientId: z.string().uuid() }).safeParse({
+  const parsed = clientUpdateSchema.safeParse({
     clientId: formData.get("clientId"),
     name: formData.get("name"),
     legalName: formData.get("legalName"),
@@ -135,17 +143,13 @@ export async function updateClientAction(formData: FormData) {
     supportEmail: cleanOptional(formData.get("supportEmail")?.toString() ?? null),
     internalNotes: cleanOptional(formData.get("internalNotes")?.toString() ?? null),
     billingStatus: formData.get("billingStatus") || undefined,
-    serviceStatus: formData.get("serviceStatus") || undefined,
-    serviceStatusReason: cleanOptional(
-      formData.get("serviceStatusReason")?.toString() ?? null
-    ),
   });
 
   if (!parsed.success) {
-    throw new Error(validationErrorMessage("Client update", parsed.error));
+    throw new Error(validationErrorMessage("Client profile update", parsed.error));
   }
 
-  await updateClient(parsed.data.clientId, {
+  await updateClientProfile(parsed.data.clientId, {
     ...parsed.data,
     actorAdminId: session.admin.id,
   });
@@ -153,6 +157,36 @@ export async function updateClientAction(formData: FormData) {
   revalidatePath("/admin");
   revalidatePath("/admin/clients");
   revalidatePath(`/admin/clients/${parsed.data.clientId}`);
+}
+
+export async function refreshClientBillingAction(formData: FormData) {
+  "use server";
+  await requireAdminSession();
+
+  const parsed = z
+    .object({
+      clientId: z.string().uuid(),
+    })
+    .safeParse({
+      clientId: formData.get("clientId"),
+    });
+
+  if (!parsed.success) {
+    throw new Error(validationErrorMessage("Billing refresh", parsed.error));
+  }
+
+  await refreshClientBillingSnapshotForClientId(parsed.data.clientId);
+
+  revalidatePath("/admin");
+  revalidatePath("/admin/clients");
+  revalidatePath(`/admin/clients/${parsed.data.clientId}`);
+  revalidatePath("/admin/payments");
+  revalidatePath("/admin/subscriptions");
+}
+
+export async function updateClientAction(formData: FormData) {
+  "use server";
+  return updateClientProfileAction(formData);
 }
 
 export async function upsertClientContactAction(formData: FormData) {

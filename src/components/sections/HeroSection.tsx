@@ -10,18 +10,18 @@ import { Card, CardContent, CardDescription } from "@/components/ui/card";
 
 const heroTrustPoints = [
   {
-    title: "Real proof only",
-    text: "Frequency Framed is the only public project shown on the homepage.",
+    title: "Real work done",
+    text: "3 real clients delivered — websites, e-commerce, and integrations.",
     icon: Check,
   },
   {
-    title: "Built to convert",
-    text: "Clear hierarchy, sharper messaging, and stronger calls to action.",
+    title: "Fast delivery",
+    text: "Delivered in 5–14 days depending on project scope.",
     icon: Sparkles,
   },
   {
-    title: "Simple process",
-    text: "€400 setup, paid as €200 to begin and €200 before go-live.",
+    title: "No lock-in",
+    text: "No long contracts. Cancel or pause the monthly plan anytime.",
     icon: ShieldCheck,
   },
 ];
@@ -110,9 +110,9 @@ export default function HeroSection() {
             transition={{ duration: 0.7, delay: 0.12 }}
             className="mt-6 mb-8 max-w-[480px] text-[17px] font-normal leading-[1.75] text-[#CBD5F5]"
           >
-            We design and build websites, SaaS products, apps, custom software,
-            and connected systems for Irish businesses that want a serious
-            digital presence.
+            We design and build websites, products, and systems for small
+            businesses that want a serious digital presence — without agency
+            prices or long contracts.
           </motion.p>
 
           <motion.div
@@ -124,11 +124,11 @@ export default function HeroSection() {
             <Button
               asChild
               size="lg"
-              aria-label="Get started with the €400 setup and €25 per month offer"
+              aria-label="See Ziffera's services and pricing"
               className="btn-primary shimmer-hover bg-[linear-gradient(135deg,#4F46E5_0%,#7C3AED_100%)] px-8 text-white shadow-[0_4px_24px_rgba(99,102,241,0.45),0_0_0_1px_rgba(139,92,246,0.3)] hover:shadow-[0_10px_34px_rgba(99,102,241,0.52),0_0_0_1px_rgba(139,92,246,0.35)]"
             >
-              <Link href="/checkout/setup-deposit">
-                Get Started {"\u2014"} €400 setup + €25/month
+              <Link href="/services">
+                See our services
               </Link>
             </Button>
           </motion.div>
@@ -142,7 +142,7 @@ export default function HeroSection() {
             <span className="flex h-5 w-5 items-center justify-center rounded-full bg-white/10 text-cyan-200 shadow-[0_0_8px_#22C55E]">
               <Check className="h-3.5 w-3.5" />
             </span>
-            Currently accepting 2 new projects this month.
+            3 clients delivered. 2 slots open this month.
           </motion.p>
 
           <motion.div
