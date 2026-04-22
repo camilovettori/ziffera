@@ -11,18 +11,23 @@ import { Card, CardContent, CardDescription } from "@/components/ui/card";
 
 const heroTrustPoints = [
   {
-    title: "Real work done",
-    text: "3 real clients delivered — websites, e-commerce, and integrations.",
+    title: "12+ websites delivered",
+    text: "Real Irish businesses",
     icon: Check,
   },
   {
-    title: "Fast delivery",
-    text: "Delivered in 5–14 days depending on project scope.",
+    title: "7-day delivery",
+    text: "When content is ready",
     icon: Sparkles,
   },
   {
+    title: "100% client satisfaction",
+    text: "Every project, no exceptions",
+    icon: Check,
+  },
+  {
     title: "No lock-in",
-    text: "No long contracts. Cancel or pause the monthly plan anytime.",
+    text: "Cancel or pause anytime",
     icon: ShieldCheck,
   },
 ];
@@ -118,7 +123,7 @@ export default function HeroSection() {
             className="mt-6 mb-8 max-w-[480px] text-[17px] font-normal leading-[1.75] text-[#CBD5F5]"
           >
             We design and build websites, products, and systems for small
-            businesses that want a serious digital presence — without agency
+            businesses that want a serious digital presence â€” without agency
             prices or long contracts.
           </motion.p>
 
@@ -131,12 +136,20 @@ export default function HeroSection() {
             <Button
               asChild
               size="lg"
-              aria-label="See Ziffera's services and pricing"
+              aria-label="Book a free call with Ziffera"
               className="btn-primary shimmer-hover bg-[linear-gradient(135deg,#4F46E5_0%,#7C3AED_100%)] px-8 text-white shadow-[0_4px_24px_rgba(99,102,241,0.45),0_0_0_1px_rgba(139,92,246,0.3)] hover:shadow-[0_10px_34px_rgba(99,102,241,0.52),0_0_0_1px_rgba(139,92,246,0.35)]"
             >
-              <Link href="/services">
-                See our services
-              </Link>
+              <Link href="/contact">Book a Free Call</Link>
+            </Button>
+
+            <Button
+              asChild
+              size="lg"
+              variant="outline"
+              aria-label="See Ziffera's work"
+              className="border-white/15 bg-white/5 text-white shadow-none backdrop-blur-sm hover:border-white/25 hover:bg-white/10"
+            >
+              <Link href="#work">See Our Work</Link>
             </Button>
           </motion.div>
 
@@ -149,7 +162,7 @@ export default function HeroSection() {
             <span className="flex h-5 w-5 items-center justify-center rounded-full bg-white/10 text-cyan-200 shadow-[0_0_8px_#22C55E]">
               <Check className="h-3.5 w-3.5" />
             </span>
-            3 clients delivered. 2 slots open this month.
+            Currently accepting 2 new projects this month.
           </motion.p>
 
           <motion.div

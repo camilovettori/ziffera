@@ -1,11 +1,16 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Check, Code2, Globe, Smartphone, Sparkles, Workflow } from "lucide-react";
+import { Check, Sparkles } from "lucide-react";
 import Link from "next/link";
-import Header from "@/components/layout/Header";
+import Image from "next/image";
+import CTASection from "@/components/sections/CTASection";
 import ExampleSection from "@/components/sections/ExampleSection";
 import HeroSection from "@/components/sections/HeroSection";
+import PricingSection from "@/components/sections/PricingSection";
+import ServicesSection from "@/components/sections/ServicesSection";
+import TestimonialsSection from "@/components/sections/TestimonialsSection";
+import Header from "@/components/layout/Header";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -15,39 +20,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-
-const services = [
-  {
-    title: "Websites",
-    desc: "Clean, fast, mobile-first websites delivered in 7 days.",
-    icon: Globe,
-    accent: "from-blue-500 to-cyan-400",
-  },
-  {
-    title: "E-commerce",
-    desc: "Online stores with Stripe, product management, and admin access.",
-    icon: Sparkles,
-    accent: "from-violet-500 to-fuchsia-400",
-  },
-  {
-    title: "SaaS Products",
-    desc: "Subscription-ready digital products with real commercial thinking.",
-    icon: Smartphone,
-    accent: "from-sky-500 to-blue-500",
-  },
-  {
-    title: "Mobile Apps",
-    desc: "iOS and Android interfaces that feel polished and intuitive.",
-    icon: Code2,
-    accent: "from-indigo-500 to-blue-600",
-  },
-  {
-    title: "Systems & Integrations",
-    desc: "Automation and connected systems that remove admin work.",
-    icon: Workflow,
-    accent: "from-cyan-500 to-indigo-500",
-  },
-];
 
 const productProof = [
   {
@@ -66,28 +38,19 @@ const productProof = [
   },
 ];
 
-const monthlyPlanIncludes = [
-  "Website hosting",
-  "Security updates",
-  "Basic maintenance",
-  "Small text or image updates within reasonable limits",
-  "Ongoing support",
-  "Keeping the website online and running properly",
-];
-
-const monthlyPlanNotIncluded = [
-  "Full redesigns",
-  "New pages",
-  "Advanced SEO",
-  "Ads / marketing management",
-  "Large feature upgrades",
-  "Major booking system changes",
-];
-
-const reassuranceItems = [
-  "You pay €200 to begin.",
-  "You review and approve the website before the final payment.",
-  "The site goes live only when the work is ready.",
+const proofSpecs = [
+  {
+    title: "Live e-commerce",
+    text: "Full storefront with gallery, artwork pages, and cart.",
+  },
+  {
+    title: "Stripe checkout",
+    text: "Direct payments with a clean, embedded checkout flow.",
+  },
+  {
+    title: "Admin panel",
+    text: "Client manages products and orders without a developer.",
+  },
 ];
 
 const faqs = [
@@ -151,60 +114,9 @@ export default function HomePage() {
 
       <Header />
       <HeroSection />
-
       <ExampleSection />
-
-      <motion.section
-        id="services"
-        variants={container}
-        initial="hidden"
-        whileInView="show"
-        viewport={{ once: true, amount: 0.22 }}
-        className="bg-[linear-gradient(180deg,#f8fbff_0%,#ffffff_100%)] py-20 lg:py-24"
-      >
-        <div className="mx-auto max-w-7xl px-6 lg:px-10">
-          <motion.div variants={item} className="max-w-2xl">
-            <Badge>Services</Badge>
-            <h2 className="mt-4 text-4xl font-semibold tracking-[-0.05em] text-slate-950 md:text-5xl">
-              What we build.
-            </h2>
-            <p className="mt-4 max-w-[500px] text-[18px] leading-[1.65] text-slate-700">
-              Websites, e-commerce stores, SaaS products, apps, and systems.
-              Every build is clean, fast, and ready to work for your business.
-            </p>
-          </motion.div>
-
-          <div className="mt-12 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
-            {services.map((service) => {
-              const Icon = service.icon;
-
-              return (
-                <motion.div
-                  key={service.title}
-                  variants={item}
-                  whileHover={{ y: -6, scale: 1.015 }}
-                  transition={{ duration: 0.22 }}
-                >
-                  <Card className="group relative h-full overflow-hidden rounded-[20px] border border-[#E2E8F0] bg-white shadow-[0_2px_12px_rgba(0,0,0,0.04)] transition-all duration-300 hover:-translate-y-[6px] hover:border-[rgba(99,102,241,0.3)] hover:shadow-[0_16px_48px_rgba(99,102,241,0.1)]">
-                    <div className={`absolute inset-x-0 top-0 h-[3px] bg-gradient-to-r ${service.accent}`} />
-                    <CardHeader className="flex h-full flex-col px-7 pt-8 pb-4">
-                      <div className="mb-5 flex h-[52px] w-[52px] items-center justify-center rounded-[12px] border border-[rgba(99,102,241,0.08)] bg-[rgba(99,102,241,0.08)] text-[24px] text-blue-700 shadow-none transition duration-300 group-hover:shadow-[0_10px_24px_rgba(99,102,241,0.08)]">
-                        <Icon className="h-6 w-6" />
-                      </div>
-                      <CardTitle className="text-[18px] font-extrabold tracking-[-0.04em] text-[#0F172A]">
-                        {service.title}
-                      </CardTitle>
-                      <CardDescription className="mt-3 flex-1 text-[14px] leading-[1.65] text-slate-700">
-                        {service.desc}
-                      </CardDescription>
-                    </CardHeader>
-                  </Card>
-                </motion.div>
-              );
-            })}
-          </div>
-        </div>
-      </motion.section>
+      <TestimonialsSection />
+      <ServicesSection />
 
       <motion.section
         id="products"
@@ -273,173 +185,75 @@ export default function HomePage() {
             </motion.div>
           ))}
         </div>
-      </motion.section>
 
-      <motion.section
-        id="pricing"
-        variants={container}
-        initial="hidden"
-        whileInView="show"
-        viewport={{ once: true, amount: 0.18 }}
-        className="mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-24"
-      >
-        <div className="grid gap-6 lg:grid-cols-[1.02fr_0.98fr]">
-          <motion.div variants={item}>
-            <Badge>Pricing</Badge>
-            <h2 className="mt-4 text-4xl font-semibold tracking-[-0.05em] text-slate-950 md:text-5xl">
-              One clear price.
-            </h2>
-            <p className="mt-4 max-w-2xl text-lg leading-8 text-slate-700">
-              €400 setup. €25/month after launch. No hidden fees. No long
-              contracts. Just a clear offer for a serious business website.
-            </p>
+        <div className="mt-12 grid gap-6 lg:grid-cols-[0.94fr_1.06fr]">
+          <motion.div
+            initial={{ opacity: 0, y: 18 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.25 }}
+            transition={{ duration: 0.65, delay: 0.05 }}
+            className="grid gap-4"
+          >
+            {proofSpecs.map((shot) => (
+              <Card
+                key={shot.title}
+                className="overflow-hidden border-slate-200 bg-white shadow-[0_18px_50px_rgba(15,23,42,0.06)]"
+              >
+                <CardHeader className="pb-3">
+                  <div className="flex items-center justify-between gap-4">
+                    <Badge variant="outline">{shot.title}</Badge>
+                    <Sparkles className="h-4 w-4 text-blue-600" />
+                  </div>
+                  <CardTitle className="mt-4 text-xl tracking-[-0.04em] text-slate-950">
+                    Frequency Framed
+                  </CardTitle>
+                  <CardDescription className="mt-2 max-w-xl text-sm leading-6 text-slate-600">
+                    {shot.text}
+                  </CardDescription>
+                </CardHeader>
+              </Card>
+            ))}
           </motion.div>
 
-          <motion.div variants={item}>
-            <Card className="overflow-hidden border-blue-100/80 bg-[linear-gradient(180deg,#eff6ff_0%,#ffffff_100%)] shadow-[0_24px_72px_rgba(59,130,246,0.08)]">
-              <CardHeader>
-                <Badge>Start now</Badge>
-                <CardTitle className="mt-4 text-4xl tracking-[-0.05em]">
-                  €400 setup + €25/month
-                </CardTitle>
-                <CardDescription className="mt-3 max-w-xl text-base leading-7 text-slate-700">
-                  Secure your build slot with a clear setup payment and an
-                  ongoing monthly plan for hosting and support.
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="grid gap-3 sm:grid-cols-2">
-                  <Card className="border-slate-200/80 bg-white shadow-[0_12px_28px_rgba(15,23,42,0.05)]">
-                    <CardContent className="px-4 py-3 text-sm font-medium text-slate-700">
-                      €200 to begin
-                    </CardContent>
-                  </Card>
-                  <Card className="border-slate-200/80 bg-white shadow-[0_12px_28px_rgba(15,23,42,0.05)]">
-                    <CardContent className="px-4 py-3 text-sm font-medium text-slate-700">
-                      €200 before go-live
-                    </CardContent>
-                  </Card>
+          <motion.div
+            initial={{ opacity: 0, y: 18 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.25 }}
+            transition={{ duration: 0.65, delay: 0.05 }}
+            className="grid gap-4"
+          >
+            <Card className="overflow-hidden border-slate-200 bg-white/95 p-4 shadow-[0_24px_70px_rgba(15,23,42,0.08)] lg:p-5">
+              <div className="flex items-center justify-between gap-4">
+                <Badge variant="secondary">Frequency Framed</Badge>
+                <div className="rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-[10px] uppercase tracking-[0.24em] text-blue-700">
+                  Live client work
                 </div>
+              </div>
 
-                <div className="rounded-[1.4rem] border border-blue-100 bg-white px-5 py-5 text-sm leading-7 text-slate-700">
-                  The setup total is €400. The €25/month plan covers hosting,
-                  security updates, basic maintenance, small text or image
-                  changes within reasonable limits, ongoing support, and keeping
-                  the website online and running properly.
+              <div className="mt-4 overflow-hidden rounded-[1.8rem] border border-slate-200 bg-slate-100 shadow-[0_18px_50px_rgba(15,23,42,0.06)]">
+                <div className="border-b border-slate-200 bg-slate-50 px-4 py-3">
+                  <div className="flex items-center gap-2">
+                    <span className="h-2.5 w-2.5 rounded-full bg-slate-300" />
+                    <span className="h-2.5 w-2.5 rounded-full bg-slate-300" />
+                    <span className="h-2.5 w-2.5 rounded-full bg-slate-300" />
+                  </div>
                 </div>
-
-                <Button
-                  asChild
-                  className="w-full"
-                  size="lg"
-                  aria-label="Get started with the €400 setup and €25 per month offer"
-                >
-                  <Link href="/checkout/setup-deposit">
-                    Get Started {"—"} €400 setup + €25/month
-                  </Link>
-                </Button>
-              </CardContent>
+                <div className="relative aspect-[16/11] bg-slate-200">
+                  <Image
+                    src="/examples/homepage.png"
+                    alt="Frequency Framed homepage preview"
+                    fill
+                    sizes="(max-width: 1024px) 100vw, 56vw"
+                    className="object-cover object-top"
+                  />
+                </div>
+              </div>
             </Card>
           </motion.div>
         </div>
       </motion.section>
 
-      <motion.section
-        variants={container}
-        initial="hidden"
-        whileInView="show"
-        viewport={{ once: true, amount: 0.2 }}
-        className="bg-[linear-gradient(180deg,#ffffff_0%,#f8fbff_100%)] py-20 lg:py-24"
-      >
-        <div className="mx-auto max-w-7xl px-6 lg:px-10">
-          <div className="grid gap-6 lg:grid-cols-[0.95fr_1.05fr]">
-            <motion.div variants={item}>
-              <Badge>Monthly plan</Badge>
-              <h2 className="mt-4 text-4xl font-semibold tracking-[-0.05em] text-slate-950 md:text-5xl">
-                What the €25/month plan includes
-              </h2>
-              <p className="mt-4 max-w-xl text-lg leading-8 text-slate-700">
-                The monthly plan starts when the website goes live and keeps the
-                site supported afterwards.
-              </p>
-            </motion.div>
-
-            <motion.div variants={item} className="grid gap-4">
-              <div className="grid gap-3 sm:grid-cols-2">
-                {monthlyPlanIncludes.map((entry) => (
-                  <Card
-                    key={entry}
-                    className="border-slate-200/80 bg-white shadow-[0_12px_28px_rgba(15,23,42,0.05)]"
-                  >
-                    <CardContent className="flex items-start gap-3 px-4 py-4 text-sm text-slate-700">
-                      <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-blue-50 text-blue-700">
-                        <Check className="h-3.5 w-3.5" />
-                      </span>
-                      {entry}
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-
-              <Card className="border-slate-200/80 bg-white shadow-[0_12px_28px_rgba(15,23,42,0.05)]">
-                <CardContent className="space-y-3 px-5 py-5 text-sm leading-7 text-slate-700">
-                  <div className="text-[10px] uppercase tracking-[0.24em] text-slate-500">
-                    Not included
-                  </div>
-                  <div className="flex flex-wrap gap-2">
-                    {monthlyPlanNotIncluded.map((entry) => (
-                      <span
-                        key={entry}
-                        className="rounded-full border border-slate-200 bg-slate-50 px-3 py-2 text-xs text-slate-700"
-                      >
-                        {entry}
-                      </span>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
-            </motion.div>
-          </div>
-        </div>
-      </motion.section>
-
-      <motion.section
-        variants={container}
-        initial="hidden"
-        whileInView="show"
-        viewport={{ once: true, amount: 0.2 }}
-        className="mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-24"
-      >
-        <div className="grid gap-6 lg:grid-cols-[0.95fr_1.05fr]">
-          <motion.div variants={item}>
-            <Badge>Reassurance</Badge>
-            <h2 className="mt-4 text-4xl font-semibold tracking-[-0.05em] text-slate-950 md:text-5xl">
-              No risk, no confusion.
-            </h2>
-            <p className="mt-4 max-w-xl text-lg leading-8 text-slate-700">
-              The process stays clear from the first click to the final handoff.
-            </p>
-          </motion.div>
-
-          <motion.div variants={item}>
-            <div className="grid gap-3">
-              {reassuranceItems.map((entry) => (
-                <Card
-                  key={entry}
-                  className="border-slate-200/80 bg-white shadow-[0_12px_28px_rgba(15,23,42,0.05)]"
-                >
-                  <CardContent className="flex items-center gap-3 px-4 py-4 text-sm text-slate-700">
-                    <span className="flex h-6 w-6 items-center justify-center rounded-full bg-blue-50 text-blue-700">
-                      <Check className="h-3.5 w-3.5" />
-                    </span>
-                    {entry}
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </motion.div>
-        </div>
-      </motion.section>
+      <PricingSection />
 
       <section id="faq" className="mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-24">
         <div className="grid gap-8 lg:grid-cols-[0.92fr_1.08fr]">
@@ -474,6 +288,8 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      <CTASection />
 
       <footer className="border-t border-slate-200/80 bg-white/80">
         <div className="mx-auto grid max-w-7xl gap-8 px-6 py-10 lg:grid-cols-[1.05fr_0.95fr] lg:px-10">
@@ -522,7 +338,7 @@ export default function HomePage() {
         <div className="border-t border-slate-200/80">
           <div className="mx-auto flex max-w-7xl flex-col gap-3 px-6 py-4 text-sm text-slate-600 lg:flex-row lg:items-center lg:justify-between lg:px-10">
             <span>
-              {"©"} 2025 Ziffera. All rights reserved. | Built in Ireland{" "}
+              {"Â©"} 2025 Ziffera. All rights reserved. | Built in Ireland{" "}
               {"\u{1F1EE}\u{1F1EA}"}
             </span>
             <span>Ready to launch a better first impression?</span>

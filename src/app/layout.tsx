@@ -7,7 +7,7 @@ export const metadata: Metadata = {
     template: "%s | Ziffera",
   },
   description:
-    "Ziffera builds premium websites, SaaS products, and systems for Irish businesses. Custom design, mobile-optimized, with website setup from \u20AC400 plus \u20AC25/month.",
+    "Ziffera builds premium websites, e-commerce stores, and digital systems for Irish businesses. Fast delivery, honest pricing, no lock-in contracts.",
   keywords: [
     "web design Ireland",
     "website development Dublin",
@@ -20,7 +20,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Ziffera | Premium Website Design for Irish Businesses",
     description:
-      "Ziffera builds premium websites, SaaS products, and systems for Irish businesses. Custom design, mobile-optimized, with website setup from \u20AC400 plus \u20AC25/month.",
+      "Premium websites for Irish businesses. Delivered in 7 days. From \u20AC800.",
     url: "https://www.ziffera.ie",
     siteName: "Ziffera",
     locale: "en_IE",
@@ -38,7 +38,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Ziffera | Premium Website Design for Irish Businesses",
     description:
-      "Ziffera builds premium websites, SaaS products, and systems for Irish businesses. Custom design, mobile-optimized, with website setup from \u20AC400 plus \u20AC25/month.",
+      "Premium websites for Irish businesses. Delivered in 7 days. From \u20AC800.",
     images: ["/examples/homepage.png"],
   },
   metadataBase: new URL("https://www.ziffera.ie"),
