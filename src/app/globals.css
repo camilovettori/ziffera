@@ -335,3 +335,9 @@ section[id] {
   border-color: rgba(99, 102, 241, 0.4);
   transform: translateX(6px) !important;
 }
+
+.hero-sphere-canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+}

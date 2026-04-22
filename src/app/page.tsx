@@ -335,7 +335,7 @@ export default function HomePage() {
                   aria-label="Get started with the €400 setup and €25 per month offer"
                 >
                   <Link href="/checkout/setup-deposit">
-                    Get Started {"\u2014"} €400 setup + €25/month
+                    Get Started {"—"} €400 setup + €25/month
                   </Link>
                 </Button>
               </CardContent>
@@ -522,7 +522,7 @@ export default function HomePage() {
         <div className="border-t border-slate-200/80">
           <div className="mx-auto flex max-w-7xl flex-col gap-3 px-6 py-4 text-sm text-slate-600 lg:flex-row lg:items-center lg:justify-between lg:px-10">
             <span>
-              {"\u00A9"} 2025 Ziffera. All rights reserved. | Built in Ireland{" "}
+              {"©"} 2025 Ziffera. All rights reserved. | Built in Ireland{" "}
               {"\u{1F1EE}\u{1F1EA}"}
             </span>
             <span>Ready to launch a better first impression?</span>

@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(grep -E \"\\(^[^/]*$|app/page\\)\")",
+      "Bash(node -e \"console.log\\(require\\('c:/Users/Camilo/ziffera/node_modules/three/package.json'\\).version\\)\")",
+      "Bash(npx tsc *)",
+      "Bash(npm run *)",
+      "Bash(npm ls *)",
+      "Bash(npm install *)"
+    ]
+  }
+}
