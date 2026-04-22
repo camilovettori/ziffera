@@ -7,9 +7,7 @@ import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 
 const navItems = [
-  { label: "Services", href: "/services" },
   { label: "Work", href: "/work" },
-  { label: "Products", href: "/products/marginflow" },
   { label: "Pricing", href: "/pricing" },
   { label: "Contact", href: "/contact" },
 ];
@@ -70,7 +68,7 @@ export default function Header() {
                 scrolled ? "text-slate-500" : "text-white/40",
               ].join(" ")}
             >
-              Websites / Products / Systems
+              Premium websites only
             </span>
           </div>
 
@@ -97,10 +95,10 @@ export default function Header() {
 
             <Button
               asChild
-              aria-label="Get started with your website project"
+              aria-label="Get your website"
               className="bg-[linear-gradient(135deg,#2563eb_0%,#7c3aed_100%)] px-6 shadow-[0_18px_44px_rgba(37,99,235,0.28)] hover:shadow-[0_24px_56px_rgba(124,58,237,0.36)]"
             >
-              <Link href="/checkout/setup-deposit">Start your website</Link>
+              <Link href="/contact">Get your website</Link>
             </Button>
           </div>
 
@@ -154,10 +152,10 @@ export default function Header() {
             <Button
               asChild
               className="w-full"
-              aria-label="Get started with your website project"
+              aria-label="Get your website"
             >
-              <Link href="/checkout/setup-deposit" onClick={() => setMobileOpen(false)}>
-                Start your website
+              <Link href="/contact" onClick={() => setMobileOpen(false)}>
+                Get your website
               </Link>
             </Button>
           </div>

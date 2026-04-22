@@ -1,105 +1,36 @@
-"use client";
-
-import { motion } from "framer-motion";
-import { Check, Sparkles } from "lucide-react";
-import Link from "next/link";
-import Image from "next/image";
 import CTASection from "@/components/sections/CTASection";
 import ExampleSection from "@/components/sections/ExampleSection";
 import HeroSection from "@/components/sections/HeroSection";
+import HowItWorksSection from "@/components/sections/HowItWorksSection";
 import PricingSection from "@/components/sections/PricingSection";
 import ServicesSection from "@/components/sections/ServicesSection";
 import TestimonialsSection from "@/components/sections/TestimonialsSection";
 import Header from "@/components/layout/Header";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-
-const productProof = [
-  {
-    title: "MarginFlow",
-    desc: "A software product that proves Ziffera can ship real digital tools, not just brochure sites.",
-    bullets: ["Product design", "Commercial thinking", "Subscription-ready"],
-    href: "/products/marginflow",
-    cta: "Explore MarginFlow",
-  },
-  {
-    title: "Zconnect",
-    desc: "Systems and integration work that removes admin and strengthens the technical side of the company.",
-    bullets: ["Automation", "Connected systems", "Operational clarity"],
-    href: "/contact",
-    cta: "Talk about Zconnect",
-  },
-];
-
-const proofSpecs = [
-  {
-    title: "Live e-commerce",
-    text: "Full storefront with gallery, artwork pages, and cart.",
-  },
-  {
-    title: "Stripe checkout",
-    text: "Direct payments with a clean, embedded checkout flow.",
-  },
-  {
-    title: "Admin panel",
-    text: "Client manages products and orders without a developer.",
-  },
-];
+import { Card, CardContent } from "@/components/ui/card";
 
 const faqs = [
   {
-    question: "How does payment work?",
+    question: "How fast can you build my website?",
     answer:
-      "The setup is €400 total, paid as €200 to begin and €200 before go-live. The monthly plan is €25/month after launch.",
+      "Most projects are delivered in 5-14 days once the content is ready and the scope is clear.",
   },
   {
     question: "What do I need to provide?",
     answer:
-      "Just your content (text and images), your preferences, and your goals. We handle the rest.",
+      "Your business details, any branding you already have, and a few notes on what the website needs to do.",
   },
   {
-    question: "Can I make changes after launch?",
+    question: "Is there a long-term contract?",
     answer:
-      "Yes. The monthly plan covers reasonable text and image updates, ongoing support, and keeping the site running properly.",
+      "No. The monthly plan is simple, and you can cancel or pause it anytime.",
   },
   {
-    question: "What if I'm not happy with the design?",
+    question: "What does the monthly fee cover?",
     answer:
-      "We work through a clear revision process to make sure you're satisfied before anything goes live.",
+      "Hosting, security updates, basic maintenance, and ongoing support so the site stays in good shape.",
   },
 ];
-
-const container = {
-  hidden: {},
-  show: {
-    transition: {
-      staggerChildren: 0.08,
-    },
-  },
-};
-
-const item = {
-  hidden: { opacity: 0, y: 18 },
-  show: { opacity: 1, y: 0 },
-};
-
-const structuredData = {
-  "@context": "https://schema.org",
-  "@type": "LocalBusiness",
-  name: "Ziffera",
-  url: "https://www.ziffera.ie",
-  address: {
-    "@type": "PostalAddress",
-    addressCountry: "IE",
-  },
-};
 
 export default function HomePage() {
   return (
@@ -117,142 +48,7 @@ export default function HomePage() {
       <ExampleSection />
       <TestimonialsSection />
       <ServicesSection />
-
-      <motion.section
-        id="products"
-        variants={container}
-        initial="hidden"
-        whileInView="show"
-        viewport={{ once: true, amount: 0.18 }}
-        className="mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-24"
-      >
-        <motion.div variants={item} className="max-w-2xl">
-          <Badge>Product and systems capability</Badge>
-          <h2 className="mt-4 text-4xl font-semibold tracking-[-0.05em] text-slate-950 md:text-5xl">
-            MarginFlow and Zconnect.
-          </h2>
-          <p className="mt-4 max-w-2xl text-lg leading-8 text-slate-700">
-            Ziffera also designs and builds software products and systems. That
-            keeps the website work grounded in real product thinking.
-          </p>
-        </motion.div>
-
-        <div className="mt-12 grid gap-6 lg:grid-cols-2">
-          {productProof.map((product) => (
-            <motion.div
-              key={product.title}
-              variants={item}
-              whileHover={{ y: -6, scale: 1.015 }}
-              transition={{ duration: 0.22 }}
-            >
-              <Card className="overflow-hidden border-slate-200/80 bg-white shadow-[0_18px_50px_rgba(15,23,42,0.06)] transition duration-300 hover:border-blue-200 hover:shadow-[0_28px_66px_rgba(15,23,42,0.1)]">
-                <CardHeader className="pb-4">
-                  <div className="inline-flex rounded-full border border-blue-200 bg-white/80 px-3 py-1 text-[10px] uppercase tracking-[0.24em] text-blue-700 backdrop-blur">
-                    {product.title}
-                  </div>
-                  <CardTitle className="mt-5 text-3xl tracking-[-0.05em]">
-                    {product.title}
-                  </CardTitle>
-                  <CardDescription className="mt-4 max-w-xl text-slate-700">
-                    {product.desc}
-                  </CardDescription>
-                </CardHeader>
-
-                <CardContent className="space-y-4">
-                  <div className="grid gap-2">
-                    {product.bullets.map((bullet) => (
-                      <div
-                        key={bullet}
-                        className="flex items-center gap-3 rounded-[1.2rem] border border-slate-200 bg-[linear-gradient(180deg,#ffffff_0%,#f8fbff_100%)] px-4 py-3 text-sm text-slate-700"
-                      >
-                        <span className="flex h-5 w-5 items-center justify-center rounded-full bg-blue-50 text-blue-700">
-                          <Check className="h-3.5 w-3.5" />
-                        </span>
-                        {bullet}
-                      </div>
-                    ))}
-                  </div>
-
-                  <Button
-                    asChild
-                    className="w-full"
-                    aria-label={`Explore ${product.title}`}
-                  >
-                    <Link href={product.href}>{product.cta}</Link>
-                  </Button>
-                </CardContent>
-              </Card>
-            </motion.div>
-          ))}
-        </div>
-
-        <div className="mt-12 grid gap-6 lg:grid-cols-[0.94fr_1.06fr]">
-          <motion.div
-            initial={{ opacity: 0, y: 18 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.25 }}
-            transition={{ duration: 0.65, delay: 0.05 }}
-            className="grid gap-4"
-          >
-            {proofSpecs.map((shot) => (
-              <Card
-                key={shot.title}
-                className="overflow-hidden border-slate-200 bg-white shadow-[0_18px_50px_rgba(15,23,42,0.06)]"
-              >
-                <CardHeader className="pb-3">
-                  <div className="flex items-center justify-between gap-4">
-                    <Badge variant="outline">{shot.title}</Badge>
-                    <Sparkles className="h-4 w-4 text-blue-600" />
-                  </div>
-                  <CardTitle className="mt-4 text-xl tracking-[-0.04em] text-slate-950">
-                    Frequency Framed
-                  </CardTitle>
-                  <CardDescription className="mt-2 max-w-xl text-sm leading-6 text-slate-600">
-                    {shot.text}
-                  </CardDescription>
-                </CardHeader>
-              </Card>
-            ))}
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 18 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.25 }}
-            transition={{ duration: 0.65, delay: 0.05 }}
-            className="grid gap-4"
-          >
-            <Card className="overflow-hidden border-slate-200 bg-white/95 p-4 shadow-[0_24px_70px_rgba(15,23,42,0.08)] lg:p-5">
-              <div className="flex items-center justify-between gap-4">
-                <Badge variant="secondary">Frequency Framed</Badge>
-                <div className="rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-[10px] uppercase tracking-[0.24em] text-blue-700">
-                  Live client work
-                </div>
-              </div>
-
-              <div className="mt-4 overflow-hidden rounded-[1.8rem] border border-slate-200 bg-slate-100 shadow-[0_18px_50px_rgba(15,23,42,0.06)]">
-                <div className="border-b border-slate-200 bg-slate-50 px-4 py-3">
-                  <div className="flex items-center gap-2">
-                    <span className="h-2.5 w-2.5 rounded-full bg-slate-300" />
-                    <span className="h-2.5 w-2.5 rounded-full bg-slate-300" />
-                    <span className="h-2.5 w-2.5 rounded-full bg-slate-300" />
-                  </div>
-                </div>
-                <div className="relative aspect-[16/11] bg-slate-200">
-                  <Image
-                    src="/examples/homepage.png"
-                    alt="Frequency Framed homepage preview"
-                    fill
-                    sizes="(max-width: 1024px) 100vw, 56vw"
-                    className="object-cover object-top"
-                  />
-                </div>
-              </div>
-            </Card>
-          </motion.div>
-        </div>
-      </motion.section>
-
+      <HowItWorksSection />
       <PricingSection />
 
       <section id="faq" className="mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-24">
@@ -263,8 +59,8 @@ export default function HomePage() {
               A few quick answers before you start.
             </h2>
             <p className="mt-4 max-w-xl text-lg leading-8 text-slate-700">
-              Straight answers help people move faster. Here&apos;s what most
-              Irish SME owners want to know first.
+              Straight answers help people move faster. Here&apos;s what most business
+              owners want to know first.
             </p>
           </div>
 
@@ -296,7 +92,7 @@ export default function HomePage() {
           <div className="max-w-2xl">
             <Badge variant="secondary">Ziffera</Badge>
             <p className="mt-4 text-lg leading-8 text-slate-700">
-              Websites. SaaS. Apps. Software. Systems. Built in Ireland.
+              Premium websites for real businesses. Fast delivery. No lock-in.
             </p>
           </div>
 
@@ -336,20 +132,12 @@ export default function HomePage() {
         </div>
 
         <div className="border-t border-slate-200/80">
-          <div className="mx-auto flex max-w-7xl flex-col gap-3 px-6 py-4 text-sm text-slate-600 lg:flex-row lg:items-center lg:justify-between lg:px-10">
-            <span>
-              {"Â©"} 2025 Ziffera. All rights reserved. | Built in Ireland{" "}
-              {"\u{1F1EE}\u{1F1EA}"}
-            </span>
+        <div className="mx-auto flex max-w-7xl flex-col gap-3 px-6 py-4 text-sm text-slate-600 lg:flex-row lg:items-center lg:justify-between lg:px-10">
+            <span>Copyright 2025 Ziffera. All rights reserved.</span>
             <span>Ready to launch a better first impression?</span>
           </div>
         </div>
       </footer>
-
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
-      />
     </main>
   );
 }

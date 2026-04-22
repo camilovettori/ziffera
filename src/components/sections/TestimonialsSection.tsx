@@ -1,29 +1,29 @@
-'use client'
+"use client";
 
-import { motion } from 'framer-motion'
-import { Badge } from '@/components/ui/badge'
-import { Card, CardContent } from '@/components/ui/card'
+import { motion } from "framer-motion";
+import { Badge } from "@/components/ui/badge";
+import { Card, CardContent } from "@/components/ui/card";
 
 const testimonials = [
   {
-    name: 'Aoife M.',
-    role: 'Independent Physiotherapy Clinic',
+    name: "Aoife M.",
+    role: "Independent Physiotherapy Clinic",
     quote:
-      'The new site made us look much more established, and enquiries felt warmer almost immediately.',
+      "The new site made us look much more established, and enquiries felt warmer almost immediately.",
   },
   {
-    name: 'Luca D.',
-    role: 'Local Consultancy',
+    name: "Luca D.",
+    role: "Local Consultancy",
     quote:
-      'The process was straightforward, quick, and the finished website felt premium from the first screen.',
+      "The process was straightforward, quick, and the finished website felt premium from the first screen.",
   },
   {
-    name: 'Niamh S.',
-    role: 'Boutique Service Business',
+    name: "Niamh S.",
+    role: "Boutique Service Business",
     quote:
-      'We finally had a website that matched the quality of the service we already deliver to clients.',
+      "We finally had a website that matched the quality of the service we already deliver to clients.",
   },
-]
+];
 
 const container = {
   hidden: {},
@@ -32,19 +32,19 @@ const container = {
       staggerChildren: 0.08,
     },
   },
-}
+};
 
 const item = {
   hidden: { opacity: 0, y: 18 },
   show: { opacity: 1, y: 0 },
-}
+};
 
 function getInitials(name: string) {
   return name
     .split(/\s+/)
     .slice(0, 2)
-    .map((part) => part[0]?.toUpperCase() ?? '')
-    .join('')
+    .map((part) => part[0]?.toUpperCase() ?? "")
+    .join("");
 }
 
 export default function TestimonialsSection() {
@@ -63,8 +63,7 @@ export default function TestimonialsSection() {
             Trusted by real businesses.
           </h2>
           <p className="mt-4 max-w-2xl text-lg leading-8 text-slate-700">
-            Irish businesses that needed a serious digital presence — without
-            the agency overhead.
+            Irish businesses that needed a serious website - without the agency overhead.
           </p>
         </motion.div>
 
@@ -112,5 +111,5 @@ export default function TestimonialsSection() {
         </div>
       </div>
     </motion.section>
-  )
+  );
 }

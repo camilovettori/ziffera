@@ -25,22 +25,23 @@ type Slide = VideoSlide | ImageSlide;
 const slides: Slide[] = [
   {
     type: "video",
-    src: "/examples/zconnect.mp4",
-    label: "Zconnect",
-    sublabel: "Automation System",
+    src: "/examples/homepage.mp4",
+    label: "Frequency Framed",
+    sublabel: "E-commerce website",
+    badge: "LIVE",
   },
   {
     type: "video",
     src: "/examples/rubandscrub.mp4",
     label: "Rub & Scrub",
-    sublabel: "Service Website",
+    sublabel: "Service website",
   },
   {
-    type: "video",
-    src: "/examples/homepage.mp4",
-    label: "Frequency Framed",
-    sublabel: "E-commerce Store",
-    badge: "LIVE",
+    type: "image",
+    src: "/examples/mobileFF.jpg",
+    alt: "Frequency Framed mobile view",
+    label: "Mobile-first view",
+    sublabel: "Built for smaller screens",
   },
 ];
 

@@ -12,7 +12,7 @@ import { Card, CardContent, CardDescription } from "@/components/ui/card";
 const heroTrustPoints = [
   {
     title: "12+ websites delivered",
-    text: "Real Irish businesses",
+    text: "Real businesses",
     icon: Check,
   },
   {
@@ -58,7 +58,7 @@ export default function HeroSection() {
         className="hero-grid-overlay absolute inset-0 z-0 pointer-events-none opacity-70"
         aria-hidden="true"
       />
-      <div className="pointer-events-none absolute inset-0 z-[1] bg-[radial-gradient(circle_at_top_left,rgba(37,99,235,0.16),transparent_26%),radial-gradient(circle_at_top_right,rgba(124,58,237,0.12),transparent_24%),radial-gradient(circle_at_bottom_right,rgba(96,165,250,0.12),transparent_26%)]" />
+      <div className="pointer-events-none absolute inset-0 z-[1] bg-[radial-gradient(circle_at_top_left,rgba(37,99,246,0.16),transparent_26%),radial-gradient(circle_at_top_right,rgba(124,58,237,0.12),transparent_24%),radial-gradient(circle_at_bottom_right,rgba(96,165,250,0.12),transparent_26%)]" />
       <div className="pointer-events-none absolute inset-0 z-[1] overflow-hidden">
         <div className="hero-blob absolute left-[-6%] top-[-8%] h-96 w-96 rounded-full bg-[radial-gradient(circle,rgba(96,165,250,0.35),rgba(37,99,235,0.1)_55%,transparent_72%)] blur-3xl" />
         <div className="hero-blob absolute right-[-8%] top-[12%] h-[22rem] w-[22rem] rounded-full bg-[radial-gradient(circle,rgba(124,58,237,0.14),rgba(124,58,237,0.04)_58%,transparent_74%)] blur-3xl [animation-delay:1.8s]" />
@@ -82,7 +82,7 @@ export default function HeroSection() {
         <div className="hero-fade-bottom z-[3]" />
       </div>
 
-      {/* Sphere — full bleed behind hero */}
+      {/* Sphere - full bleed behind hero */}
       <div
         className="pointer-events-none absolute inset-0 z-0 overflow-hidden"
         aria-hidden="true"
@@ -101,7 +101,7 @@ export default function HeroSection() {
         >
           <Badge className="inline-flex items-center gap-2 rounded-full border border-[rgba(99,102,241,0.28)] bg-[rgba(99,102,241,0.12)] px-4 py-1.5 text-[10px] font-bold uppercase tracking-[2.5px] text-[#A5B4FC] shadow-[0_10px_24px_rgba(37,99,235,0.10)] backdrop-blur-md">
             <span className="h-1.5 w-1.5 rounded-full bg-[#818CF8] shadow-[0_0_6px_#818CF8] animate-pulse [animation-duration:2s]" />
-            Websites / products / systems
+            Websites / fast delivery / no lock-in
           </Badge>
 
           <motion.h1
@@ -122,9 +122,17 @@ export default function HeroSection() {
             transition={{ duration: 0.7, delay: 0.12 }}
             className="mt-6 mb-8 max-w-[480px] text-[17px] font-normal leading-[1.75] text-[#CBD5F5]"
           >
-            We design and build websites, products, and systems for small
-            businesses that want a serious digital presence â€” without agency
-            prices or long contracts.
+            We design and build fast, modern websites for real businesses - professional
+            website design, e-commerce ready, and without agency complexity.
+          </motion.p>
+
+          <motion.p
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.65, delay: 0.16 }}
+            className="max-w-[480px] text-[15px] font-semibold leading-7 text-cyan-100"
+          >
+            Built for real businesses. Delivered in 7-14 days.
           </motion.p>
 
           <motion.div
@@ -136,10 +144,10 @@ export default function HeroSection() {
             <Button
               asChild
               size="lg"
-              aria-label="Book a free call with Ziffera"
+              aria-label="Get your website"
               className="btn-primary shimmer-hover bg-[linear-gradient(135deg,#4F46E5_0%,#7C3AED_100%)] px-8 text-white shadow-[0_4px_24px_rgba(99,102,241,0.45),0_0_0_1px_rgba(139,92,246,0.3)] hover:shadow-[0_10px_34px_rgba(99,102,241,0.52),0_0_0_1px_rgba(139,92,246,0.35)]"
             >
-              <Link href="/contact">Book a Free Call</Link>
+              <Link href="/contact">Get your website</Link>
             </Button>
 
             <Button

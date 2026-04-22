@@ -1,34 +1,50 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowRight, Check, Shield, Sparkles } from "lucide-react";
+import { ArrowRight, Check } from "lucide-react";
 import Header from "@/components/layout/Header";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
+
+export const metadata: Metadata = {
+  title: "Rub & Scrub — Ziffera",
+  description:
+    "A service website case study showing how Ziffera built a cleaner booking flow that helped increase enquiries and bookings.",
+  alternates: {
+    canonical: "/work/rub-and-scrub",
+  },
+  openGraph: {
+    title: "Rub & Scrub — Ziffera",
+    description:
+      "A service website case study showing how Ziffera built a cleaner booking flow that helped increase enquiries and bookings.",
+    url: "https://www.ziffera.ie/work/rub-and-scrub",
+    siteName: "Ziffera",
+    type: "website",
+    images: [
+      {
+        url: "/examples/rub-and-scrub.png",
+        width: 1200,
+        height: 630,
+        alt: "Rub and Scrub website preview",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Rub & Scrub — Ziffera",
+    description:
+      "A service website case study showing how Ziffera built a cleaner booking flow that helped increase enquiries and bookings.",
+    images: ["/examples/rub-and-scrub.png"],
+  },
+};
 
 const highlights = [
-  "Mobile-first website built for a service business with no e-commerce complexity",
-  "WhatsApp booking flow — form pre-fills a WhatsApp message for instant handoff",
-  "Before/after photo gallery to build trust before the customer books",
-  "Clear service pricing with optional extras listed",
-  "Customer reviews section and leave-a-review flow",
-  "Privacy policy and terms pages included",
-];
-
-const buildSpecs = [
-  {
-    title: "The brief",
-    text: "Rub & Scrub was operating entirely through word of mouth and WhatsApp with no web presence. The goal was a clean, fast site that made the business look professional and made it easy for Dublin customers to book — without overcomplicating a simple service.",
-  },
-  {
-    title: "The result",
-    text: "A live, professional website for a real Dublin service business. The WhatsApp booking flow removes friction — customers fill in their details and WhatsApp opens with the message pre-written. Clean, fast, and built to convert local traffic into bookings.",
-  },
-  {
-    title: "The stack",
-    text: "Built with Next.js, a custom WhatsApp booking integration, and a mobile-first layout designed for customers searching on their phones. No backend overhead — the right tool for a simple, effective service site.",
-  },
+  "Helps people book faster",
+  "Shows proof of quality with photos",
+  "Builds trust before the customer reaches out",
+  "Makes the business look more professional",
+  "Works well for local customers on mobile",
 ];
 
 export default function RubAndScrubPage() {
@@ -54,15 +70,15 @@ export default function RubAndScrubPage() {
             </span>
           </h1>
           <p className="mt-6 max-w-2xl text-lg leading-8 text-slate-600 md:text-[1.16rem] md:leading-9">
-            A mobile-first booking site for a Dublin car valeting business —
-            WhatsApp booking flow, before/after gallery, service pricing, and
-            customer reviews. Live at rubandscrub.ie.
+            A mobile-first website for a Dublin car valeting business - simple booking,
+            strong proof of quality, and a clearer path to enquiry.
           </p>
-          <div className="mt-9 flex flex-wrap gap-4">
-            <Button asChild size="lg" aria-label="Start a similar build">
-              <Link href="/checkout/setup-deposit">
-                Start a similar build <ArrowRight className="h-4 w-4" />
-              </Link>
+          <div className="mt-5 inline-flex rounded-full border border-emerald-200 bg-emerald-50 px-4 py-2 text-sm font-semibold text-emerald-800">
+            Outcome: Increased bookings with a simple flow
+          </div>
+          <div className="mt-8 flex flex-wrap gap-4">
+            <Button asChild size="lg" aria-label="Get your website">
+              <Link href="/contact">Get your website</Link>
             </Button>
             <Button asChild variant="outline" size="lg" aria-label="View the live Rub and Scrub website">
               <a
@@ -70,7 +86,7 @@ export default function RubAndScrubPage() {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                View live site → rubandscrub.ie
+                View live site <ArrowRight className="h-4 w-4" />
               </a>
             </Button>
           </div>
@@ -106,13 +122,13 @@ export default function RubAndScrubPage() {
 
           <Card className="overflow-hidden border-slate-200/80 bg-white shadow-[0_28px_84px_rgba(15,23,42,0.1)]">
             <CardHeader>
-              <Badge variant="secondary">What we built</Badge>
+              <Badge variant="secondary">What changed</Badge>
               <CardTitle className="mt-4 text-3xl tracking-[-0.05em]">
                 Simple, fast, and built to convert.
               </CardTitle>
               <CardDescription className="mt-3 max-w-2xl text-base leading-7">
-                A service site for a real business — no unnecessary complexity,
-                just the features that get customers to book.
+                The goal was to make it easier for local customers to understand the
+                service, trust the business, and make a booking.
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-3">
@@ -127,49 +143,8 @@ export default function RubAndScrubPage() {
                   {point}
                 </div>
               ))}
-              <Separator className="my-5" />
-              <div className="grid gap-3 sm:grid-cols-2">
-                {[
-                  "Next.js",
-                  "WhatsApp integration",
-                  "Mobile-first design",
-                  "No e-commerce overhead",
-                ].map((tech) => (
-                  <Card
-                    key={tech}
-                    className="border-slate-200/80 bg-white shadow-[0_12px_28px_rgba(15,23,42,0.05)]"
-                  >
-                    <CardContent className="flex items-center gap-3 px-4 py-3 text-sm text-slate-700">
-                      <Shield className="h-4 w-4 text-blue-700" />
-                      {tech}
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
             </CardContent>
           </Card>
-        </div>
-
-        <div className="mt-10 grid gap-4 sm:grid-cols-3">
-          {buildSpecs.map((shot) => (
-            <Card
-              key={shot.title}
-              className="overflow-hidden border-slate-200 bg-white shadow-[0_18px_50px_rgba(15,23,42,0.06)]"
-            >
-              <CardHeader className="pb-3">
-                <div className="flex items-center justify-between gap-4">
-                  <Badge variant="outline">{shot.title}</Badge>
-                  <Sparkles className="h-4 w-4 text-blue-600" />
-                </div>
-                <CardTitle className="mt-4 text-xl tracking-[-0.04em] text-slate-950">
-                  Rub &amp; Scrub
-                </CardTitle>
-                <CardDescription className="mt-2 max-w-xl text-sm leading-6 text-slate-600">
-                  {shot.text}
-                </CardDescription>
-              </CardHeader>
-            </Card>
-          ))}
         </div>
 
         <div className="mt-20 border-t border-slate-200/80 pt-16">
@@ -178,13 +153,13 @@ export default function RubAndScrubPage() {
             Start a similar build.
           </h2>
           <p className="mt-4 max-w-xl text-lg leading-8 text-slate-700">
-            The same quality of work is available for your business. €400 setup,
-            €25/month — live in 7 days.
+            The same quality of work is available for your business. A clear process,
+            a fixed price, and a live result in 5-14 days.
           </p>
           <div className="mt-8 flex flex-wrap gap-4">
             <Button asChild size="lg">
-              <Link href="/checkout/setup-deposit">
-                Start a similar build <ArrowRight className="h-4 w-4" />
+              <Link href="/contact">
+                Get your website <ArrowRight className="h-4 w-4" />
               </Link>
             </Button>
             <Button asChild variant="outline" size="lg">
@@ -193,7 +168,7 @@ export default function RubAndScrubPage() {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                View live site → rubandscrub.ie
+                View live site
               </a>
             </Button>
           </div>

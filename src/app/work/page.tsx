@@ -1,10 +1,78 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowRight, Check, Sparkles } from "lucide-react";
+import { ArrowRight, Check } from "lucide-react";
 import Header from "@/components/layout/Header";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
+
+export const metadata: Metadata = {
+  title: "Website Projects — Ziffera",
+  description:
+    "Explore real websites built by Ziffera, including e-commerce stores and business websites.",
+  alternates: {
+    canonical: "/work",
+  },
+  openGraph: {
+    title: "Website Projects — Ziffera",
+    description:
+      "Explore real websites built by Ziffera, including e-commerce stores and business websites.",
+    url: "https://www.ziffera.ie/work",
+    siteName: "Ziffera",
+    type: "website",
+    images: [
+      {
+        url: "/examples/homepage.png",
+        width: 1200,
+        height: 630,
+        alt: "Ziffera website preview",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Website Projects — Ziffera",
+    description:
+      "Explore real websites built by Ziffera, including e-commerce stores and business websites.",
+    images: ["/examples/homepage.png"],
+  },
+};
+
+const projects = [
+  {
+    name: "Frequency Framed",
+    badge: "E-commerce website",
+    image: "/examples/homepage.png",
+    imageAlt: "Frequency Framed homepage preview",
+    liveHref: "https://www.frequencyframed.ie",
+    detailHref: "/work/frequency-framed",
+    summary:
+      "A premium storefront that helps the brand look more established and makes it easier to sell online.",
+    outcome: "Started selling online instantly",
+    bullets: [
+      "Looks more established from the first screen",
+      "Makes online selling feel easier",
+      "Helps visitors take action faster",
+    ],
+  },
+  {
+    name: "Rub & Scrub",
+    badge: "Service website",
+    image: "/examples/rub-and-scrub.png",
+    imageAlt: "Rub and Scrub homepage preview",
+    liveHref: "https://www.rubandscrub.ie",
+    detailHref: "/work/rub-and-scrub",
+    summary:
+      "A clean booking site that turns local traffic into enquiries and makes the business look more credible.",
+    outcome: "Increased bookings with a simple flow",
+    bullets: [
+      "Helps people book faster",
+      "Shows proof of quality with photos",
+      "Builds trust before the customer reaches out",
+    ],
+  },
+];
 
 export default function WorkPage() {
   return (
@@ -31,382 +99,109 @@ export default function WorkPage() {
           </h1>
           <p className="mt-6 max-w-2xl text-lg leading-8 text-slate-600 md:text-[1.16rem] md:leading-9">
             Every project shown here is live and serving real customers. No
-            mock-up galleries, no concept designs — just working products.
+            mock-up galleries, no software demos - just working websites.
           </p>
         </div>
 
-        <div className="mt-16 grid gap-10 lg:grid-cols-[0.94fr_1.06fr]">
-          <div className="max-w-2xl">
-            <Badge>Real client project</Badge>
-            <h2 className="mt-4 text-4xl font-semibold tracking-[-0.05em] text-slate-950 md:text-5xl">
-              Frequency Framed.
-            </h2>
-            <p className="mt-4 max-w-xl text-lg leading-8 text-slate-600">
-              A live e-commerce build with Stripe checkout, an admin panel, and
-              a polished storefront. The only real project featured here.
-            </p>
+        <div className="mt-16 grid gap-10">
+          {projects.map((project) => (
+            <div key={project.name} className="grid gap-6 lg:grid-cols-[0.94fr_1.06fr]">
+              <div className="max-w-2xl">
+                <Badge>Live client project</Badge>
+                <h2 className="mt-4 text-4xl font-semibold tracking-[-0.05em] text-slate-950 md:text-5xl">
+                  {project.name}.
+                </h2>
+                <p className="mt-4 max-w-xl text-lg leading-8 text-slate-600">
+                  {project.summary}
+                </p>
+                <div className="mt-4 inline-flex rounded-full border border-emerald-200 bg-emerald-50 px-4 py-2 text-sm font-semibold text-emerald-800">
+                  Outcome: {project.outcome}
+                </div>
 
-            <div className="mt-6 rounded-[1.6rem] border border-blue-100 bg-white px-5 py-4 shadow-[0_16px_38px_rgba(59,130,246,0.08)]">
-              <div className="text-[10px] uppercase tracking-[0.28em] text-blue-700">
-                Live proof
-              </div>
-              <div className="mt-2 text-base font-semibold text-slate-900">
-                Frequency Framed is live at frequencyframed.ie.
-              </div>
-            </div>
+                <div className="mt-6 grid gap-3">
+                  {project.bullets.map((point) => (
+                    <Card
+                      key={point}
+                      className="border-slate-200/80 bg-[linear-gradient(180deg,#ffffff_0%,#f8fbff_100%)] shadow-[0_12px_28px_rgba(15,23,42,0.05)]"
+                    >
+                      <CardContent className="flex items-center gap-3 px-4 py-3 text-sm font-medium text-slate-700">
+                        <span className="flex h-5 w-5 items-center justify-center rounded-full bg-blue-50 text-blue-700">
+                          <Check className="h-3.5 w-3.5" />
+                        </span>
+                        {point}
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
 
-            <div className="mt-8 grid gap-3">
-              {[
-                "Live website at frequencyframed.ie",
-                "Stripe checkout and admin flow included",
-                "A real client build, not a mock-up gallery",
-              ].map((point) => (
-                <Card
-                  key={point}
-                  className="border-slate-200/80 bg-[linear-gradient(180deg,#ffffff_0%,#f8fbff_100%)] shadow-[0_12px_28px_rgba(15,23,42,0.05)]"
-                >
-                  <CardContent className="flex items-center gap-3 px-4 py-3 text-sm font-medium text-slate-700">
-                    <span className="flex h-5 w-5 items-center justify-center rounded-full bg-blue-50 text-blue-700">
-                      <Check className="h-3.5 w-3.5" />
-                    </span>
-                    {point}
-                  </CardContent>
+                <div className="mt-8 flex flex-wrap gap-4">
+                  <Button asChild size="lg" aria-label={`View the live ${project.name} website`}>
+                    <a
+                      href={project.liveHref}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      View live site <ArrowRight className="h-4 w-4" />
+                    </a>
+                  </Button>
+                  <Button asChild variant="outline" size="lg">
+                    <Link href={project.detailHref}>View case study</Link>
+                  </Button>
+                  <Button asChild variant="outline" size="lg">
+                    <Link href="/contact">Get your website</Link>
+                  </Button>
+                </div>
+              </div>
+
+              <div className="grid gap-4">
+                <Card className="overflow-hidden border-slate-200 bg-white/95 p-4 shadow-[0_24px_70px_rgba(15,23,42,0.08)] lg:p-5">
+                  <div className="flex items-center justify-between gap-4">
+                    <Badge variant="secondary">{project.name}</Badge>
+                    <div className="rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-[10px] uppercase tracking-[0.24em] text-blue-700">
+                      {project.badge}
+                    </div>
+                  </div>
+                  <div className="mt-4 overflow-hidden rounded-[1.8rem] border border-slate-200 bg-slate-100 shadow-[0_18px_50px_rgba(15,23,42,0.06)]">
+                    <div className="border-b border-slate-200 bg-slate-50 px-4 py-3">
+                      <div className="flex items-center gap-2">
+                        <span className="h-2.5 w-2.5 rounded-full bg-slate-300" />
+                        <span className="h-2.5 w-2.5 rounded-full bg-slate-300" />
+                        <span className="h-2.5 w-2.5 rounded-full bg-slate-300" />
+                      </div>
+                    </div>
+                    <div className="relative aspect-[16/11] bg-slate-200">
+                      <Image
+                        src={project.image}
+                        alt={project.imageAlt}
+                        fill
+                        sizes="(max-width: 1024px) 100vw, 56vw"
+                        className="object-cover object-top"
+                      />
+                    </div>
+                  </div>
                 </Card>
-              ))}
-            </div>
-
-            <div className="mt-8 flex flex-wrap gap-4">
-              <Button asChild size="lg" aria-label="See the full Frequency Framed case study">
-                <Link href="/work/frequency-framed">
-                  Full case study <ArrowRight className="h-4 w-4" />
-                </Link>
-              </Button>
-              <Button asChild variant="outline" size="lg" aria-label="View the live Frequency Framed website">
-                <a
-                  href="https://www.frequencyframed.ie"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  View live proof
-                </a>
-              </Button>
-            </div>
-          </div>
-
-          <div className="grid gap-4">
-            <Card className="overflow-hidden border-slate-200 bg-white/95 p-4 shadow-[0_24px_70px_rgba(15,23,42,0.08)] lg:p-5">
-              <div className="flex items-center justify-between gap-4">
-                <Badge variant="secondary">Frequency Framed</Badge>
-                <div className="rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-[10px] uppercase tracking-[0.24em] text-blue-700">
-                  Live client work
-                </div>
-              </div>
-              <div className="mt-4 overflow-hidden rounded-[1.8rem] border border-slate-200 bg-slate-100 shadow-[0_18px_50px_rgba(15,23,42,0.06)]">
-                <div className="border-b border-slate-200 bg-slate-50 px-4 py-3">
-                  <div className="flex items-center gap-2">
-                    <span className="h-2.5 w-2.5 rounded-full bg-slate-300" />
-                    <span className="h-2.5 w-2.5 rounded-full bg-slate-300" />
-                    <span className="h-2.5 w-2.5 rounded-full bg-slate-300" />
-                  </div>
-                </div>
-                <div className="relative aspect-[16/11] bg-slate-200">
-                  <Image
-                    src="/examples/homepage.png"
-                    alt="Frequency Framed homepage preview"
-                    fill
-                    sizes="(max-width: 1024px) 100vw, 56vw"
-                    className="object-cover object-top"
-                  />
-                </div>
-              </div>
-            </Card>
-
-            <div className="grid gap-4 sm:grid-cols-3">
-              {[
-                { title: "Homepage", text: "Clear structure that leads visitors toward action." },
-                { title: "Checkout", text: "Embedded Stripe flow with a simple payment path." },
-                { title: "Admin", text: "Practical controls for ongoing management." },
-              ].map((shot) => (
-                <Card
-                  key={shot.title}
-                  className="overflow-hidden border-slate-200 bg-white shadow-[0_18px_50px_rgba(15,23,42,0.06)]"
-                >
-                  <CardHeader className="pb-3">
-                    <div className="flex items-center justify-between gap-4">
-                      <Badge variant="outline">{shot.title}</Badge>
-                      <Sparkles className="h-4 w-4 text-blue-600" />
-                    </div>
-                    <CardTitle className="mt-4 text-xl tracking-[-0.04em] text-slate-950">
-                      Frequency Framed
-                    </CardTitle>
-                    <CardDescription className="mt-2 max-w-xl text-sm leading-6 text-slate-600">
-                      {shot.text}
-                    </CardDescription>
-                  </CardHeader>
-                </Card>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        <div className="mt-20 border-t border-slate-200/80 pt-16">
-          <div className="grid gap-10 lg:grid-cols-[0.94fr_1.06fr]">
-            <div className="max-w-2xl">
-              <Badge>Live client project</Badge>
-              <h2 className="mt-4 text-4xl font-semibold tracking-[-0.05em] text-slate-950 md:text-5xl">
-                Rub &amp; Scrub.
-              </h2>
-              <p className="mt-4 max-w-xl text-lg leading-8 text-slate-600">
-                Mobile car valeting business in Dublin. WhatsApp booking flow,
-                before/after gallery, and a clean service site built to convert.
-              </p>
-
-              <div className="mt-6 rounded-[1.6rem] border border-blue-100 bg-white px-5 py-4 shadow-[0_16px_38px_rgba(59,130,246,0.08)]">
-                <div className="text-[10px] uppercase tracking-[0.28em] text-blue-700">
-                  Live proof
-                </div>
-                <div className="mt-2 text-base font-semibold text-slate-900">
-                  Rub &amp; Scrub is live at rubandscrub.ie.
-                </div>
-              </div>
-
-              <div className="mt-8 grid gap-3">
-                {[
-                  "Live website at rubandscrub.ie",
-                  "WhatsApp booking flow with pre-filled message",
-                  "Before/after gallery and customer reviews",
-                ].map((point) => (
-                  <Card
-                    key={point}
-                    className="border-slate-200/80 bg-[linear-gradient(180deg,#ffffff_0%,#f8fbff_100%)] shadow-[0_12px_28px_rgba(15,23,42,0.05)]"
-                  >
-                    <CardContent className="flex items-center gap-3 px-4 py-3 text-sm font-medium text-slate-700">
-                      <span className="flex h-5 w-5 items-center justify-center rounded-full bg-blue-50 text-blue-700">
-                        <Check className="h-3.5 w-3.5" />
-                      </span>
-                      {point}
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-
-              <div className="mt-8 flex flex-wrap gap-4">
-                <Button asChild size="lg" aria-label="See the full Rub and Scrub case study">
-                  <Link href="/work/rub-and-scrub">
-                    Full case study <ArrowRight className="h-4 w-4" />
-                  </Link>
-                </Button>
-                <Button asChild variant="outline" size="lg" aria-label="View the live Rub and Scrub website">
-                  <a
-                    href="https://www.rubandscrub.ie"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    View live site
-                  </a>
-                </Button>
               </div>
             </div>
-
-            <div className="grid gap-4">
-              <Card className="overflow-hidden border-slate-200 bg-white/95 p-4 shadow-[0_24px_70px_rgba(15,23,42,0.08)] lg:p-5">
-                <div className="flex items-center justify-between gap-4">
-                  <Badge variant="secondary">Rub &amp; Scrub</Badge>
-                  <div className="rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-[10px] uppercase tracking-[0.24em] text-blue-700">
-                    Live client work
-                  </div>
-                </div>
-                <div className="mt-4 overflow-hidden rounded-[1.8rem] border border-slate-200 bg-slate-100 shadow-[0_18px_50px_rgba(15,23,42,0.06)]">
-                  <div className="border-b border-slate-200 bg-slate-50 px-4 py-3">
-                    <div className="flex items-center gap-2">
-                      <span className="h-2.5 w-2.5 rounded-full bg-slate-300" />
-                      <span className="h-2.5 w-2.5 rounded-full bg-slate-300" />
-                      <span className="h-2.5 w-2.5 rounded-full bg-slate-300" />
-                    </div>
-                  </div>
-                  <div className="relative aspect-[16/11] bg-slate-200">
-                    <Image
-                      src="/examples/rub-and-scrub.png"
-                      alt="Rub and Scrub homepage preview"
-                      fill
-                      sizes="(max-width: 1024px) 100vw, 56vw"
-                      className="object-cover object-top"
-                    />
-                  </div>
-                </div>
-              </Card>
-
-              <div className="grid gap-4 sm:grid-cols-3">
-                {[
-                  { title: "Booking", text: "WhatsApp flow that opens with a pre-filled message — no back-and-forth." },
-                  { title: "Gallery", text: "Before/after photos that show the quality of work before the customer commits." },
-                  { title: "Reviews", text: "Customer reviews section that builds trust with new visitors." },
-                ].map((shot) => (
-                  <Card
-                    key={shot.title}
-                    className="overflow-hidden border-slate-200 bg-white shadow-[0_18px_50px_rgba(15,23,42,0.06)]"
-                  >
-                    <CardHeader className="pb-3">
-                      <div className="flex items-center justify-between gap-4">
-                        <Badge variant="outline">{shot.title}</Badge>
-                        <Sparkles className="h-4 w-4 text-blue-600" />
-                      </div>
-                      <CardTitle className="mt-4 text-xl tracking-[-0.04em] text-slate-950">
-                        Rub &amp; Scrub
-                      </CardTitle>
-                      <CardDescription className="mt-2 max-w-xl text-sm leading-6 text-slate-600">
-                        {shot.text}
-                      </CardDescription>
-                    </CardHeader>
-                  </Card>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="mt-20 border-t border-slate-200/80 pt-16">
-          <div className="grid gap-10 lg:grid-cols-[0.94fr_1.06fr]">
-            <div className="max-w-2xl">
-              <Badge>Zconnect — Systems &amp; Integrations</Badge>
-              <h2 className="mt-4 text-4xl font-semibold tracking-[-0.05em] text-slate-950 md:text-5xl">
-                Lovin from the Oven.
-              </h2>
-              <p className="mt-4 max-w-xl text-lg leading-8 text-slate-600">
-                Automated invoice sync between Unify and Zoho Books for an Irish
-                food business. Zero manual entry, real-time triggers, clean
-                handoff.
-              </p>
-
-              <div className="mt-6 rounded-[1.6rem] border border-blue-100 bg-white px-5 py-4 shadow-[0_16px_38px_rgba(59,130,246,0.08)]">
-                <div className="text-[10px] uppercase tracking-[0.28em] text-blue-700">
-                  What it does
-                </div>
-                <div className="mt-2 text-base font-semibold text-slate-900">
-                  Unify orders → Zoho Books invoices, automatically.
-                </div>
-              </div>
-
-              <div className="mt-8 grid gap-3">
-                {[
-                  "Unify → Zoho Books automated in real time",
-                  "Hours of weekly admin eliminated from day one",
-                  "System runs without developer involvement after handoff",
-                ].map((point) => (
-                  <Card
-                    key={point}
-                    className="border-slate-200/80 bg-[linear-gradient(180deg,#ffffff_0%,#f8fbff_100%)] shadow-[0_12px_28px_rgba(15,23,42,0.05)]"
-                  >
-                    <CardContent className="flex items-center gap-3 px-4 py-3 text-sm font-medium text-slate-700">
-                      <span className="flex h-5 w-5 items-center justify-center rounded-full bg-blue-50 text-blue-700">
-                        <Check className="h-3.5 w-3.5" />
-                      </span>
-                      {point}
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-
-              <div className="mt-8 flex flex-wrap gap-4">
-                <Button asChild size="lg" aria-label="See the full Lovin from the Oven case study">
-                  <Link href="/work/lovin-from-the-oven">
-                    Full case study <ArrowRight className="h-4 w-4" />
-                  </Link>
-                </Button>
-                <Button asChild variant="outline" size="lg">
-                  <Link href="/contact">Talk about Zconnect</Link>
-                </Button>
-              </div>
-            </div>
-
-            <div className="grid gap-4">
-              <Card className="overflow-hidden border-slate-200 bg-white/95 p-4 shadow-[0_24px_70px_rgba(15,23,42,0.08)] lg:p-5">
-                <div className="flex items-center justify-between gap-4">
-                  <Badge variant="secondary">Lovin from the Oven</Badge>
-                  <div className="rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-[10px] uppercase tracking-[0.24em] text-blue-700">
-                    Zconnect integration
-                  </div>
-                </div>
-                <div className="mt-4 overflow-hidden rounded-[1.8rem] border border-slate-200 bg-slate-100 shadow-[0_18px_50px_rgba(15,23,42,0.06)]">
-                  <div className="border-b border-slate-200 bg-slate-50 px-4 py-3">
-                    <div className="flex items-center gap-2">
-                      <span className="h-2.5 w-2.5 rounded-full bg-slate-300" />
-                      <span className="h-2.5 w-2.5 rounded-full bg-slate-300" />
-                      <span className="h-2.5 w-2.5 rounded-full bg-slate-300" />
-                    </div>
-                  </div>
-                  <div className="relative aspect-[16/11] flex items-center justify-center bg-slate-50 p-8">
-                    <div className="flex w-full flex-col items-center gap-5">
-                      <div className="text-[10px] uppercase tracking-[0.28em] text-blue-700">
-                        Integration flow
-                      </div>
-                      <div className="flex flex-wrap items-center justify-center gap-3">
-                        <div className="rounded-[1.2rem] border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-900 shadow-[0_8px_20px_rgba(15,23,42,0.05)]">
-                          Unify
-                        </div>
-                        <ArrowRight className="h-4 w-4 shrink-0 text-blue-400" />
-                        <div className="rounded-[1.2rem] border border-blue-100 bg-blue-50 px-4 py-3 text-sm font-semibold text-blue-900 shadow-[0_8px_20px_rgba(59,130,246,0.08)]">
-                          Zconnect
-                        </div>
-                        <ArrowRight className="h-4 w-4 shrink-0 text-blue-400" />
-                        <div className="rounded-[1.2rem] border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-900 shadow-[0_8px_20px_rgba(15,23,42,0.05)]">
-                          Zoho Books
-                        </div>
-                      </div>
-                      <p className="max-w-[16rem] text-center text-xs text-slate-500">
-                        Order confirmed → invoice generated automatically
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </Card>
-
-              <div className="grid gap-4 sm:grid-cols-3">
-                {[
-                  { title: "Integration", text: "Unify and Zoho Books connected via webhook — no polling, no delay." },
-                  { title: "Automation", text: "Every confirmed order generates an invoice immediately, without any manual step." },
-                  { title: "Handoff", text: "Full documentation handed to the client so the system is theirs to own." },
-                ].map((shot) => (
-                  <Card
-                    key={shot.title}
-                    className="overflow-hidden border-slate-200 bg-white shadow-[0_18px_50px_rgba(15,23,42,0.06)]"
-                  >
-                    <CardHeader className="pb-3">
-                      <div className="flex items-center justify-between gap-4">
-                        <Badge variant="outline">{shot.title}</Badge>
-                        <Sparkles className="h-4 w-4 text-blue-600" />
-                      </div>
-                      <CardTitle className="mt-4 text-xl tracking-[-0.04em] text-slate-950">
-                        Lovin from the Oven
-                      </CardTitle>
-                      <CardDescription className="mt-2 max-w-xl text-sm leading-6 text-slate-600">
-                        {shot.text}
-                      </CardDescription>
-                    </CardHeader>
-                  </Card>
-                ))}
-              </div>
-            </div>
-          </div>
+          ))}
         </div>
 
         <div className="mt-20 border-t border-slate-200/80 pt-16">
           <Badge>Start your project</Badge>
           <h2 className="mt-4 text-4xl font-semibold tracking-[-0.05em] text-slate-950 md:text-5xl">
-            Want a build like this?
+            Want a website like this?
           </h2>
           <p className="mt-4 max-w-xl text-lg leading-8 text-slate-700">
             The same quality of work is available for your business. A clear
-            process, a fixed price, and a live result in 7 days.
+            process, a fixed price, and a live result in 5-14 days.
           </p>
           <div className="mt-8 flex flex-wrap gap-4">
             <Button asChild size="lg">
-              <Link href="/checkout/setup-deposit">
-                Start your website <ArrowRight className="h-4 w-4" />
+              <Link href="/contact">
+                Get your website <ArrowRight className="h-4 w-4" />
               </Link>
             </Button>
             <Button asChild variant="outline" size="lg">
-              <Link href="/contact">Talk to Ziffera</Link>
+              <Link href="#pricing">View Pricing</Link>
             </Button>
           </div>
         </div>

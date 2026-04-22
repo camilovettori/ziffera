@@ -1,34 +1,50 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowRight, Check, Shield, Sparkles } from "lucide-react";
+import { ArrowRight, Check } from "lucide-react";
 import Header from "@/components/layout/Header";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
+
+export const metadata: Metadata = {
+  title: "Frequency Framed — Ziffera",
+  description:
+    "A premium e-commerce website case study showing how Ziffera built a storefront that made selling online feel easier.",
+  alternates: {
+    canonical: "/work/frequency-framed",
+  },
+  openGraph: {
+    title: "Frequency Framed — Ziffera",
+    description:
+      "A premium e-commerce website case study showing how Ziffera built a storefront that made selling online feel easier.",
+    url: "https://www.ziffera.ie/work/frequency-framed",
+    siteName: "Ziffera",
+    type: "website",
+    images: [
+      {
+        url: "/examples/homepage.png",
+        width: 1200,
+        height: 630,
+        alt: "Frequency Framed website preview",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Frequency Framed — Ziffera",
+    description:
+      "A premium e-commerce website case study showing how Ziffera built a storefront that made selling online feel easier.",
+    images: ["/examples/homepage.png"],
+  },
+};
 
 const highlights = [
-  "Art gallery with Supabase image storage and dynamic artwork pages",
-  "Stripe checkout for direct artwork purchases",
-  "Commission request flow for custom paintings",
-  "Blog, reviews, FAQ, and shipping/returns pages",
-  "Full admin panel for managing artworks, orders, and content",
-  "Mobile-first design with a premium, minimal aesthetic",
-];
-
-const buildSpecs = [
-  {
-    title: "The brief",
-    text: "The client was selling original oil paintings with no digital presence — relying entirely on Instagram and word of mouth. The goal was a platform that felt as premium as the art itself, with a simple way to sell directly and take commission requests without back-and-forth.",
-  },
-  {
-    title: "The result",
-    text: "A live, fully functional e-commerce platform built and deployed for a real Irish artist. Works on mobile, handles real Stripe payments, and gives the client full control through an admin panel — no developer needed for day-to-day updates.",
-  },
-  {
-    title: "The stack",
-    text: "Built with Next.js, Supabase for image storage, and Stripe for checkout. Every part of the system — gallery, cart, commissions, blog, admin — was built to work for a solo artist running a real business.",
-  },
+  "Looks more established at first glance",
+  "Makes online selling feel easier",
+  "Helps visitors take action faster",
+  "Works well on mobile and desktop",
+  "Gives the client a website they can be proud of",
 ];
 
 export default function FrequencyFramedPage() {
@@ -50,19 +66,19 @@ export default function FrequencyFramedPage() {
             Frequency Framed.
             <br />
             <span className="bg-[linear-gradient(180deg,#1d4ed8_0%,#3b82f6_45%,#7dd3fc_100%)] bg-clip-text text-transparent">
-              Built for a real artist.
+              Built to sell online.
             </span>
           </h1>
           <p className="mt-6 max-w-2xl text-lg leading-8 text-slate-600 md:text-[1.16rem] md:leading-9">
-            A full e-commerce platform for an Irish artist — gallery, Stripe
-            checkout, commission requests, and a complete admin panel. Live at
-            frequencyframed.ie.
+            A premium e-commerce website that helps the brand look more established,
+            makes browsing feel easier, and supports direct online sales.
           </p>
-          <div className="mt-9 flex flex-wrap gap-4">
-            <Button asChild size="lg" aria-label="Start a similar build">
-              <Link href="/checkout/setup-deposit">
-                Start a similar build <ArrowRight className="h-4 w-4" />
-              </Link>
+          <div className="mt-5 inline-flex rounded-full border border-emerald-200 bg-emerald-50 px-4 py-2 text-sm font-semibold text-emerald-800">
+            Outcome: Started selling online instantly
+          </div>
+          <div className="mt-8 flex flex-wrap gap-4">
+            <Button asChild size="lg" aria-label="Get your website">
+              <Link href="/contact">Get your website</Link>
             </Button>
             <Button asChild variant="outline" size="lg" aria-label="View the live Frequency Framed website">
               <a
@@ -70,13 +86,13 @@ export default function FrequencyFramedPage() {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                View live site → frequencyframed.ie
+                View live site <ArrowRight className="h-4 w-4" />
               </a>
             </Button>
           </div>
         </div>
 
-        <div className="mt-16 grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
+        <div className="mt-16 grid gap-6 lg:grid-cols-[1.02fr_0.98fr]">
           <Card className="overflow-hidden border-slate-200 bg-white/95 p-4 shadow-[0_24px_70px_rgba(15,23,42,0.08)] lg:p-5">
             <div className="flex items-center justify-between gap-4">
               <Badge variant="secondary">Frequency Framed</Badge>
@@ -106,13 +122,13 @@ export default function FrequencyFramedPage() {
 
           <Card className="overflow-hidden border-slate-200/80 bg-white shadow-[0_28px_84px_rgba(15,23,42,0.1)]">
             <CardHeader>
-              <Badge variant="secondary">What we built</Badge>
+              <Badge variant="secondary">What changed</Badge>
               <CardTitle className="mt-4 text-3xl tracking-[-0.05em]">
-                A complete platform, not a template.
+                A storefront that feels premium from the first screen.
               </CardTitle>
               <CardDescription className="mt-3 max-w-2xl text-base leading-7">
-                Every part of the platform was built from scratch to fit how a
-                working artist actually sells and communicates with buyers.
+                The goal was to make the brand feel more established and make it easier
+                for visitors to browse, trust the business, and buy.
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-3">
@@ -127,49 +143,8 @@ export default function FrequencyFramedPage() {
                   {point}
                 </div>
               ))}
-              <Separator className="my-5" />
-              <div className="grid gap-3 sm:grid-cols-2">
-                {[
-                  "Next.js App Router",
-                  "Supabase image storage",
-                  "Stripe checkout",
-                  "Custom admin panel",
-                ].map((tech) => (
-                  <Card
-                    key={tech}
-                    className="border-slate-200/80 bg-white shadow-[0_12px_28px_rgba(15,23,42,0.05)]"
-                  >
-                    <CardContent className="flex items-center gap-3 px-4 py-3 text-sm text-slate-700">
-                      <Shield className="h-4 w-4 text-blue-700" />
-                      {tech}
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
             </CardContent>
           </Card>
-        </div>
-
-        <div className="mt-10 grid gap-4 sm:grid-cols-3">
-          {buildSpecs.map((shot) => (
-            <Card
-              key={shot.title}
-              className="overflow-hidden border-slate-200 bg-white shadow-[0_18px_50px_rgba(15,23,42,0.06)]"
-            >
-              <CardHeader className="pb-3">
-                <div className="flex items-center justify-between gap-4">
-                  <Badge variant="outline">{shot.title}</Badge>
-                  <Sparkles className="h-4 w-4 text-blue-600" />
-                </div>
-                <CardTitle className="mt-4 text-xl tracking-[-0.04em] text-slate-950">
-                  Frequency Framed
-                </CardTitle>
-                <CardDescription className="mt-2 max-w-xl text-sm leading-6 text-slate-600">
-                  {shot.text}
-                </CardDescription>
-              </CardHeader>
-            </Card>
-          ))}
         </div>
 
         <div className="mt-20 border-t border-slate-200/80 pt-16">
@@ -178,13 +153,13 @@ export default function FrequencyFramedPage() {
             Start a similar build.
           </h2>
           <p className="mt-4 max-w-xl text-lg leading-8 text-slate-700">
-            The same quality of work is available for your business. €400 setup,
-            €25/month — live in 7 days.
+            The same quality of work is available for your business. A clear process,
+            a fixed price, and a live result in 5-14 days.
           </p>
           <div className="mt-8 flex flex-wrap gap-4">
             <Button asChild size="lg">
-              <Link href="/checkout/setup-deposit">
-                Start a similar build <ArrowRight className="h-4 w-4" />
+              <Link href="/contact">
+                Get your website <ArrowRight className="h-4 w-4" />
               </Link>
             </Button>
             <Button asChild variant="outline" size="lg">
@@ -193,7 +168,7 @@ export default function FrequencyFramedPage() {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                View live site → frequencyframed.ie
+                View live site
               </a>
             </Button>
           </div>

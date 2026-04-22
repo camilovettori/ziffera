@@ -1,6 +1,5 @@
 "use client";
 import { useEffect, useState } from "react";
-import { Check, Clock3, ShieldCheck, Sparkles } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
@@ -8,25 +7,22 @@ import { Button } from "@/components/ui/button";
 
 const slides = [
   { src: "/examples/homepage.png", alt: "Frequency Framed homepage" },
-  { src: "/examples/checkout.png", alt: "Frequency Framed checkout" },
   { src: "/examples/gallery.png", alt: "Frequency Framed gallery" },
-  { src: "/examples/admin.png", alt: "Frequency Framed admin panel" },
-  { src: "/examples/cart.png", alt: "Frequency Framed cart" },
   { src: "/examples/mobileFF.jpg", alt: "Frequency Framed mobile view" },
 ];
 
 const proofHighlights = [
   {
-    title: "Live e-commerce",
-    text: "Full storefront with gallery, artwork pages, and cart.",
+    title: "Real website",
+    text: "A polished site that feels credible from the first screen.",
   },
   {
-    title: "Stripe checkout",
-    text: "Direct payments with a clean embedded checkout flow.",
+    title: "Clear enquiries",
+    text: "Visitors can move from interest to action without friction.",
   },
   {
-    title: "Admin panel",
-    text: "Client manages products and orders without a developer.",
+    title: "Easy handoff",
+    text: "The client can manage the site without extra complexity.",
   },
 ];
 
@@ -120,7 +116,7 @@ export default function HeroCarousel() {
               size="lg"
               className="bg-[linear-gradient(135deg,#2563eb_0%,#7c3aed_100%)] shadow-[0_18px_44px_rgba(37,99,235,0.28)]"
             >
-              <Link href="/checkout/setup-deposit">Start your website</Link>
+              <Link href="/contact">Get your website</Link>
             </Button>
 
             <Button

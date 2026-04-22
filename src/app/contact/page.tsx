@@ -12,8 +12,8 @@ import { Select } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
 import { Textarea } from "@/components/ui/textarea";
 
-const needs = ["Website", "E-commerce", "System / automation"];
-const budgets = ["EUR500-EUR1000", "EUR1000-EUR3000", "Not sure"];
+const needs = ["Website", "E-commerce website", "Booking / contact site"];
+const budgets = ["€400-€800", "€800-€1,500", "Not sure"];
 
 type FormState = {
   name: string;
@@ -67,15 +67,6 @@ export default function ContactPage() {
     setStatus("sending");
     setFeedback("");
 
-    console.log("Submitting contact form", {
-      name,
-      email,
-      businessName,
-      need,
-      budget,
-      messageLength: message.length,
-    });
-
     try {
       const response = await fetch("/api/contact", {
         method: "POST",
@@ -111,7 +102,6 @@ export default function ContactPage() {
         throw new Error(result.error ?? "Unable to send message. Please try again.");
       }
 
-      console.log("Contact form sent", result);
       setFormData(initialFormState);
       setStatus("success");
       setFeedback(result.message ?? "Thanks. Your message has been sent.");
@@ -149,7 +139,7 @@ export default function ContactPage() {
                 className="h-12 w-auto object-contain lg:h-14"
               />
               <div className="mt-2 pl-1 text-[10px] uppercase tracking-[0.3em] text-slate-500">
-                Websites / Systems / SaaS
+                Premium websites only
               </div>
             </Link>
 
@@ -174,14 +164,19 @@ export default function ContactPage() {
         >
           <Badge>Friendly, direct contact</Badge>
           <h1 className="mt-6 text-5xl font-semibold leading-[0.94] tracking-[-0.06em] text-slate-950 md:text-7xl xl:text-[5.5rem]">
-            Tell us what you need.
+            Tell us about your website.
           </h1>
           <p className="mt-6 max-w-2xl text-lg leading-8 text-slate-600 md:text-[1.16rem] md:leading-9">
-            Share a few details and we&apos;ll reply with the clearest next step.
+            Most websites are delivered in 7-14 days. We handle everything for you.
+            No pressure - just a quick quote.
           </p>
 
           <div className="mt-8 grid gap-3 sm:grid-cols-3">
-            {["Usually reply within 24 hours", "Clear next steps", "No pressure"].map(
+            {[
+              "Most websites delivered in 7-14 days",
+              "We handle everything for you",
+              "No pressure - just a quick quote",
+            ].map(
               (entry) => (
                 <Card
                   key={entry}
@@ -197,8 +192,8 @@ export default function ContactPage() {
 
           <Card className="mt-8 border-blue-100/80 bg-[linear-gradient(180deg,#eff6ff_0%,#ffffff_100%)] shadow-[0_18px_42px_rgba(59,130,246,0.08)]">
             <CardContent className="px-5 py-4 text-sm leading-7 text-slate-700">
-              We build websites, e-commerce stores, custom systems, and
-              integrations for small businesses and growing brands.
+              We build premium websites for real businesses and keep the process
+              simple from start to finish.
             </CardContent>
           </Card>
         </motion.div>
@@ -212,11 +207,10 @@ export default function ContactPage() {
             <CardHeader className="pb-5">
               <Badge>Contact form</Badge>
               <CardTitle className="mt-4 text-3xl tracking-[-0.05em]">
-                Start the conversation
+                Get a clear quote
               </CardTitle>
               <CardDescription className="mt-3 max-w-2xl text-base leading-7">
-                A short form keeps things easy and helps us reply with the
-                right next step.
+                A short form keeps things easy and helps us reply with the right next step.
               </CardDescription>
             </CardHeader>
 
@@ -323,7 +317,7 @@ export default function ContactPage() {
                     name="message"
                     value={formData.message}
                     onChange={(event) => handleChange("message", event.target.value)}
-                    placeholder="A few lines about what you need, what it should do, and any links that help."
+                    placeholder="Tell us what your website needs to do, what pages you need, and any examples you like."
                     required
                   />
                 </motion.div>
@@ -356,7 +350,7 @@ export default function ContactPage() {
             </CardContent>
           </Card>
         </motion.div>
-x      </div>
+      </div>
     </main>
   );
 }
