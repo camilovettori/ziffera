@@ -1,5 +1,5 @@
 import CTASection from "@/components/sections/CTASection";
-import ExampleSection from "@/components/sections/ExampleSection";
+import OurWorkSection from "@/components/sections/OurWorkSection";
 import HeroSection from "@/components/sections/HeroSection";
 import HowItWorksSection from "@/components/sections/HowItWorksSection";
 import PricingSection from "@/components/sections/PricingSection";
@@ -45,7 +45,7 @@ export default function HomePage() {
 
       <Header />
       <HeroSection />
-      <ExampleSection />
+      <OurWorkSection />
       <TestimonialsSection />
       <ServicesSection />
       <HowItWorksSection />
