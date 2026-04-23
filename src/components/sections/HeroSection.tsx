@@ -3,8 +3,7 @@
 import { motion } from "framer-motion";
 import { Check, ShieldCheck, Sparkles } from "lucide-react";
 import Link from "next/link";
-import HeroSphere from "@/components/HeroSphere";
-import VideoCarousel from "@/components/ui/VideoCarousel";
+import ZifferaOrb from "@/components/ui/ZifferaOrb";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription } from "@/components/ui/card";
@@ -48,7 +47,6 @@ export default function HeroSection() {
       className="relative isolate w-full min-h-screen px-6 pt-6 lg:px-10 lg:pt-8"
       style={{
         position: "relative",
-        overflow: "hidden",
         background:
           "radial-gradient(ellipse 90% 70% at 15% 40%, rgba(59,130,246,0.22) 0%, transparent 65%), radial-gradient(ellipse 70% 90% at 85% 20%, rgba(124,58,237,0.18) 0%, transparent 60%), radial-gradient(ellipse 60% 60% at 60% 85%, rgba(16,185,129,0.08) 0%, transparent 55%), linear-gradient(160deg, #060917 0%, #0B0F28 35%, #0D0B22 65%, #080C1F 100%)",
       }}
@@ -82,17 +80,30 @@ export default function HeroSection() {
         <div className="hero-fade-bottom z-[3]" />
       </div>
 
-      {/* Sphere - full bleed behind hero */}
+      {/* Orb glow backdrop + ZifferaOrb */}
       <div
-        className="pointer-events-none absolute inset-0 z-0 overflow-hidden"
+        className="pointer-events-none absolute inset-0 z-0"
         aria-hidden="true"
       >
-        <div className="absolute right-[-5%] top-1/2 h-[800px] w-[800px] -translate-y-1/2 lg:h-[950px] lg:w-[950px] xl:h-[1050px] xl:w-[1050px]">
-          <HeroSphere />
-        </div>
+        <div
+          style={{
+            position: 'absolute',
+            right: '-5%',
+            top: '50%',
+            transform: 'translateY(-50%)',
+            width: '700px',
+            height: '700px',
+            borderRadius: '50%',
+            background: 'radial-gradient(circle, rgba(59,15,160,0.3) 0%, rgba(37,99,235,0.08) 45%, transparent 70%)',
+            pointerEvents: 'none',
+            zIndex: 0,
+            filter: 'blur(60px)',
+          }}
+        />
+        <ZifferaOrb />
       </div>
 
-      <div className="relative z-10 mx-auto grid max-w-7xl gap-10 pb-[60px] pt-10 lg:grid-cols-[1.04fr_0.96fr] lg:items-center lg:pt-[4.5rem]">
+      <div className="relative z-10 mx-auto max-w-7xl pb-[60px] pt-10 lg:pt-[4.5rem]">
         <motion.div
           initial={{ opacity: 0, y: 18 }}
           animate={{ opacity: 1, y: 0 }}
@@ -206,14 +217,6 @@ export default function HeroSection() {
           </motion.div>
         </motion.div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20, scale: 0.98 }}
-          animate={{ opacity: 1, y: 0, scale: 1 }}
-          transition={{ duration: 0.9, delay: 0.18 }}
-          className="relative mx-auto w-full max-w-[520px] lg:self-center"
-        >
-          <VideoCarousel />
-        </motion.div>
       </div>
     </section>
   );
