@@ -77,8 +77,8 @@ export default function RubAndScrubPage() {
             Outcome: Increased bookings with a simple flow
           </div>
           <div className="mt-8 flex flex-wrap gap-4">
-            <Button asChild size="lg" aria-label="Book a call">
-              <Link href="/contact">Book a call</Link>
+            <Button asChild size="lg" aria-label="Get in touch">
+              <Link href="/contact">Get in touch</Link>
             </Button>
             <Button asChild variant="outline" size="lg" aria-label="View the live Rub and Scrub website">
               <a
@@ -159,7 +159,7 @@ export default function RubAndScrubPage() {
           <div className="mt-8 flex flex-wrap gap-4">
             <Button asChild size="lg">
               <Link href="/contact">
-                Book a call <ArrowRight className="h-4 w-4" />
+                Get in touch <ArrowRight className="h-4 w-4" />
               </Link>
             </Button>
             <Button asChild variant="outline" size="lg">

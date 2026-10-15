@@ -35,7 +35,7 @@ export default function Hero() {
 
           <div className="mt-8 flex flex-wrap gap-3">
             <Button asChild size="lg">
-              <Link href="/contact">Book a call</Link>
+              <Link href="/contact">Get in touch</Link>
             </Button>
             <Button asChild size="lg" variant="outline">
               <Link href="#work">See our work</Link>

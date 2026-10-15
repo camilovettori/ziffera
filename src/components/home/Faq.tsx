@@ -3,7 +3,7 @@ import { Plus } from "lucide-react";
 const faqs = [
   {
     q: "How much does a project cost?",
-    a: "It depends on what you need, so we don't use a price list. After a short call you get a written scope and a fixed quote, and nothing starts until you approve it.",
+    a: "It depends on what you need, so we don't use a price list. After a quick conversation by email or call, you get a written scope and a fixed quote, and nothing starts until you approve it.",
   },
   {
     q: "Can you build a custom system for my company?",
