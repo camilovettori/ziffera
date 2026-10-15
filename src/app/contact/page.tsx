@@ -1,48 +1,99 @@
 "use client";
 
-import { motion } from "framer-motion";
-import Link from "next/link";
-import { FormEvent, useState } from "react";
-import { Badge } from "@/components/ui/badge";
+import { FormEvent, useEffect, useId, useState } from "react";
+import { Mail, MapPin, Link2 } from "lucide-react";
+import Header from "@/components/layout/Header";
+import SiteFooter from "@/components/layout/SiteFooter";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Select } from "@/components/ui/select";
-import { Separator } from "@/components/ui/separator";
 import { Textarea } from "@/components/ui/textarea";
-import ZifferaLogo from "@/components/layout/ZifferaLogo";
+import { cn } from "@/lib/utils";
 
-const needs = ["Website", "E-commerce website", "Booking / contact site"];
-const budgets = ["€400-€800", "€800-€1,500", "Not sure"];
+type Mode = "call" | "message";
+
+const topics = [
+  "Website or online shop",
+  "Custom business system",
+  "Integration or automation",
+  "Not sure yet",
+];
+
+const times = [
+  "Weekday morning (9:00–12:00)",
+  "Weekday afternoon (12:00–17:00)",
+  "Any time on a weekday",
+];
+
+const callTypes = ["Video call", "Phone call"];
 
 type FormState = {
   name: string;
   email: string;
-  businessName: string;
-  need: string;
-  budget: string;
-  message: string;
+  company: string;
+  phone: string;
+  topic: string;
+  time: string;
+  callType: string;
+  notes: string;
 };
 
-const initialFormState: FormState = {
+const empty: FormState = {
   name: "",
   email: "",
-  businessName: "",
-  need: "",
-  budget: "",
-  message: "",
+  company: "",
+  phone: "",
+  topic: "",
+  time: "",
+  callType: callTypes[0],
+  notes: "",
 };
 
-export default function ContactPage() {
-  const [formData, setFormData] = useState<FormState>(initialFormState);
-  const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">(
-    "idle"
-  );
-  const [feedback, setFeedback] = useState("");
+const nextSteps = [
+  ["We reply", "Usually within 24 hours, to confirm a time that suits you."],
+  ["We talk", "30 minutes about your business and what needs to change."],
+  ["You get a plan", "A written scope and a fixed quote. Nothing starts until you approve it."],
+];
 
-  const handleChange = <K extends keyof FormState>(key: K, value: FormState[K]) => {
-    setFormData((current) => ({ ...current, [key]: value }));
-    if (status !== "idle") {
+function Field({
+  label,
+  hint,
+  children,
+  className,
+  htmlFor,
+}: {
+  label: string;
+  hint?: string;
+  children: React.ReactNode;
+  className?: string;
+  htmlFor: string;
+}) {
+  return (
+    <div className={cn("space-y-2", className)}>
+      <label htmlFor={htmlFor} className="flex items-baseline justify-between text-sm font-medium text-ink">
+        {label}
+        {hint ? <span className="text-xs font-normal text-ink-3">{hint}</span> : null}
+      </label>
+      {children}
+    </div>
+  );
+}
+
+export default function ContactPage() {
+  const [mode, setMode] = useState<Mode>("call");
+  const [form, setForm] = useState<FormState>(empty);
+  const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
+  const [feedback, setFeedback] = useState("");
+  const id = useId();
+
+  useEffect(() => {
+    const type = new URLSearchParams(window.location.search).get("type");
+    if (type === "message") setMode("message");
+  }, []);
+
+  const set = <K extends keyof FormState>(key: K, value: FormState[K]) => {
+    setForm((f) => ({ ...f, [key]: value }));
+    if (status !== "idle" && status !== "sending") {
       setStatus("idle");
       setFeedback("");
     }
@@ -50,19 +101,29 @@ export default function ContactPage() {
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    const f = Object.fromEntries(
+      Object.entries(form).map(([k, v]) => [k, v.trim()])
+    ) as FormState;
 
-    const name = formData.name.trim();
-    const email = formData.email.trim();
-    const businessName = formData.businessName.trim();
-    const need = formData.need.trim();
-    const budget = formData.budget.trim();
-    const message = formData.message.trim();
-
-    if (!name || !email || !businessName || !need || !budget || !message) {
+    if (mode === "message" && !f.notes) {
       setStatus("error");
-      setFeedback("Please complete all fields before sending.");
+      setFeedback("Add a short message so we know how to help.");
       return;
     }
+
+    const message =
+      mode === "call"
+        ? [
+            "CALL REQUEST",
+            `Call type: ${f.callType}`,
+            `Best time: ${f.time}`,
+            f.phone ? `Phone: ${f.phone}` : null,
+            "",
+            f.notes ? `Notes:\n${f.notes}` : "No notes added.",
+          ]
+            .filter((line) => line !== null)
+            .join("\n")
+        : f.notes;
 
     setStatus("sending");
     setFeedback("");
@@ -70,277 +131,205 @@ export default function ContactPage() {
     try {
       const response = await fetch("/api/contact", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          name,
-          email,
-          businessName,
-          need,
-          budget,
+          name: f.name,
+          email: f.email,
+          businessName: f.company,
+          need: f.topic,
+          timeline: mode === "call" ? `Call: ${f.time} (${f.callType})` : undefined,
           message,
         }),
       });
-
-      const responseText = await response.text();
-      let result: { success?: boolean; message?: string; error?: string } = {};
-
-      if (responseText) {
-        try {
-          result = JSON.parse(responseText) as {
-            success?: boolean;
-            message?: string;
-            error?: string;
-          };
-        } catch (parseError) {
-          console.error("Contact API returned invalid JSON", parseError);
-        }
+      const text = await response.text();
+      let result: { message?: string; error?: string } = {};
+      try {
+        result = text ? JSON.parse(text) : {};
+      } catch {
+        // non-JSON response; fall through to generic handling
       }
+      if (!response.ok) throw new Error(result.error ?? "We couldn't send that. Please try again.");
 
-      if (!response.ok) {
-        throw new Error(result.error ?? "Unable to send message. Please try again.");
-      }
-
-      setFormData(initialFormState);
+      setForm(empty);
       setStatus("success");
-      setFeedback(result.message ?? "Thanks. Your message has been sent.");
+      setFeedback(
+        mode === "call"
+          ? "Request sent. We'll email you to confirm the call time."
+          : "Message sent. We'll reply by email."
+      );
     } catch (error) {
-      console.error("Contact form submission failed", error);
       setStatus("error");
       setFeedback(
         error instanceof Error
-          ? error.message
-          : "Something went wrong. Please try again."
+          ? `${error.message} You can also email hello@ziffera.ie.`
+          : "Something went wrong. You can also email hello@ziffera.ie."
       );
     }
   };
 
+  const fid = (name: string) => `${id}-${name}`;
+
   return (
-    <main className="relative min-h-screen overflow-x-hidden bg-[#F7FAFF] text-slate-900">
-      <div className="pointer-events-none absolute inset-0 -z-10">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(59,130,246,0.18),transparent_26%),radial-gradient(circle_at_top_right,rgba(125,211,252,0.14),transparent_24%),linear-gradient(180deg,#ffffff_0%,#f6f9ff_42%,#eef4ff_100%)]" />
-        <div className="absolute left-[-10%] top-[-8%] h-[24rem] w-[24rem] rounded-full bg-blue-200/40 blur-3xl" />
-        <div className="absolute right-[-8%] top-[10rem] h-[22rem] w-[22rem] rounded-full bg-cyan-200/32 blur-3xl" />
-        <div className="absolute bottom-[12%] left-[18%] h-[18rem] w-[18rem] rounded-full bg-indigo-200/28 blur-3xl" />
-        <div className="absolute inset-0 opacity-[0.04] [background-image:linear-gradient(rgba(15,23,42,0.12)_1px,transparent_1px),linear-gradient(90deg,rgba(15,23,42,0.12)_1px,transparent_1px)] [background-size:84px_84px]" />
-      </div>
+    <>
+      <Header />
+      <main className="relative overflow-x-clip">
+        <div className="blueprint absolute inset-x-0 top-0 -z-10 h-[34rem]" aria-hidden="true" />
+        <div className="absolute inset-x-0 top-[20rem] -z-10 h-[14rem] bg-gradient-to-b from-transparent to-paper" aria-hidden="true" />
 
-      <div className="mx-auto max-w-7xl px-6 py-6 lg:px-10">
-        <div className="sticky top-0 z-20 rounded-[1.8rem] border border-slate-200/80 bg-white/84 px-5 py-4 shadow-[0_18px_44px_rgba(15,23,42,0.07)] backdrop-blur-2xl">
-          <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-            <Link href="/" aria-label="Ziffera home" className="inline-flex w-fit">
-              <ZifferaLogo />
-            </Link>
+        <div className="mx-auto grid max-w-7xl gap-12 px-5 pb-24 pt-10 lg:grid-cols-[0.85fr_1.15fr] lg:gap-16 lg:px-10 lg:pt-16">
+          <div>
+            <p className="text-sm font-medium text-z-deep">Contact</p>
+            <h1 className="mt-4 text-[2.6rem] font-extrabold leading-[1] tracking-[-0.05em] text-ink sm:text-6xl">
+              Book a call with Ziffera
+            </h1>
+            <p className="mt-6 max-w-md text-lg leading-8 text-ink-2">
+              Tell us a little about your business and pick a time that suits you. A website,
+              a custom system or an integration: we&apos;ll tell you honestly what makes sense.
+            </p>
 
-            <div className="flex flex-wrap gap-3">
-              <Button asChild variant="outline">
-                <Link href="/">Back to homepage</Link>
-              </Button>
-              <Button asChild variant="secondary">
-                <Link href="/#work">View real work</Link>
-              </Button>
+            <ol className="mt-10 space-y-6 border-l border-line-strong pl-6">
+              {nextSteps.map(([title, body], i) => (
+                <li key={title} className="relative">
+                  <span
+                    className="absolute -left-[1.95rem] top-0.5 flex h-[15px] w-[15px] items-center justify-center rounded-full border-2 border-z-blue bg-paper"
+                    aria-hidden="true"
+                  >
+                    {i === nextSteps.length - 1 ? <span className="h-1.5 w-1.5 rounded-full bg-z-blue" /> : null}
+                  </span>
+                  <p className="font-semibold text-ink">{title}</p>
+                  <p className="mt-1 max-w-sm text-[15px] leading-6 text-ink-2">{body}</p>
+                </li>
+              ))}
+            </ol>
+
+            <dl className="mt-10 grid gap-4 text-[15px]">
+              <div className="flex items-center gap-3">
+                <dt className="sr-only">Email</dt>
+                <Mail className="h-4 w-4 text-ink-3" aria-hidden="true" />
+                <dd><a href="mailto:hello@ziffera.ie" className="font-medium text-ink hover:text-z-blue">hello@ziffera.ie</a></dd>
+              </div>
+              <div className="flex items-center gap-3">
+                <dt className="sr-only">LinkedIn</dt>
+                <Link2 className="h-4 w-4 text-ink-3" aria-hidden="true" />
+                <dd>
+                  <a href="https://www.linkedin.com/company/ziffera" target="_blank" rel="noopener noreferrer" className="font-medium text-ink hover:text-z-blue">
+                    Ziffera on LinkedIn
+                  </a>
+                </dd>
+              </div>
+              <div className="flex items-center gap-3">
+                <dt className="sr-only">Location</dt>
+                <MapPin className="h-4 w-4 text-ink-3" aria-hidden="true" />
+                <dd className="text-ink-2">Dublin, Ireland</dd>
+              </div>
+            </dl>
+          </div>
+
+          <div className="rounded-2xl border border-line bg-surface p-6 shadow-[0_30px_60px_-36px_rgba(13,21,48,0.35)] sm:p-9">
+            <div role="radiogroup" aria-label="How would you like to get in touch?" className="grid grid-cols-2 gap-1 rounded-xl border border-line bg-paper p-1">
+              {(
+                [
+                  ["call", "Book a call"],
+                  ["message", "Send a message"],
+                ] as const
+              ).map(([value, label]) => (
+                <button
+                  key={value}
+                  type="button"
+                  role="radio"
+                  aria-checked={mode === value}
+                  onClick={() => setMode(value)}
+                  className={cn(
+                    "rounded-lg px-4 py-2.5 text-[15px] font-semibold transition-colors",
+                    mode === value ? "bg-surface text-ink shadow-[0_1px_3px_rgba(13,21,48,0.12)]" : "text-ink-3 hover:text-ink"
+                  )}
+                >
+                  {label}
+                </button>
+              ))}
             </div>
+
+            <form onSubmit={handleSubmit} className="mt-8 grid gap-5 sm:grid-cols-2">
+              <Field label="Name" htmlFor={fid("name")}>
+                <Input id={fid("name")} autoComplete="name" required value={form.name} onChange={(e) => set("name", e.target.value)} />
+              </Field>
+              <Field label="Work email" htmlFor={fid("email")}>
+                <Input id={fid("email")} type="email" autoComplete="email" required value={form.email} onChange={(e) => set("email", e.target.value)} />
+              </Field>
+              <Field label="Company" htmlFor={fid("company")}>
+                <Input id={fid("company")} autoComplete="organization" required value={form.company} onChange={(e) => set("company", e.target.value)} />
+              </Field>
+              <Field label="What is it about?" htmlFor={fid("topic")}>
+                <Select id={fid("topic")} required value={form.topic} onChange={(e) => set("topic", e.target.value)}>
+                  <option value="" disabled>Choose one</option>
+                  {topics.map((t) => <option key={t}>{t}</option>)}
+                </Select>
+              </Field>
+
+              {mode === "call" ? (
+                <>
+                  <Field label="Best time" htmlFor={fid("time")}>
+                    <Select id={fid("time")} required value={form.time} onChange={(e) => set("time", e.target.value)}>
+                      <option value="" disabled>Choose a time</option>
+                      {times.map((t) => <option key={t}>{t}</option>)}
+                    </Select>
+                  </Field>
+                  <Field label="Call by" htmlFor={fid("calltype")}>
+                    <Select id={fid("calltype")} value={form.callType} onChange={(e) => set("callType", e.target.value)}>
+                      {callTypes.map((t) => <option key={t}>{t}</option>)}
+                    </Select>
+                  </Field>
+                  {form.callType === "Phone call" ? (
+                    <Field label="Phone number" htmlFor={fid("phone")} className="sm:col-span-2">
+                      <Input id={fid("phone")} type="tel" autoComplete="tel" required value={form.phone} onChange={(e) => set("phone", e.target.value)} />
+                    </Field>
+                  ) : null}
+                </>
+              ) : null}
+
+              <Field
+                label={mode === "call" ? "Anything we should know?" : "Message"}
+                hint={mode === "call" ? "Optional" : undefined}
+                htmlFor={fid("notes")}
+                className="sm:col-span-2"
+              >
+                <Textarea
+                  id={fid("notes")}
+                  className="min-h-[140px]"
+                  required={mode === "message"}
+                  value={form.notes}
+                  onChange={(e) => set("notes", e.target.value)}
+                  placeholder={
+                    mode === "call"
+                      ? "What does the business do, and what would you like to improve?"
+                      : "Tell us what you need, which tools you use today, and any deadlines."
+                  }
+                />
+              </Field>
+
+              <div className="flex flex-col gap-4 border-t border-line pt-6 sm:col-span-2 sm:flex-row sm:items-center sm:justify-between">
+                <p
+                  aria-live="polite"
+                  className={cn(
+                    "text-sm leading-6",
+                    status === "success" ? "text-emerald-700" : status === "error" ? "text-rose-700" : "text-ink-3"
+                  )}
+                >
+                  {feedback || "Goes straight to hello@ziffera.ie. We never share your details."}
+                </p>
+                <Button type="submit" size="lg" disabled={status === "sending"} className="shrink-0">
+                  {status === "sending"
+                    ? "Sending…"
+                    : mode === "call"
+                      ? "Request a call"
+                      : "Send message"}
+                </Button>
+              </div>
+            </form>
           </div>
         </div>
-      </div>
-
-      <div className="mx-auto grid max-w-7xl gap-12 px-6 pb-24 pt-10 lg:grid-cols-[0.92fr_1.08fr] lg:px-10 lg:pb-32 lg:pt-14">
-        <motion.div
-          initial={{ opacity: 0, y: 18 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.55 }}
-          className="max-w-3xl"
-        >
-          <Badge>Friendly, direct contact</Badge>
-          <h1 className="mt-6 text-5xl font-semibold leading-[0.94] tracking-[-0.06em] text-slate-950 md:text-7xl xl:text-[5.5rem]">
-            Tell us about your website.
-          </h1>
-          <p className="mt-6 max-w-2xl text-lg leading-8 text-slate-600 md:text-[1.16rem] md:leading-9">
-            Most websites are delivered in 7-14 days. We handle everything for you.
-            No pressure - just a quick quote.
-          </p>
-
-          <div className="mt-8 grid gap-3 sm:grid-cols-3">
-            {[
-              "Most websites delivered in 7-14 days",
-              "We handle everything for you",
-              "No pressure - just a quick quote",
-            ].map(
-              (entry) => (
-                <Card
-                  key={entry}
-                  className="border-slate-200/80 bg-[linear-gradient(180deg,#ffffff_0%,#f8fbff_100%)] shadow-[0_12px_28px_rgba(15,23,42,0.05)]"
-                >
-                  <CardContent className="px-4 py-3 text-sm font-medium text-slate-700">
-                    {entry}
-                  </CardContent>
-                </Card>
-              )
-            )}
-          </div>
-
-          <Card className="mt-8 border-blue-100/80 bg-[linear-gradient(180deg,#eff6ff_0%,#ffffff_100%)] shadow-[0_18px_42px_rgba(59,130,246,0.08)]">
-            <CardContent className="px-5 py-4 text-sm leading-7 text-slate-700">
-              We build premium websites for real businesses and keep the process
-              simple from start to finish.
-            </CardContent>
-          </Card>
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 18 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.05 }}
-        >
-          <Card className="overflow-hidden border-slate-200/80 bg-[linear-gradient(180deg,#ffffff_0%,#f8fbff_100%)] shadow-[0_28px_84px_rgba(15,23,42,0.1)]">
-            <CardHeader className="pb-5">
-              <Badge>Contact form</Badge>
-              <CardTitle className="mt-4 text-3xl tracking-[-0.05em]">
-                Get a clear quote
-              </CardTitle>
-              <CardDescription className="mt-3 max-w-2xl text-base leading-7">
-                A short form keeps things easy and helps us reply with the right next step.
-              </CardDescription>
-            </CardHeader>
-
-            <CardContent className="space-y-6">
-              <form onSubmit={handleSubmit} className="space-y-6">
-                <div className="grid gap-5 md:grid-cols-2">
-                  <div className="space-y-2">
-                    <label className="text-[10px] uppercase tracking-[0.24em] text-slate-500">
-                      Name
-                    </label>
-                    <Input
-                      type="text"
-                      name="name"
-                      value={formData.name}
-                      onChange={(event) => handleChange("name", event.target.value)}
-                      placeholder="Your name"
-                      required
-                    />
-                  </div>
-
-                  <div className="space-y-2">
-                    <label className="text-[10px] uppercase tracking-[0.24em] text-slate-500">
-                      Email
-                    </label>
-                    <Input
-                      type="email"
-                      name="email"
-                      value={formData.email}
-                      onChange={(event) => handleChange("email", event.target.value)}
-                      placeholder="you@company.com"
-                      required
-                    />
-                  </div>
-
-                  <div className="space-y-2 md:col-span-2">
-                    <label className="text-[10px] uppercase tracking-[0.24em] text-slate-500">
-                      Business name
-                    </label>
-                    <Input
-                      type="text"
-                      name="businessName"
-                      value={formData.businessName}
-                      onChange={(event) =>
-                        handleChange("businessName", event.target.value)
-                      }
-                      placeholder="Company or brand"
-                      required
-                    />
-                  </div>
-                </div>
-
-                <Separator />
-
-                <div className="grid gap-5 md:grid-cols-2">
-                  <div className="space-y-2">
-                    <label className="text-[10px] uppercase tracking-[0.24em] text-slate-500">
-                      What do you need?
-                    </label>
-                    <Select
-                      value={formData.need}
-                      onChange={(event) => handleChange("need", event.target.value)}
-                      required
-                    >
-                      <option value="">Select one</option>
-                      {needs.map((entry) => (
-                        <option key={entry} value={entry}>
-                          {entry}
-                        </option>
-                      ))}
-                    </Select>
-                  </div>
-
-                  <div className="space-y-2">
-                    <label className="text-[10px] uppercase tracking-[0.24em] text-slate-500">
-                      Budget
-                    </label>
-                    <Select
-                      value={formData.budget}
-                      onChange={(event) => handleChange("budget", event.target.value)}
-                      required
-                    >
-                      <option value="">Select one</option>
-                      {budgets.map((entry) => (
-                        <option key={entry} value={entry}>
-                          {entry}
-                        </option>
-                      ))}
-                    </Select>
-                  </div>
-                </div>
-
-                <Separator />
-
-                <motion.div
-                  initial={{ opacity: 0, y: 8 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.35 }}
-                  className="space-y-2"
-                >
-                  <label className="text-[10px] uppercase tracking-[0.24em] text-slate-500">
-                    Message
-                  </label>
-                  <Textarea
-                    name="message"
-                    value={formData.message}
-                    onChange={(event) => handleChange("message", event.target.value)}
-                    placeholder="Tell us what your website needs to do, what pages you need, and any examples you like."
-                    required
-                  />
-                </motion.div>
-
-                <div className="flex flex-col gap-4 border-t border-slate-200 pt-5 md:flex-row md:items-center md:justify-between">
-                  <div className="text-sm leading-7 text-slate-500">
-                    We&apos;ll review the details and send you a clear next step.
-                  </div>
-
-                  <div className="flex flex-col items-start gap-3 md:items-end">
-                    <Button type="submit" disabled={status === "sending"} size="lg">
-                      {status === "sending" ? "Sending..." : "Send message"}
-                    </Button>
-
-                    <p
-                      aria-live="polite"
-                      className={`max-w-xl text-sm leading-6 ${
-                        status === "success"
-                          ? "text-emerald-600"
-                          : status === "error"
-                            ? "text-rose-600"
-                            : "text-slate-500"
-                      }`}
-                    >
-                      {feedback || "Your message goes straight to hello@ziffera.ie."}
-                    </p>
-                  </div>
-                </div>
-              </form>
-            </CardContent>
-          </Card>
-        </motion.div>
-      </div>
-    </main>
+      </main>
+      <SiteFooter cta={false} />
+    </>
   );
 }
