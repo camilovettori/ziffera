@@ -77,8 +77,8 @@ export default function FrequencyFramedPage() {
             Outcome: Started selling online instantly
           </div>
           <div className="mt-8 flex flex-wrap gap-4">
-            <Button asChild size="lg" aria-label="Get your website">
-              <Link href="/contact">Get your website</Link>
+            <Button asChild size="lg" aria-label="Book a call">
+              <Link href="/contact">Book a call</Link>
             </Button>
             <Button asChild variant="outline" size="lg" aria-label="View the live Frequency Framed website">
               <a
@@ -159,7 +159,7 @@ export default function FrequencyFramedPage() {
           <div className="mt-8 flex flex-wrap gap-4">
             <Button asChild size="lg">
               <Link href="/contact">
-                Get your website <ArrowRight className="h-4 w-4" />
+                Book a call <ArrowRight className="h-4 w-4" />
               </Link>
             </Button>
             <Button asChild variant="outline" size="lg">

@@ -17,9 +17,9 @@ const code = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Ziffera — Websites and business systems, Dublin",
+  title: "Ziffera — Websites, custom software and integrations",
   description:
-    "Ziffera is a Dublin studio building fast websites, online shops and the systems behind them: bookings, payments, costing and invoice automation.",
+    "Ziffera is a Dublin web and software studio. We build websites, custom business systems and integrations that connect the tools you already use.",
   keywords: [
     "website design",
     "website development",
@@ -45,9 +45,9 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: "Ziffera — Websites and business systems, Dublin",
+    title: "Ziffera — Websites, custom software and integrations",
     description:
-      "Premium website design and development for real businesses. Clean design, e-commerce ready, built to bring customers.",
+      "Websites, custom business software and integrations, built in Dublin by Ziffera.",
     url: "https://www.ziffera.ie",
     siteName: "Ziffera",
     locale: "en_IE",
@@ -63,9 +63,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Ziffera — Websites and business systems, Dublin",
+    title: "Ziffera — Websites, custom software and integrations",
     description:
-      "Premium website design and development for real businesses. Clean design, e-commerce ready, built to bring customers.",
+      "Websites, custom business software and integrations, built in Dublin by Ziffera.",
     images: ["/examples/homepage.png"],
   },
   metadataBase: new URL("https://www.ziffera.ie"),
@@ -102,7 +102,7 @@ const serviceJsonLd = {
   url: "https://www.ziffera.ie",
   areaServed: "Worldwide",
   description:
-    "Premium website design and development for businesses that need a modern, customer-focused site.",
+    "Websites, custom business systems and integrations for growing companies.",
 };
 
 export default function RootLayout({

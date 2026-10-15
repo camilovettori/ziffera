@@ -2,24 +2,24 @@ import { Plus } from "lucide-react";
 
 const faqs = [
   {
-    q: "How fast can you build my website?",
-    a: "Most projects go live in 5–14 days once the text, photos and scope are agreed.",
+    q: "How much does a project cost?",
+    a: "It depends on what you need, so we don't use a price list. After a short call you get a written scope and a fixed quote, and nothing starts until you approve it.",
   },
   {
-    q: "What do I need to provide?",
-    a: "Your business details, any logo or branding you already have, and a few notes on what the site needs to do. We can help with the writing.",
+    q: "Can you build a custom system for my company?",
+    a: "Yes. Dashboards, admin tools, booking or ordering systems and customer portals are all things we build. Bigger systems are delivered in phases, so your team can start using parts of it early.",
   },
   {
-    q: "Is there a long-term contract?",
-    a: "No. The monthly plan can be paused or cancelled at any time.",
+    q: "Can you connect the tools we already use?",
+    a: "Usually, yes. We've connected Zoho Books, Zoho Invoice, Unify, Stripe, WhatsApp and Supabase. Tell us what you use and we'll tell you what's possible before you commit.",
   },
   {
-    q: "What does the monthly fee cover?",
-    a: "Hosting, security updates, basic maintenance and small text or image changes, so the site keeps working after launch.",
+    q: "How long does a website take?",
+    a: "Most websites go live in 5–14 days once the content and scope are agreed.",
   },
   {
-    q: "Can you connect my website to the tools I already use?",
-    a: "Usually, yes. We've connected sites and apps to Stripe, WhatsApp, Supabase, Zoho Books and Unify. Tell us what you use and we'll say what's possible.",
+    q: "What happens after launch?",
+    a: "We can host and look after everything on a monthly care plan: hosting, security updates, maintenance and small changes. There's no long-term contract.",
   },
 ];
 

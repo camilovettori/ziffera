@@ -2,16 +2,16 @@ import type { Metadata } from "next";
 import type { ReactNode } from "react";
 
 export const metadata: Metadata = {
-  title: "Contact Ziffera — Get Your Website",
+  title: "Book a call — Ziffera",
   description:
-    "Start your website project with Ziffera. Fast delivery and no long-term contracts.",
+    "Book a call with Ziffera about a website, a custom business system or an integration. Written scope and fixed quote before anything starts.",
   alternates: {
     canonical: "/contact",
   },
   openGraph: {
-    title: "Contact Ziffera — Get Your Website",
+    title: "Book a call — Ziffera",
     description:
-      "Start your website project with Ziffera. Fast delivery and no long-term contracts.",
+      "Book a call with Ziffera about a website, a custom business system or an integration. Written scope and fixed quote before anything starts.",
     url: "https://www.ziffera.ie/contact",
     siteName: "Ziffera",
     type: "website",
@@ -26,9 +26,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Contact Ziffera — Get Your Website",
+    title: "Book a call — Ziffera",
     description:
-      "Start your website project with Ziffera. Fast delivery and no long-term contracts.",
+      "Book a call with Ziffera about a website, a custom business system or an integration. Written scope and fixed quote before anything starts.",
     images: ["/examples/homepage.png"],
   },
 };

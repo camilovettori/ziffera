@@ -8,10 +8,10 @@ import ZifferaLogo from "@/components/layout/ZifferaLogo";
 import { cn } from "@/lib/utils";
 
 const navItems = [
+  { label: "Services", href: "/#services" },
   { label: "Work", href: "/#work" },
-  { label: "Products", href: "/#products" },
-  { label: "Pricing", href: "/pricing" },
-  { label: "Contact", href: "/contact" },
+  { label: "Process", href: "/#process" },
+  { label: "Contact", href: "/contact?type=message" },
 ];
 
 export default function Header() {
@@ -50,7 +50,7 @@ export default function Header() {
             </Link>
           ))}
           <Button asChild className="ml-3 h-10 px-4">
-            <Link href="/contact">Start a project</Link>
+            <Link href="/contact">Book a call</Link>
           </Button>
         </nav>
 
@@ -81,7 +81,7 @@ export default function Header() {
           ))}
           <Button asChild size="lg" className="mt-4 w-full">
             <Link href="/contact" onClick={() => setMobileOpen(false)}>
-              Start a project
+              Book a call
             </Link>
           </Button>
         </nav>

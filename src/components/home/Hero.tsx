@@ -4,6 +4,12 @@ import SystemMap from "@/components/home/SystemMap";
 
 const stack = ["Next.js", "Stripe", "PostgreSQL", "FastAPI", "Zoho API"];
 
+const facts = [
+  ["4", "systems live in production"],
+  ["5–14", "days for a typical website"],
+  ["Fixed", "written quote before we start"],
+];
+
 export default function Hero() {
   return (
     <section className="relative overflow-hidden border-b border-line">
@@ -15,40 +21,33 @@ export default function Hero() {
 
       <div className="mx-auto grid max-w-7xl items-center gap-12 px-5 pb-16 pt-10 lg:grid-cols-[1fr_1.02fr] lg:gap-10 lg:px-10 lg:pb-24 lg:pt-16">
         <div className="max-w-xl">
-          <p className="inline-flex items-center gap-2 rounded-full border border-line bg-surface px-3 py-1 text-sm text-ink-2">
-            <span className="live-dot h-2 w-2 rounded-full bg-emerald-500" aria-hidden="true" />
-            Dublin studio, taking 2 new projects this month
-          </p>
+          <p className="text-sm font-medium text-z-deep">Web and software studio, Dublin</p>
 
-          <h1 className="mt-6 text-[2.75rem] font-extrabold leading-[0.98] tracking-[-0.05em] text-ink sm:text-6xl xl:text-[4.6rem]">
-            Websites, and the systems that run behind them.
+          <h1 className="mt-5 text-[2.6rem] font-extrabold leading-[1] tracking-[-0.05em] text-ink sm:text-6xl xl:text-[4.25rem]">
+            Websites, custom software and integrations.
           </h1>
 
           <p className="mt-6 max-w-[34rem] text-lg leading-8 text-ink-2">
-            Ziffera builds fast websites and online shops for Irish businesses, plus the
-            tools underneath: bookings, payments, recipe costing, invoice automation.
-            Everything on this page is live and in use.
+            Ziffera designs and builds the digital side of growing companies: the website that
+            brings customers in, the systems your team works in every day, and the
+            integrations that make your tools talk to each other.
           </p>
 
           <div className="mt-8 flex flex-wrap gap-3">
             <Button asChild size="lg">
-              <Link href="/contact">Start a project</Link>
+              <Link href="/contact">Book a call</Link>
             </Button>
             <Button asChild size="lg" variant="outline">
-              <Link href="#work">See the work</Link>
+              <Link href="#work">See our work</Link>
             </Button>
           </div>
 
-          <dl className="mt-10 grid max-w-md grid-cols-3 gap-px overflow-hidden rounded-xl border border-line bg-line">
-            {[
-              ["5–14", "days to launch"],
-              ["€400", "websites from"],
-              ["0", "lock-in contracts"],
-            ].map(([value, label]) => (
+          <dl className="mt-10 grid max-w-lg grid-cols-3 gap-px overflow-hidden rounded-xl border border-line bg-line">
+            {facts.map(([value, label]) => (
               <div key={label} className="bg-surface px-4 py-3">
                 <dt className="sr-only">{label}</dt>
                 <dd className="font-mono text-xl font-semibold tracking-tight text-ink">{value}</dd>
-                <dd className="text-xs text-ink-3">{label}</dd>
+                <dd className="text-xs leading-4 text-ink-3">{label}</dd>
               </div>
             ))}
           </dl>

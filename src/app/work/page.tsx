@@ -166,7 +166,7 @@ export default function WorkPage() {
                     </Button>
                   ) : null}
                   <Button asChild variant="outline" size="lg">
-                    <Link href="/contact">Get your website</Link>
+                    <Link href="/contact">Book a call</Link>
                   </Button>
                 </div>
               </div>
@@ -209,17 +209,17 @@ export default function WorkPage() {
             Want a website like this?
           </h2>
           <p className="mt-4 max-w-xl text-lg leading-8 text-slate-700">
-            The same quality of work is available for your business. A clear
-            process, a fixed price, and a live result in 5-14 days.
+            The same quality of work is available for your business: a clear
+            process, a written scope and a fixed quote before anything starts.
           </p>
           <div className="mt-8 flex flex-wrap gap-4">
             <Button asChild size="lg">
               <Link href="/contact">
-                Get your website <ArrowRight className="h-4 w-4" />
+                Book a call <ArrowRight className="h-4 w-4" />
               </Link>
             </Button>
             <Button asChild variant="outline" size="lg">
-              <Link href="#pricing">View Pricing</Link>
+              <Link href="/contact?type=message">Send a message</Link>
             </Button>
           </div>
         </div>

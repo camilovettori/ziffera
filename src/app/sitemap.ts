@@ -21,13 +21,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
       images: [`${baseUrl}/examples/homepage.png`],
     },
     {
-      url: `${baseUrl}/pricing`,
-      lastModified,
-      changeFrequency: "monthly",
-      priority: 0.9,
-      images: [`${baseUrl}/examples/homepage.png`],
-    },
-    {
       url: `${baseUrl}/contact`,
       lastModified,
       changeFrequency: "monthly",

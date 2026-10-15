@@ -1,23 +1,23 @@
 const steps = [
   {
-    when: "Day 0",
-    title: "Agree the scope",
-    body: "A short call, a fixed quote, and a €200 deposit to book your slot.",
+    when: "Step 1",
+    title: "Discovery call",
+    body: "A 30-minute call about your business, then a written scope and a fixed quote.",
   },
   {
-    when: "Days 1–7",
-    title: "Build",
-    body: "Design and development happen together. You get a private preview link early.",
+    when: "Step 2",
+    title: "Design and develop",
+    body: "You get a private preview link early, so you see progress as it happens.",
   },
   {
-    when: "Days 7–12",
-    title: "Review",
-    body: "You click through the real site on your phone and we make the changes.",
+    when: "Step 3",
+    title: "Test with real data",
+    body: "Your team uses the real thing before launch. We fix what doesn't fit how you work.",
   },
   {
-    when: "Launch",
-    title: "Go live",
-    body: "Pay the balance, we connect your domain, and the site starts working for you.",
+    when: "Step 4",
+    title: "Go live and stay supported",
+    body: "We handle launch, hosting and security updates, and we're here for changes after.",
   },
 ];
 
@@ -26,11 +26,11 @@ export default function Process() {
     <section id="process" className="mx-auto max-w-7xl px-5 py-20 lg:px-10 lg:py-28">
       <div className="max-w-2xl">
         <h2 className="text-4xl font-extrabold tracking-[-0.045em] text-ink md:text-5xl">
-          From first call to live in about two weeks
+          How a project runs
         </h2>
         <p className="mt-4 text-lg leading-8 text-ink-2">
-          Timings assume your text and photos are ready. If they aren&apos;t, we&apos;ll help
-          you write them.
+          The same four steps for a website or a custom system. A typical website goes live
+          in 5–14 days; systems are planned and delivered in phases.
         </p>
       </div>
 
