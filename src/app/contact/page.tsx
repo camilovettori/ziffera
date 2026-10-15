@@ -1,7 +1,6 @@
 "use client";
 
 import { motion } from "framer-motion";
-import Image from "next/image";
 import Link from "next/link";
 import { FormEvent, useState } from "react";
 import { Badge } from "@/components/ui/badge";
@@ -11,6 +10,7 @@ import { Input } from "@/components/ui/input";
 import { Select } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
 import { Textarea } from "@/components/ui/textarea";
+import ZifferaLogo from "@/components/layout/ZifferaLogo";
 
 const needs = ["Website", "E-commerce website", "Booking / contact site"];
 const budgets = ["€400-€800", "€800-€1,500", "Not sure"];
@@ -129,18 +129,8 @@ export default function ContactPage() {
       <div className="mx-auto max-w-7xl px-6 py-6 lg:px-10">
         <div className="sticky top-0 z-20 rounded-[1.8rem] border border-slate-200/80 bg-white/84 px-5 py-4 shadow-[0_18px_44px_rgba(15,23,42,0.07)] backdrop-blur-2xl">
           <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-            <Link href="/" className="inline-flex w-fit flex-col items-start">
-              <Image
-                src="/logos/ziffera-logo.png"
-                alt="Ziffera logo"
-                width={230}
-                height={76}
-                priority
-                className="h-12 w-auto object-contain lg:h-14"
-              />
-              <div className="mt-2 pl-1 text-[10px] uppercase tracking-[0.3em] text-slate-500">
-                Premium websites only
-              </div>
+            <Link href="/" aria-label="Ziffera home" className="inline-flex w-fit">
+              <ZifferaLogo />
             </Link>
 
             <div className="flex flex-wrap gap-3">
