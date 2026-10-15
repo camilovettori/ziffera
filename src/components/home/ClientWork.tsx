@@ -6,27 +6,8 @@ import { Button } from "@/components/ui/button";
 
 const projects = [
   {
-    name: "Rub & Scrub",
-    client: "Mobile car valeting, Dublin",
-    logo: { src: "/systems/rubandscrub-logo.png", w: 360, h: 271 },
-    needed: "Local customers kept phoning at the wrong time. They needed to book a valet in under a minute from a phone.",
-    built: [
-      "Mobile-first service site with prices up front",
-      "Booking flow that drops straight into WhatsApp",
-      "Before/after gallery and local SEO for Dublin searches",
-    ],
-    stack: ["Next.js", "Supabase", "Vercel"],
-    url: "rubandscrub.ie",
-    live: "https://www.rubandscrub.ie",
-    caseStudy: "/work/rub-and-scrub",
-    media: {
-      kind: "video" as const,
-      src: "/examples/rubandscrub.mp4",
-      poster: "/examples/rubandscrub-poster.jpg",
-    },
-  },
-  {
     name: "Frequency Framed",
+    type: "E-commerce website",
     client: "Artist selling framed originals",
     logo: { src: "/systems/frequency-framed-logo.png", w: 520, h: 273 },
     needed: "Sales happened over DMs. The artist wanted a proper shop that handles payment, stock and orders without him.",
@@ -48,7 +29,50 @@ const projects = [
     },
   },
   {
+    name: "Rub & Scrub",
+    type: "Service website",
+    client: "Mobile car valeting, Dublin",
+    logo: { src: "/systems/rubandscrub-logo.png", w: 360, h: 271 },
+    needed: "Local customers kept phoning at the wrong time. They needed to book a valet in under a minute from a phone.",
+    built: [
+      "Mobile-first service site with prices up front",
+      "Booking flow that drops straight into WhatsApp",
+      "Before/after gallery and local SEO for Dublin searches",
+    ],
+    stack: ["Next.js", "Supabase", "Vercel"],
+    url: "rubandscrub.ie",
+    live: "https://www.rubandscrub.ie",
+    caseStudy: "/work/rub-and-scrub",
+    media: {
+      kind: "video" as const,
+      src: "/examples/rubandscrub.mp4",
+      poster: "/examples/rubandscrub-poster.jpg",
+    },
+  },
+  {
+    name: "ZRecipe",
+    type: "SaaS product",
+    client: "Food costing for bakeries and restaurants",
+    logo: { src: "/systems/zrecipe-icon.png", w: 200, h: 242 },
+    needed: "Kitchens price dishes by guesswork. They needed to see the real cost, margin and selling price of every recipe.",
+    built: [
+      "Ingredient library with supplier prices",
+      "Live cost, margin and VAT for every recipe",
+      "Multi-tenant app with its own admin, run by Ziffera",
+    ],
+    stack: ["Next.js", "Supabase", "Vercel"],
+    url: "zrecipe.ie",
+    live: "https://zrecipe.ie",
+    caseStudy: null,
+    media: {
+      kind: "video" as const,
+      src: "/systems/zrecipe-demo.mp4",
+      poster: "/systems/zrecipe-poster.jpg",
+    },
+  },
+  {
     name: "Zconnect",
+    type: "Integration",
     client: "Built for Lovin from the Oven, a bakery business",
     logo: null,
     needed: "Staff copied every delivery order from Unify into Zoho Books by hand: names, line items, VAT, totals.",
@@ -74,10 +98,11 @@ export default function ClientWork() {
     <section id="work" className="mx-auto max-w-7xl px-5 py-20 lg:px-10 lg:py-28">
       <div className="max-w-2xl">
         <h2 className="text-4xl font-extrabold tracking-[-0.045em] text-ink md:text-5xl">
-          Client work
+          Work
         </h2>
         <p className="mt-4 text-lg leading-8 text-ink-2">
-          Three businesses, three different problems. Each one is running in production today.
+          An online shop, a booking site, a SaaS product and an integration. All four are
+          live and in daily use.
         </p>
       </div>
 
@@ -115,6 +140,7 @@ export default function ClientWork() {
                   )}
                 </span>
                 <div>
+                  <p className="font-mono text-[12px] text-z-deep">{p.type}</p>
                   <h3 className="text-2xl font-bold tracking-[-0.035em] text-ink">{p.name}</h3>
                   <p className="text-sm text-ink-3">{p.client}</p>
                 </div>

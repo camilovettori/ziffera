@@ -72,6 +72,22 @@ const projects = [
       "Builds trust before the customer reaches out",
     ],
   },
+  {
+    name: "ZRecipe",
+    badge: "SaaS product",
+    image: "/systems/zrecipe-poster.jpg",
+    imageAlt: "ZRecipe recipe costing dashboard",
+    liveHref: "https://zrecipe.ie",
+    detailHref: null,
+    summary:
+      "Our own food costing software for bakeries and restaurants. It shows the real cost, margin and selling price of every recipe.",
+    outcome: "Live at zrecipe.ie",
+    bullets: [
+      "Ingredient library with supplier prices",
+      "Live cost, margin and VAT per recipe",
+      "Multi-tenant app run and maintained by Ziffera",
+    ],
+  },
 ];
 
 export default function WorkPage() {
@@ -99,7 +115,7 @@ export default function WorkPage() {
           </h1>
           <p className="mt-6 max-w-2xl text-lg leading-8 text-slate-600 md:text-[1.16rem] md:leading-9">
             Every project shown here is live and serving real customers. No
-            mock-up galleries, no software demos - just working websites.
+            mock-up galleries, no fake demos - just working websites and software.
           </p>
         </div>
 
@@ -107,7 +123,7 @@ export default function WorkPage() {
           {projects.map((project) => (
             <div key={project.name} className="grid gap-6 lg:grid-cols-[0.94fr_1.06fr]">
               <div className="max-w-2xl">
-                <Badge>Live client project</Badge>
+                <Badge>{project.detailHref ? "Live client project" : "Our own product"}</Badge>
                 <h2 className="mt-4 text-4xl font-semibold tracking-[-0.05em] text-slate-950 md:text-5xl">
                   {project.name}.
                 </h2>
@@ -144,9 +160,11 @@ export default function WorkPage() {
                       View live site <ArrowRight className="h-4 w-4" />
                     </a>
                   </Button>
-                  <Button asChild variant="outline" size="lg">
-                    <Link href={project.detailHref}>View case study</Link>
-                  </Button>
+                  {project.detailHref ? (
+                    <Button asChild variant="outline" size="lg">
+                      <Link href={project.detailHref}>View case study</Link>
+                    </Button>
+                  ) : null}
                   <Button asChild variant="outline" size="lg">
                     <Link href="/contact">Get your website</Link>
                   </Button>
