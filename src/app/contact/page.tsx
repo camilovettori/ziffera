@@ -1,6 +1,7 @@
 "use client";
 
 import { FormEvent, useEffect, useId, useState } from "react";
+import Link from "next/link";
 import { Mail, MapPin, Link2 } from "lucide-react";
 import Header from "@/components/layout/Header";
 import SiteFooter from "@/components/layout/SiteFooter";
@@ -317,7 +318,15 @@ export default function ContactPage() {
                     status === "success" ? "text-emerald-700" : status === "error" ? "text-rose-700" : "text-ink-3"
                   )}
                 >
-                  {feedback || "Goes straight to hello@ziffera.ie. We never share your details."}
+                  {feedback || (
+                    <>
+                      Goes straight to hello@ziffera.ie. See our{" "}
+                      <Link href="/privacy" className="underline underline-offset-4 hover:text-ink">
+                        privacy policy
+                      </Link>
+                      .
+                    </>
+                  )}
                 </p>
                 <Button type="submit" size="lg" disabled={status === "sending"} className="shrink-0">
                   {status === "sending"

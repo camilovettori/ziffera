@@ -93,9 +93,10 @@ const projects = [
   },
 ];
 
-export default function ClientWork() {
+export default function ClientWork({ showHeading = true }: { showHeading?: boolean }) {
   return (
     <section id="work" className="mx-auto max-w-7xl px-5 py-20 lg:px-10 lg:py-28">
+      {showHeading ? (
       <div className="max-w-2xl">
         <h2 className="text-4xl font-extrabold tracking-[-0.045em] text-ink md:text-5xl">
           Work
@@ -105,8 +106,9 @@ export default function ClientWork() {
           live and in daily use.
         </p>
       </div>
+      ) : null}
 
-      <div className="mt-14 grid gap-20 lg:gap-28">
+      <div className={showHeading ? "mt-14 grid gap-20 lg:gap-28" : "grid gap-20 lg:gap-28"}>
         {projects.map((p, i) => (
           <article
             key={p.name}

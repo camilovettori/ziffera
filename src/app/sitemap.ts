@@ -41,5 +41,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.8,
       images: [`${baseUrl}/examples/rub-and-scrub.png`],
     },
+    {
+      url: `${baseUrl}/privacy`,
+      lastModified,
+      changeFrequency: "yearly",
+      priority: 0.3,
+    },
   ];
 }

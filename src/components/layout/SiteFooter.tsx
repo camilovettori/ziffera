@@ -48,7 +48,10 @@ export default function SiteFooter({ cta = true }: { cta?: boolean }) {
               LinkedIn
             </a>
           </nav>
-          <p className="text-ink-3">© {new Date().getFullYear()} Ziffera, Dublin</p>
+          <p className="flex gap-4 text-ink-3">
+            <Link href="/privacy" className="hover:text-ink">Privacy</Link>
+            <span>© {new Date().getFullYear()} Ziffera, Dublin</span>
+          </p>
         </div>
       </div>
     </footer>
