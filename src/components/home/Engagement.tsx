@@ -22,7 +22,7 @@ const models = [
 const commitments = [
   "Written scope and fixed quote",
   "No lock-in contracts",
-  "One team from first call to support",
+  "One team from first contact to support",
   "Based in Dublin, working across Ireland",
 ];
 
@@ -35,8 +35,8 @@ export default function Engagement() {
             How we work together
           </h2>
           <p className="max-w-lg text-lg leading-8 text-ink-2 lg:justify-self-end">
-            Every business is different, so we quote after a short call rather than from a
-            price list. You&apos;ll know the full cost before we start.
+            Every business is different, so we quote after a short conversation rather than
+            from a price list. You&apos;ll know the full cost before we start.
           </p>
         </div>
 
@@ -63,7 +63,7 @@ export default function Engagement() {
           </ul>
           <div className="flex shrink-0 gap-3">
             <Button asChild size="lg">
-              <Link href="/contact">Book a call</Link>
+              <Link href="/contact">Get in touch</Link>
             </Button>
           </div>
         </div>

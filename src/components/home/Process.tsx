@@ -1,8 +1,8 @@
 const steps = [
   {
     when: "Step 1",
-    title: "Discovery call",
-    body: "A 30-minute call about your business, then a written scope and a fixed quote.",
+    title: "First conversation",
+    body: "By email or a short call, whichever you prefer. Then a written scope and a fixed quote.",
   },
   {
     when: "Step 2",

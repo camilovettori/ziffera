@@ -10,7 +10,13 @@ import { Select } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
 
-type Mode = "call" | "message";
+type Mode = "email" | "video" | "phone";
+
+const modes: { value: Mode; label: string }[] = [
+  { value: "email", label: "Email" },
+  { value: "video", label: "Video call" },
+  { value: "phone", label: "Phone call" },
+];
 
 const topics = [
   "Website or online shop",
@@ -25,8 +31,6 @@ const times = [
   "Any time on a weekday",
 ];
 
-const callTypes = ["Video call", "Phone call"];
-
 type FormState = {
   name: string;
   email: string;
@@ -34,7 +38,6 @@ type FormState = {
   phone: string;
   topic: string;
   time: string;
-  callType: string;
   notes: string;
 };
 
@@ -45,13 +48,12 @@ const empty: FormState = {
   phone: "",
   topic: "",
   time: "",
-  callType: callTypes[0],
   notes: "",
 };
 
 const nextSteps = [
-  ["We reply", "Usually within 24 hours, to confirm a time that suits you."],
-  ["We talk", "30 minutes about your business and what needs to change."],
+  ["We reply", "Usually within 24 hours, by email or with a call, whichever you prefer."],
+  ["We understand the problem", "A few questions about your business and what needs to change."],
   ["You get a plan", "A written scope and a fixed quote. Nothing starts until you approve it."],
 ];
 
@@ -80,7 +82,7 @@ function Field({
 }
 
 export default function ContactPage() {
-  const [mode, setMode] = useState<Mode>("call");
+  const [mode, setMode] = useState<Mode>("email");
   const [form, setForm] = useState<FormState>(empty);
   const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
   const [feedback, setFeedback] = useState("");
@@ -88,7 +90,8 @@ export default function ContactPage() {
 
   useEffect(() => {
     const type = new URLSearchParams(window.location.search).get("type");
-    if (type === "message") setMode("message");
+    if (type === "call" || type === "video") setMode("video");
+    if (type === "phone") setMode("phone");
   }, []);
 
   const set = <K extends keyof FormState>(key: K, value: FormState[K]) => {
@@ -105,17 +108,18 @@ export default function ContactPage() {
       Object.entries(form).map(([k, v]) => [k, v.trim()])
     ) as FormState;
 
-    if (mode === "message" && !f.notes) {
+    if (mode === "email" && !f.notes) {
       setStatus("error");
       setFeedback("Add a short message so we know how to help.");
       return;
     }
 
+    const isCall = mode !== "email";
+    const modeLabel = modes.find((m) => m.value === mode)?.label ?? "Email";
     const message =
-      mode === "call"
+      isCall
         ? [
-            "CALL REQUEST",
-            `Call type: ${f.callType}`,
+            `${modeLabel.toUpperCase()} REQUEST`,
             `Best time: ${f.time}`,
             f.phone ? `Phone: ${f.phone}` : null,
             "",
@@ -137,7 +141,7 @@ export default function ContactPage() {
           email: f.email,
           businessName: f.company,
           need: f.topic,
-          timeline: mode === "call" ? `Call: ${f.time} (${f.callType})` : undefined,
+          timeline: isCall ? `${modeLabel}: ${f.time}` : "Reply by email",
           message,
         }),
       });
@@ -153,9 +157,9 @@ export default function ContactPage() {
       setForm(empty);
       setStatus("success");
       setFeedback(
-        mode === "call"
-          ? "Request sent. We'll email you to confirm the call time."
-          : "Message sent. We'll reply by email."
+        isCall
+          ? "Sent. We'll email you to confirm a time for the call."
+          : "Message sent. We'll reply by email, usually within 24 hours."
       );
     } catch (error) {
       setStatus("error");
@@ -180,11 +184,12 @@ export default function ContactPage() {
           <div>
             <p className="text-sm font-medium text-z-deep">Contact</p>
             <h1 className="mt-4 text-[2.6rem] font-extrabold leading-[1] tracking-[-0.05em] text-ink sm:text-6xl">
-              Book a call with Ziffera
+              Let&apos;s talk about your project
             </h1>
             <p className="mt-6 max-w-md text-lg leading-8 text-ink-2">
-              Tell us a little about your business and pick a time that suits you. A website,
-              a custom system or an integration: we&apos;ll tell you honestly what makes sense.
+              Tell us a little about your business and how you&apos;d like to hear back: by
+              email or on a call. A website, a custom system or an integration, we&apos;ll tell
+              you honestly what makes sense.
             </p>
 
             <ol className="mt-10 space-y-6 border-l border-line-strong pl-6">
@@ -226,30 +231,7 @@ export default function ContactPage() {
           </div>
 
           <div className="rounded-2xl border border-line bg-surface p-6 shadow-[0_30px_60px_-36px_rgba(13,21,48,0.35)] sm:p-9">
-            <div role="radiogroup" aria-label="How would you like to get in touch?" className="grid grid-cols-2 gap-1 rounded-xl border border-line bg-paper p-1">
-              {(
-                [
-                  ["call", "Book a call"],
-                  ["message", "Send a message"],
-                ] as const
-              ).map(([value, label]) => (
-                <button
-                  key={value}
-                  type="button"
-                  role="radio"
-                  aria-checked={mode === value}
-                  onClick={() => setMode(value)}
-                  className={cn(
-                    "rounded-lg px-4 py-2.5 text-[15px] font-semibold transition-colors",
-                    mode === value ? "bg-surface text-ink shadow-[0_1px_3px_rgba(13,21,48,0.12)]" : "text-ink-3 hover:text-ink"
-                  )}
-                >
-                  {label}
-                </button>
-              ))}
-            </div>
-
-            <form onSubmit={handleSubmit} className="mt-8 grid gap-5 sm:grid-cols-2">
+            <form onSubmit={handleSubmit} className="grid gap-5 sm:grid-cols-2">
               <Field label="Name" htmlFor={fid("name")}>
                 <Input id={fid("name")} autoComplete="name" required value={form.name} onChange={(e) => set("name", e.target.value)} />
               </Field>
@@ -266,21 +248,41 @@ export default function ContactPage() {
                 </Select>
               </Field>
 
-              {mode === "call" ? (
+              <fieldset className="space-y-2 sm:col-span-2">
+                <legend className="text-sm font-medium text-ink">How should we get back to you?</legend>
+                <div className="mt-2 grid grid-cols-3 gap-1 rounded-xl border border-line bg-paper p-1">
+                  {modes.map((m) => (
+                    <label
+                      key={m.value}
+                      className={cn(
+                        "cursor-pointer rounded-lg px-3 py-2.5 text-center text-[15px] font-semibold transition-colors has-[:focus-visible]:outline has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-z-blue",
+                        mode === m.value ? "bg-surface text-ink shadow-[0_1px_3px_rgba(13,21,48,0.12)]" : "text-ink-3 hover:text-ink"
+                      )}
+                    >
+                      <input
+                        type="radio"
+                        name="reply-mode"
+                        value={m.value}
+                        checked={mode === m.value}
+                        onChange={() => setMode(m.value)}
+                        className="sr-only"
+                      />
+                      {m.label}
+                    </label>
+                  ))}
+                </div>
+              </fieldset>
+
+              {mode !== "email" ? (
                 <>
-                  <Field label="Best time" htmlFor={fid("time")}>
+                  <Field label="Best time" htmlFor={fid("time")} className={mode === "video" ? "sm:col-span-2" : undefined}>
                     <Select id={fid("time")} required value={form.time} onChange={(e) => set("time", e.target.value)}>
                       <option value="" disabled>Choose a time</option>
                       {times.map((t) => <option key={t}>{t}</option>)}
                     </Select>
                   </Field>
-                  <Field label="Call by" htmlFor={fid("calltype")}>
-                    <Select id={fid("calltype")} value={form.callType} onChange={(e) => set("callType", e.target.value)}>
-                      {callTypes.map((t) => <option key={t}>{t}</option>)}
-                    </Select>
-                  </Field>
-                  {form.callType === "Phone call" ? (
-                    <Field label="Phone number" htmlFor={fid("phone")} className="sm:col-span-2">
+                  {mode === "phone" ? (
+                    <Field label="Phone number" htmlFor={fid("phone")}>
                       <Input id={fid("phone")} type="tel" autoComplete="tel" required value={form.phone} onChange={(e) => set("phone", e.target.value)} />
                     </Field>
                   ) : null}
@@ -288,21 +290,21 @@ export default function ContactPage() {
               ) : null}
 
               <Field
-                label={mode === "call" ? "Anything we should know?" : "Message"}
-                hint={mode === "call" ? "Optional" : undefined}
+                label={mode === "email" ? "Message" : "Anything we should know?"}
+                hint={mode === "email" ? undefined : "Optional"}
                 htmlFor={fid("notes")}
                 className="sm:col-span-2"
               >
                 <Textarea
                   id={fid("notes")}
                   className="min-h-[140px]"
-                  required={mode === "message"}
+                  required={mode === "email"}
                   value={form.notes}
                   onChange={(e) => set("notes", e.target.value)}
                   placeholder={
-                    mode === "call"
-                      ? "What does the business do, and what would you like to improve?"
-                      : "Tell us what you need, which tools you use today, and any deadlines."
+                    mode === "email"
+                      ? "Tell us what you need, which tools you use today, and any deadlines."
+                      : "What does the business do, and what would you like to improve?"
                   }
                 />
               </Field>
@@ -320,9 +322,9 @@ export default function ContactPage() {
                 <Button type="submit" size="lg" disabled={status === "sending"} className="shrink-0">
                   {status === "sending"
                     ? "Sending…"
-                    : mode === "call"
-                      ? "Request a call"
-                      : "Send message"}
+                    : mode === "email"
+                      ? "Send message"
+                      : "Request a call"}
                 </Button>
               </div>
             </form>

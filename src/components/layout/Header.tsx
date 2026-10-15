@@ -11,7 +11,6 @@ const navItems = [
   { label: "Services", href: "/#services" },
   { label: "Work", href: "/#work" },
   { label: "Process", href: "/#process" },
-  { label: "Contact", href: "/contact?type=message" },
 ];
 
 export default function Header() {
@@ -50,7 +49,7 @@ export default function Header() {
             </Link>
           ))}
           <Button asChild className="ml-3 h-10 px-4">
-            <Link href="/contact">Book a call</Link>
+            <Link href="/contact">Get in touch</Link>
           </Button>
         </nav>
 
@@ -81,7 +80,7 @@ export default function Header() {
           ))}
           <Button asChild size="lg" className="mt-4 w-full">
             <Link href="/contact" onClick={() => setMobileOpen(false)}>
-              Book a call
+              Get in touch
             </Link>
           </Button>
         </nav>

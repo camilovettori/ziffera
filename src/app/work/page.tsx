@@ -166,7 +166,7 @@ export default function WorkPage() {
                     </Button>
                   ) : null}
                   <Button asChild variant="outline" size="lg">
-                    <Link href="/contact">Book a call</Link>
+                    <Link href="/contact">Get in touch</Link>
                   </Button>
                 </div>
               </div>
@@ -215,11 +215,11 @@ export default function WorkPage() {
           <div className="mt-8 flex flex-wrap gap-4">
             <Button asChild size="lg">
               <Link href="/contact">
-                Book a call <ArrowRight className="h-4 w-4" />
+                Get in touch <ArrowRight className="h-4 w-4" />
               </Link>
             </Button>
             <Button asChild variant="outline" size="lg">
-              <Link href="/contact?type=message">Send a message</Link>
+              <a href="mailto:hello@ziffera.ie">hello@ziffera.ie</a>
             </Button>
           </div>
         </div>

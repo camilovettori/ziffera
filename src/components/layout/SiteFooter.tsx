@@ -14,16 +14,16 @@ export default function SiteFooter({ cta = true }: { cta?: boolean }) {
               Let&apos;s talk about what your business needs.
             </h2>
             <p className="mt-5 max-w-xl text-lg leading-8 text-ink-2">
-              Book a 30-minute call. We&apos;ll listen, ask the right questions and follow up
-              with a written scope and a fixed quote. If we&apos;re not the right fit, we&apos;ll
-              say so.
+              Send us an email or ask for a call, whichever suits you. We&apos;ll ask the right
+              questions and follow up with a written scope and a fixed quote. If we&apos;re not
+              the right fit, we&apos;ll say so.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
               <Button asChild size="lg">
-                <Link href="/contact">Book a call</Link>
+                <Link href="/contact">Get in touch</Link>
               </Button>
               <Button asChild size="lg" variant="outline">
-                <Link href="/contact?type=message">Send a message</Link>
+                <a href="mailto:hello@ziffera.ie">hello@ziffera.ie</a>
               </Button>
             </div>
           </div>
@@ -37,7 +37,7 @@ export default function SiteFooter({ cta = true }: { cta?: boolean }) {
           <nav className="flex flex-wrap gap-x-6 gap-y-2" aria-label="Footer">
             <Link href="/#services" className="hover:text-ink">Services</Link>
             <Link href="/work" className="hover:text-ink">Work</Link>
-            <Link href="/contact" className="hover:text-ink">Book a call</Link>
+            <Link href="/contact" className="hover:text-ink">Contact</Link>
             <a href="mailto:hello@ziffera.ie" className="hover:text-ink">hello@ziffera.ie</a>
             <a
               href="https://www.linkedin.com/company/ziffera"
