@@ -1,10 +1,25 @@
 import type { Metadata } from "next";
+import localFont from "next/font/local";
 import "./globals.css";
 
+const grotesk = localFont({
+  src: "./fonts/schibsted-grotesk-latin-wght-normal.woff2",
+  weight: "400 900",
+  variable: "--font-grotesk",
+  display: "swap",
+});
+
+const code = localFont({
+  src: "./fonts/jetbrains-mono-latin-wght-normal.woff2",
+  weight: "100 800",
+  variable: "--font-code",
+  display: "swap",
+});
+
 export const metadata: Metadata = {
-  title: "Ziffera — Premium Website Design & Development",
+  title: "Ziffera — Websites and business systems, Dublin",
   description:
-    "Ziffera builds fast, modern websites for real businesses. Clean design, e-commerce ready, and built to bring customers.",
+    "Ziffera is a Dublin studio building fast websites, online shops and the systems behind them: bookings, payments, costing and invoice automation.",
   keywords: [
     "website design",
     "website development",
@@ -30,7 +45,7 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: "Ziffera — Premium Website Design & Development",
+    title: "Ziffera — Websites and business systems, Dublin",
     description:
       "Premium website design and development for real businesses. Clean design, e-commerce ready, built to bring customers.",
     url: "https://www.ziffera.ie",
@@ -48,7 +63,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Ziffera — Premium Website Design & Development",
+    title: "Ziffera — Websites and business systems, Dublin",
     description:
       "Premium website design and development for real businesses. Clean design, e-commerce ready, built to bring customers.",
     images: ["/examples/homepage.png"],
@@ -96,8 +111,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body suppressHydrationWarning className="min-h-screen bg-[#F7FAFF] text-slate-900 antialiased">
+    <html lang="en" className={`${grotesk.variable} ${code.variable}`}>
+      <body suppressHydrationWarning className="min-h-screen bg-paper font-sans text-ink antialiased">
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
